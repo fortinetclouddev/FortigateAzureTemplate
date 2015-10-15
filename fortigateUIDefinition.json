@@ -127,8 +127,7 @@
       "newStorageAccountName": "basics().storageAccountSelectorElement.name",
       "adminUsername": "basics().usernameElement",
       "adminPassword": "basics().passwordElement",
-      "virtualnetName": "basics().newVnetNameElement",
-      "location": "location()"
+      "virtualnetName": "basics().newVnetNameElement"
     }
   }
   }
