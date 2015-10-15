@@ -2,16 +2,21 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location": {
-      "type": "string",
-      "allowedValues": [ "East US", "West US", "North Central US", "South Central US", "Central US", "West Europe", "North Europe", "East Asia", "South East Asia", "Japan West", "Japan East" ],
-      "metadata": {
-        "description": "Deployment location"
-      }
-    },
     "VirtualMachineSize": {
       "type": "string",
-      "allowedValues": [ "Standard_A3", "Standard_A4" ],
+      "allowedValues": [
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A8",
+        "Standard_A9",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D13",
+        "Standard_D14",
+        "Standard_DS4",
+        "Standard_DS13",
+        "Standard_DS14"
+      ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -120,7 +125,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[parameters('newStorageAccountName')]",
       "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "accountType": "[variables('storageAccountType')]"
       }
@@ -142,7 +147,7 @@
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "DefaultNSG",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
           {
@@ -180,7 +185,7 @@
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable1Name')]",
       "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
           {
@@ -198,7 +203,7 @@
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable2Name')]",
       "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
           {
@@ -224,7 +229,7 @@
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('VNetName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
         "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
@@ -268,7 +273,7 @@
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "Nic0",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('VNetName'))]"
       ],
@@ -314,7 +319,7 @@
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "Nic1",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('VNetName'))]"
       ],
@@ -390,7 +395,7 @@
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "udp",
-              "frontendPort": "500",
+              "frontendPort": 500,
               "backendPort": 500,
               "enableFloatingIP": false
             }
@@ -402,7 +407,7 @@
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "udp",
-              "frontendPort": "4500",
+              "frontendPort": 4500,
               "backendPort": 4500,
               "enableFloatingIP": false
             }
@@ -414,7 +419,7 @@
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "udp",
-              "frontendPort": "1701",
+              "frontendPort": 1701,
               "backendPort": 1701,
               "enableFloatingIP": false
             }
@@ -427,6 +432,11 @@
       "name": "[variables('compute_VM_fg1_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[resourceGroup().location]",
+      "plan": {
+        "name": "fortinet_fg-vm",
+        "publisher": "fortinet",
+        "product": "fortinet_fortigate-vm_v5"
+      },
       "copy": {
         "name": "vmLoop",
         "count": "[variables('scaleNumber')]"
@@ -441,13 +451,13 @@
           "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
-          "computername": "[variables('compute_VM_fg1_Name')]",
+          "computerName": "[variables('compute_VM_fg1_Name')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
-                "publisher": "Fortinet",
+                "publisher": "fortinet",
                 "offer": "fortinet_fortigate-vm_v5",
                 "sku": "fortinet_fg-vm",
                 "version": "latest"
@@ -480,4 +490,4 @@
       }
     }
   ]
-    }
+}
