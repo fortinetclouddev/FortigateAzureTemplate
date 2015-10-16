@@ -85,7 +85,7 @@
     "routeTable1Name": "PublicFacingSubnetRoutes",
     "routeTable2Name": "ProtectedSubnetRoutes",
     "FGProtectedAddress": "10.48.1.99",
-    "FGPubFacingAddress": "10.48.0.4",
+    "FGPubFacingAddress": "10.48.0.99",
     "nsgname": "DefaultNSG",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
