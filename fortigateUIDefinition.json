@@ -10,7 +10,7 @@
         "toolTip": "",
         "defaultValue": {
           "name":"FGNetStorage",
-          "type": "Premium_LRS"
+          "type": "Standard_LRS"
         },
         "constraints": {
           "allowedTypes": [ ],
@@ -25,7 +25,7 @@
         "recommendedSizes": [
           "Standard_A3",
           "Standard_A4",
-          "Standard_A9"
+          "Standard_A8"
         ],
         "constraints": {
           "allowedSizes": [
@@ -125,6 +125,7 @@
       "publicIPAddressType": "basics().publicIPAddressTypeElement",
       "uniqueDnsPrefixForVM": "basics().uniqueDNSPrefixElement",
       "newStorageAccountName": "basics().storageAccountSelectorElement.name",
+      "newStorageAccountType": "basics().storageAccountSelectorElement.type",
       "adminUsername": "basics().usernameElement",
       "adminPassword": "basics().passwordElement",
       "virtualnetName": "basics().newVnetNameElement"
