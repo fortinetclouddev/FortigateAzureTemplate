@@ -138,6 +138,7 @@
       "vmSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
       "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
+      "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "storageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
