@@ -81,6 +81,16 @@
             }
           },
           {
+            "name": "uniqueDNSPrefixElement",
+            "type": "Microsoft.Common.TextBox",
+            "Label": "Unique DNS Prefix for the Public IP",
+            "defaultValue": "",
+            "toolTip": "",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
             "name": "Size",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
