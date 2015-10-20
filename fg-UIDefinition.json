@@ -60,35 +60,6 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
-            "name": "publicIPAddressTypeElement",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Public IP Address Type",
-            "toolTip": "Permanent Public IP or Dynamically assigned when in use?",
-            "defaultValue": "Static",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Static",
-                  "value": "Static"
-                },
-                {
-                  "label": "Dynamic",
-                  "value": "Dynamic"
-                }
-              ]
-            }
-          },
-          {
-            "name": "uniqueDNSPrefixElement",
-            "type": "Microsoft.Common.TextBox",
-            "Label": "Unique DNS Prefix for your new Public IP",
-            "defaultValue": "",
-            "toolTip": "This must be a unique prefix in your chosen location. It will be used in the DNS record associated with your public IP.",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
             "name": "VNetName",
             "type": "Microsoft.Common.TextBox",
             "label": "New virtual network name",
@@ -152,8 +123,6 @@
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('password')]",
-      "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
-      "uniqueDnsPrefixForPublicIP": "[steps('StorageNetworkConfig').uniqueDNSPrefixElement]",
       "virtualnetName": "[steps('StorageNetworkConfig').VNetName]",
       "vmSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
