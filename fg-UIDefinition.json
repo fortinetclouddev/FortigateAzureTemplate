@@ -81,6 +81,15 @@
             }
           },
           {
+            "name": "uniqueDNSPrefix",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Unique DNS Prefix for the Public IP",
+            "toolTip": "Prefix will be used in DNS record for the new public IP.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
             "name": "Size",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
