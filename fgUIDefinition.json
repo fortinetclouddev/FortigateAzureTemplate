@@ -1,0 +1,22 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "storageAccountSelectorElement",
+        "type": "Microsoft.Storage.StorageAccountSelector",
+        "label": "Storage Account",
+        "defaultValue": {
+          "name": "FGNetStorage",
+          "type": "Standard_LRS"
+        }
+      }
+    ],
+    "steps": [ ],
+    "outputs": {
+      "VirtualMachineSize": "basics().sizeSelectorElement"
+    }
+  }
+  }
+
