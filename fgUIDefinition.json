@@ -124,7 +124,7 @@
             },
             "toolTip": {
                 "virtualNetwork": "Virtual Network Name",
-                "subnets": "Subnets requied for the Cisco CSR solution"
+                "subnets": "Internal and External Subnets for the FortiGate."
             },
             "defaultValue": {
                 "name": "vnet01",
