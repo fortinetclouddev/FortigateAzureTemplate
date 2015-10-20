@@ -33,6 +33,24 @@
         "description": "Storage Account Type."
       }
     },
+    "storageAccountNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identifies whether to use new or existing Storage Account"
+      }
+    },
+    "storageAccountExistingRG": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing existing storage account"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -73,12 +91,17 @@
       "metadata": {
         "description": "Name for Fortiaget virtual appliance."
       }
+    },
+    "baseUrl": {
+      "type": "string",
+      "metadata": {
+        "artifactsBaseUrl": "",
+        "description": "URL to acquire other templates"
+      },
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/master"
     }
   },
   "variables": {
-    "imagePublisher": "MicrosoftWindowsServer",
-    "imageOffer": "WindowsServer",
-    "OSDiskName": "osdiskforwindowssimple",
     "storageAccountType": "[parameters('StorageAccountType')]",
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('VirtualMachineSize')]",
@@ -130,16 +153,35 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces','Nic0')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces','Nic1')]",
 
-    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]"
+    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
+    "storageAccountSetupURL": "[concat(parameters('baseUrl'),'/storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]"
+
   },
   "resources": [
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[parameters('newStorageAccountName')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[resourceGroup().location]",
+      "name": "SettingUpStorageAccount",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "properties": {
-        "accountType": "[variables('storageAccountType')]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('storageAccountSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "storageAccountName": {
+            "value": "[parameters('newStorageAccountName')]"
+          },
+          "storageAccountExistingRG": {
+            "value": "[parameters('storageAccountExistingRG')]"
+          }
+        }
       }
     },
     {
@@ -456,7 +498,7 @@
       "dependsOn": [
         "Microsoft.Network/networkInterfaces/Nic0",
         "Microsoft.Network/networkInterfaces/Nic1",
-        "[concat('Microsoft.Storage/storageAccounts/',parameters('newStorageAccountName'))]"
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -469,17 +511,17 @@
         },
         "storageProfile": {
           "imageReference": {
-                "publisher": "fortinet",
-                "offer": "fortinet_fortigate-vm_v5",
-                "sku": "fortinet_fg-vm",
-                "version": "latest"
-              },
+            "publisher": "fortinet",
+            "offer": "fortinet_fortigate-vm_v5",
+            "sku": "fortinet_fg-vm",
+            "version": "latest"
+          },
           "osDisk": {
             "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[variables('compute_VM_fg1_VHD_URI')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
             }
           }
         },
