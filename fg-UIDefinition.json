@@ -84,8 +84,7 @@
             "name": "uniqueDNSPrefixElement",
             "type": "Microsoft.Common.TextBox",
             "Label": "Unique DNS Prefix for the Public IP",
-            "defaultValue": "",
-            "toolTip": "",
+            "toolTip": "Prefix will be used in DNS record for the new public IP.",
             "constraints": {
               "required": true
             }
