@@ -13,7 +13,6 @@
         }
       }
     ],
-    "steps": [ ],
     "outputs": {
       "VirtualMachineSize": "basics().sizeSelectorElement"
     }
