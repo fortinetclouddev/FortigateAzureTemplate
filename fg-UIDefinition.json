@@ -20,13 +20,6 @@
         "osPlatform": "Linux"
       },
       {
-        "name": "adminUsername",
-        "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "Admin Username for the Fortigate",
-        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
-        "osPlatform": "Linux"
-      },
-      {
         "name": "passwordElement",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
@@ -60,6 +53,15 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
+            "name": "VnetName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "New VnetName",
+            "toolTip": "This is a new virtual network for this deployment.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
             "name": "Size",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
@@ -90,15 +92,6 @@
               "sku": "fortinet_fg-vm"
             },
             "count": "1"
-          },
-          {
-            "name": "VnetName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "New VnetName",
-            "toolTip": "This is a new virtual network for this deployment.",
-            "constraints": {
-              "required": true
-            }
           },
           {
             "name": "storageAccount",
