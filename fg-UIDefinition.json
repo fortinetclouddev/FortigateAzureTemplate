@@ -62,6 +62,25 @@
             }
           },
           {
+            "name": "publicIPAddressTypeElement",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Public IP Address Type",
+            "toolTip": "",
+            "defaultValue": "Static",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Static",
+                  "value": "Static"
+                },
+                {
+                  "label": "Dynamic",
+                  "value": "Dynamic"
+                }
+              ]
+            }
+          },
+          {
             "name": "Size",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
