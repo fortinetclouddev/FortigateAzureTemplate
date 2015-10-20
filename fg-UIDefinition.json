@@ -33,7 +33,7 @@
           "authenticationType": "Authentication type - Choose Password",
           "password": "FortiGate Password",
           "confirmPassword": "Confirm Password",
-          "sshPublicKey": "Do not use"
+          "sshPublicKey": "'SSH Public Key' option not currently compatible with FortiGate"
         },
         "toolTip": {
           "authenticationType": "Authentication Type for the Linux VM - !Fortigate Web UI requires password!",
