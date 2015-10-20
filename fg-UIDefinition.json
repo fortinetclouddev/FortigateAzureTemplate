@@ -128,7 +128,7 @@
     "outputs": {
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('passwordelement')]",
+      "adminPassword": "[basics('passwordElement')]",
       "publicIPAddressName" : "[steps('StorageNetworkConfig').publicIpAddress.name]",
       "publicIPDnsName" : "[steps('StorageNetworkConfig').publicIpAddress.domainNameLabel]", 
       "publicIPNewOrExisting" : "[steps('StorageNetworkConfig').publicIpAddress.newOrExistingOrNone]",
