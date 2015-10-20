@@ -105,13 +105,13 @@
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
               "publicIpAddress": "Public IP address",
-              "domainNameLabel": "DNS label"
+              "domainNameLabel": "DNS Name"
             },
             "toolTip": {
-              "domainNameLabel": "DNS label for the Virtual Machine's public IP address."
+              "domainNameLabel": "DNS name for the FortiGate and/or PATed hosts protected by the FortiGate."
             },
             "defaultValue": {
-              "publicIpAddressName": "ip01"
+              "publicIpAddressName": "PublicIP-FG"
             },
             "options": {
               "hideNone": true
@@ -129,7 +129,7 @@
                 "subnets": "Internal and External Subnets for the FortiGate."
             },
             "defaultValue": {
-                "name": "vnet01",
+                "name": "vnet-FG",
                 "addressPrefixSize": "/16"
             },
             "constraints": {
@@ -140,7 +140,7 @@
                     "label": "First subnet",
                     "defaultValue": {
                         "name": "Subnet-1",
-                        "addressPrefixSize": "/24"
+                        "addressPrefixSize": "10.48.1.0/24"
                     },
                     "constraints": {
                         "minAddressPrefixSize": "/24",
@@ -152,7 +152,7 @@
                     "label": "Second subnet",
                     "defaultValue": {
                         "name": "Subnet-2",
-                        "addressPrefixSize": "/24"
+                        "addressPrefixSize": "10.48.2.0/24"
                     },
                     "constraints": {
                         "minAddressPrefixSize": "/24",
