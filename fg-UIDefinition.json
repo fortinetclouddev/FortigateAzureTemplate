@@ -140,7 +140,7 @@
                     "label": "First subnet",
                     "defaultValue": {
                         "name": "Subnet-1",
-                        "addressPrefixSize": "10.48.1.0/24"
+                        "addressPrefixSize": "/24"
                     },
                     "constraints": {
                         "minAddressPrefixSize": "/24",
@@ -152,7 +152,7 @@
                     "label": "Second subnet",
                     "defaultValue": {
                         "name": "Subnet-2",
-                        "addressPrefixSize": "10.48.2.0/24"
+                        "addressPrefixSize": "/24"
                     },
                     "constraints": {
                         "minAddressPrefixSize": "/24",
