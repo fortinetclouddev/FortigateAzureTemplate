@@ -60,15 +60,6 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
-            "name": "VNetName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "New virtual network name",
-            "toolTip": "This will be the name of a new virtual network for this deployment.",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
             "name": "Size",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
@@ -123,7 +114,6 @@
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('password')]",
-      "virtualnetName": "[steps('StorageNetworkConfig').VNetName]",
       "vmSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
