@@ -27,14 +27,8 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
-    "newStorageAccountType": {
+    "StorageAccountType": {
       "type": "string",
-       "allowedValues": [
-        "Standard_LRS",
-        "Standard_GRS",
-        "Premium_LRS",
-        "Premium_GRS"
-      ],
       "metadata": {
         "description": "Storage Account Type."
       }
@@ -73,13 +67,19 @@
       "metadata": {
         "description": "Type of public IP address"
       }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name for Fortiaget virtual appliance."
+      }
     }
   },
   "variables": {
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
     "OSDiskName": "osdiskforwindowssimple",
-    "storageAccountType": "[parameters('newStorageAccountType')]",
+    "storageAccountType": "[parameters('StorageAccountType')]",
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('VirtualMachineSize')]",
 
@@ -101,7 +101,7 @@
     "nsgname": "DefaultNSG",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "FortiGate",
+    "compute_VM_fg1_Name": "[parameters('vmName')]",
     "compute_VM_fg1_VHD_URI": "[concat('https://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',variables('compute_VM_fg1_Name'),'-osdisk.vhd')]",
     "compute_VM_fg1_Image_URI": "[concat('https://','fortios','.blob.core.windows.net/fortios/fortios-4968.vhd/','fortios-4968.vhd')]",
 
