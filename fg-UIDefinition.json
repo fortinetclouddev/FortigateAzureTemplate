@@ -20,15 +20,14 @@
         "osPlatform": "Linux"
       },
       {
-        "name": "SSHPassword",
+        "name": "passwordElement",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
-          "password": "Password",
-          "confirmPassword": "Confirm password",
+          "password": "FortiGate Password",
+          "confirmPassword": "Confirm Password"
         },
         "toolTip": {
-          "authenticationType": "Authentication Type for the Linux Virtual Machine",
-          "password": "Password for the Virtual Machine",
+          "password": "Password for the Fortigate virtual appliance Admin Account."
         },
         "constraints": {
           "required": true
@@ -36,8 +35,8 @@
         "options": {
           "hideConfirmation": false
         },
-        "osPlatform": "Linux"
-      }
+        "osPlatform": "Windows"
+      },
     ],
     "steps": [
       {
@@ -129,9 +128,7 @@
     "outputs": {
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('password')]",
-      "sshPublicKey": "[basics('sshPublicKey')]",
-      "authenticationType": "[basics('authenticationType')]",
+      "adminPassword": "[basics('passwordelement')]",
       "publicIPAddressName" : "[steps('StorageNetworkConfig').publicIpAddress.name]",
       "publicIPDnsName" : "[steps('StorageNetworkConfig').publicIpAddress.domainNameLabel]", 
       "publicIPNewOrExisting" : "[steps('StorageNetworkConfig').publicIpAddress.newOrExistingOrNone]",
