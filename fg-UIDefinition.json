@@ -19,15 +19,26 @@
         "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
         "osPlatform": "Linux"
       },
+     {
+        "name": "adminUsername",
+        "type": "Microsoft.Compute.UserNameTextBox",
+        "label": "Admin Username for the Fortigate",
+        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
+        "osPlatform": "Linux"
+      },
       {
         "name": "passwordElement",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
+          "authenticationType": "Authentication type - Choose Password",
           "password": "FortiGate Password",
-          "confirmPassword": "Confirm Password"
+          "confirmPassword": "Confirm Password",
+          "sshPublicKey": "Do not use"
         },
         "toolTip": {
-          "password": "Password for the Fortigate virtual appliance Admin Account."
+          "authenticationType": "Authentication Type for the Linux VM - !Fortigate Web UI requires password!",
+          "password": "Password for the Virtual Machine",
+          "sshPublicKey": "SSH Public Key - !Fortigate Web UI requires password option - don't use SSH Key!"
         },
         "constraints": {
           "required": true
@@ -35,7 +46,7 @@
         "options": {
           "hideConfirmation": false
         },
-        "osPlatform": "Windows"
+        "osPlatform": "Linux"
       }
     ],
     "steps": [
