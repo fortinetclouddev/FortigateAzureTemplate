@@ -15,8 +15,8 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "Username",
-        "toolTip": "Admin username for the FortiGate. Must not be 'admin'.",
+        "label": "Admin Username for the Fortigate",
+        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
         "osPlatform": "Linux"
       },
       {
@@ -63,10 +63,19 @@
               "domainNameLabel": "DNS name for the FortiGate and/or PATed hosts protected by the FortiGate."
             },
             "defaultValue": {
-              "publicIpAddressName": "PublicIP-FG"
+              "publicIpAddressName": "FGPublicIP"
             },
             "options": {
               "hideNone": true
+            }
+          },
+          {
+            "name": "VNetName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "New virtual network name",
+            "toolTip": "This will be the name of a new virtual network for this deployment.",
+            "constraints": {
+              "required": true
             }
           },
           {
