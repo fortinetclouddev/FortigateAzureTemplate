@@ -92,6 +92,15 @@
             "count": "1"
           },
           {
+            "name": "VnetName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "New VnetName",
+            "toolTip": "This is a new virtual network for this deployment.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
             "name": "storageAccount",
             "type": "Microsoft.Storage.StorageAccountSelector",
             "label": "Storage account",
@@ -116,6 +125,7 @@
       "adminPassword": "[basics('password')]",
       "vmSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
+      "virtualnetName": "[steps('StorageNetworkConfig').VnetName]"
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "storageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
