@@ -19,7 +19,7 @@
         "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
         "osPlatform": "Linux"
       },
-     {
+      {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Admin Username for the Fortigate",
@@ -60,20 +60,32 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
-            "name": "publicIpAddress",
-            "type": "Microsoft.Network.PublicIpAddressCombo",
-            "label": {
-              "publicIpAddress": "Public IP address",
-              "domainNameLabel": "DNS Name"
-            },
-            "toolTip": {
-              "domainNameLabel": "DNS name for the FortiGate and/or PATed hosts protected by the FortiGate."
-            },
-            "defaultValue": {
-              "publicIpAddressName": "FGPublicIP"
-            },
-            "options": {
-              "hideNone": true
+            "name": "publicIPAddressTypeElement",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Public IP Address Type",
+            "toolTip": "Permanent Public IP or Dynamically assigned when in use?",
+            "defaultValue": "Static",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Static",
+                  "value": "Static"
+                },
+                {
+                  "label": "Dynamic",
+                  "value": "Dynamic"
+                }
+              ]
+            }
+          },
+          {
+            "name": "uniqueDNSPrefixElement",
+            "type": "Microsoft.Common.TextBox",
+            "Label": "Unique DNS Prefix for your new Public IP",
+            "defaultValue": "",
+            "toolTip": "This must be a unique prefix in your chosen location. It will be used in the DNS record associated with your public IP.",
+            "constraints": {
+              "required": true
             }
           },
           {
@@ -140,10 +152,9 @@
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('password')]",
-      "publicIPAddressName" : "[steps('StorageNetworkConfig').publicIpAddress.name]",
-      "publicIPDnsName" : "[steps('StorageNetworkConfig').publicIpAddress.domainNameLabel]", 
-      "publicIPNewOrExisting" : "[steps('StorageNetworkConfig').publicIpAddress.newOrExistingOrNone]",
-      "publicIPExistingRGName" : "[steps('StorageNetworkConfig').publicIpAddress.resourceGroup]",
+      "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
+      "uniqueDnsPrefixForPublicIP": "[steps('StorageNetworkConfig').uniqueDNSPrefixElement]",
+      "virtualnetName": "[steps('StorageNetworkConfig').VNetName]",
       "vmSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
