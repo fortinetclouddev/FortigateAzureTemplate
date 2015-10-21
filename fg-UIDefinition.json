@@ -144,7 +144,7 @@
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('password')]",
-      "vmSize": "[steps('StorageNetworkConfig').vmSize]",
+      "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
       "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
       "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
