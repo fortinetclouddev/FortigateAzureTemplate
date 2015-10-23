@@ -161,7 +161,7 @@
     {
       "name": "SettingUpStorageAccount",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[variables('apiVer')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
