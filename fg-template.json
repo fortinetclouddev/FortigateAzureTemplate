@@ -89,7 +89,7 @@
     "vmName": {
       "type": "string",
       "metadata": {
-        "description": "Name for Fortiaget virtual appliance."
+        "description": "Name for FortiGate virtual appliance."
       }
     },
     "baseUrl": {
