@@ -53,10 +53,56 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
-            "name": "VnetName",
+            "name": "virtualNetwork",
+            "type": "Microsoft.Network.VirtualNetworkCombo",
+            "label": {
+              "virtualNetwork": "Virtual network",
+              "subnets": "Subnets"
+            },
+            "toolTip": {
+              "virtualNetwork": "Virtual Network Name",
+              "subnets": "Subnets requied for the Cisco CSR solution"
+            },
+            "defaultValue": {
+              "name": "fgvnet",
+              "addressPrefixSize": "/16"
+            },
+            "constraints": {
+              "minAddressPrefixSize": "/16"
+            },
+            "subnets": {
+              "subnet1": {
+                "label": "Outside Subnet",
+                "defaultValue": {
+                  "name": "outsideSubnet",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": false
+                }
+              },
+              "subnet2": {
+                "label": "Protected Subnet",
+                "defaultValue": {
+                  "name": "FGProtectedSubnet",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": false
+                }
+              }
+            }
+          },
+          {
+            "name": "FGOutsideAddress",
             "type": "Microsoft.Common.TextBox",
-            "label": "New VnetName",
-            "toolTip": "This is a new virtual network for this deployment.",
+            "label": "Fortigate Outside Interface IP address",
+            "toolTip": "This address must be in the outside subnet.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress]",
             "constraints": {
               "required": true
             }
@@ -146,7 +192,6 @@
       "adminPassword": "[basics('password')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
       "location": "[location()]",
-      "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
       "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
       "uniqueDnsPrefixForPublicIP": "[steps('StorageNetworkConfig').uniqueDNSPrefix]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",

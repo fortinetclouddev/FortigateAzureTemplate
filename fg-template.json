@@ -75,6 +75,46 @@
         "description": "Name of the Azure virtual network."
       }
     },
+    "virtualnetExistingRG": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource Group name of existing vnet."
+      }
+    },
+    "virtualnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "descritption": "vnet address prefix."
+      }
+    },
+    "Subnet1Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 1 Prefix"
+      }
+    },
+    "Subnet1Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 1 Name"
+      }
+    },
+    "Subnet2Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet2Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
     "publicIPAddressType": {
       "type": "string",
       "defaultValue": "Dynamic",
@@ -545,4 +585,3 @@
     }
   ]
 }
-test
