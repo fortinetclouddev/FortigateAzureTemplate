@@ -189,7 +189,17 @@
             "type": "Microsoft.Common.TextBox",
             "label": "Fortigate Outside Interface IP address",
             "toolTip": "This address must be in the outside subnet.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress]",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "FGProtectedAddress",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Fortigate Protected Interface IP address",
+            "toolTip": "This address must be in the protected subnet.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
             "constraints": {
               "required": true
             }
