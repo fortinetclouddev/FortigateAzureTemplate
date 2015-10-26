@@ -98,16 +98,6 @@
             }
           },
           {
-            "name": "FGOutsideAddress",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Fortigate Outside Interface IP address",
-            "toolTip": "This address must be in the outside subnet.",
-            "defaultValue": [steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress],
-            "constraints": {
-              "required": true
-            }
-          },
-          {
             "name": "publicIPAddressTypeElement",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Public IP Address Type",
@@ -183,6 +173,28 @@
               ]
             }
           }
+        ]
+      },
+      {
+        "name": "fgNetworkInterface",
+        "label": "FortiGate NIC Settings",
+        "subLabel": {
+          "preValidation": "Configure the network and storage options",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "FortiGate NIC Settings",
+        "elements": [
+          {
+            "name": "FGOutsideAddress",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Fortigate Outside Interface IP address",
+            "toolTip": "This address must be in the outside subnet.",
+            "defaultValue": [steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress],
+            "constraints": {
+              "required": true
+            }
+          }
+
         ]
       }
     ],
