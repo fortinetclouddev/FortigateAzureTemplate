@@ -102,7 +102,7 @@
             "type": "Microsoft.Common.TextBox",
             "label": "Fortigate Outside Interface IP address",
             "toolTip": "This address must be in the outside subnet.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress]",
+            "defaultValue": [steps('StorageNetworkConfig').virtualNetwork.subnets.outsideSubnet.startAddress],
             "constraints": {
               "required": true
             }
