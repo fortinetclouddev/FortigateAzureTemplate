@@ -179,7 +179,7 @@
         "name": "fgNetworkInterface",
         "label": "FortiGate NIC Settings",
         "subLabel": {
-          "preValidation": "Configure the network and storage options",
+          "preValidation": "Configure IP address for FortiGate NICs",
           "postValidation": "Done"
         },
         "bladeTitle": "FortiGate NIC Settings",
