@@ -396,7 +396,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('network_LB_Public_Name')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVer')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('network_PublicIPAddress_LB_ResourceId')]"
@@ -545,3 +545,4 @@
     }
   ]
 }
+test
