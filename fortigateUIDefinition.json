@@ -125,7 +125,7 @@
       "publicIPAddressType": "basics().publicIPAddressTypeElement",
       "uniqueDnsPrefixForVM": "basics().uniqueDNSPrefixElement",
       "newStorageAccountName": "basics().storageAccountSelectorElement.name",
-      "newStorageAccountType": "basics().storageAccountSelectorElement.type",
+      "StorageAccountType": "basics().storageAccountSelectorElement.type",
       "adminUsername": "basics().usernameElement",
       "adminPassword": "basics().passwordElement",
       "virtualnetName": "basics().newVnetNameElement"

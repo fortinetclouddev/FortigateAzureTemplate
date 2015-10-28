@@ -150,7 +150,7 @@
       "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
       "uniqueDnsPrefixForPublicIP": "[steps('StorageNetworkConfig').uniqueDNSPrefix]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
-      "storageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
+      "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
       "storageAccountExistingRG": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]"
     }
