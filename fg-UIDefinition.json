@@ -221,14 +221,15 @@
       "storageAccountExistingRG": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]",
       "virtualNetworkName" : "[steps('StorageNetworkConfig').virtualNetwork.name]",
       "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]", 
-      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
-      "Subnet2Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]", 
+      "OutsideSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "OutsideSubnetPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "ProtectedSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "ProtectedSubnetPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]", 
       "vnetNewOrExisting" : "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
       "virtualNetworkExistingRGName" : "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
       "subnet2StartAddress" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
-      "fgOutsideIP": "[steps('fgNetworkInterface').FGOutsideAddress]"
+      "fgOutsideIP": "[steps('fgNetworkInterface').FGOutsideAddress]",
+      "fgProtectedIP": "[steps('fgNetworkInterface').FGProtectedAddress]"
     }
   }
 }

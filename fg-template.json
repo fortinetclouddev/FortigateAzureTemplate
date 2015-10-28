@@ -87,28 +87,28 @@
         "descritption": "vnet address prefix."
       }
     },
-    "Subnet1Prefix": {
+    "OutsideSubnetPrefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
-    "Subnet1Name": {
+    "OutsideSubnetName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
-    "Subnet2Prefix": {
+    "ProtectedSubnetPrefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
-    "Subnet2Name": {
+    "ProtectedSubnetName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -317,6 +317,49 @@
             }
           }
         ]
+      }
+    },
+    {
+      "name": "SettingUpVirtualNetwork",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVer')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgname'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('virtualNetworkSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[parameters('virtualNetworkName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "virtualNetworkAddressPrefix": {
+            "value": "[parameters('virtualNetworkAddressPrefix')]"
+          },
+          "Subnet1Name": {
+            "value": "[parameters('Subnet1Name')]"
+          },
+          "Subnet1Prefix": {
+            "value": "[parameters('Subnet1Prefix')]"
+          },
+          "Subnet2Name": {
+            "value": "[parameters('Subnet2Name')]"
+          },
+          "Subnet2Prefix": {
+            "value": "[parameters('Subnet2Prefix')]"
+          },
+          "vnetExistingRGName": {
+            "value": "[parameters('virtualNetworkExistingRGName')]"
+          }
+        }
       }
     },
     {
