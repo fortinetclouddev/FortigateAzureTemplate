@@ -21,25 +21,20 @@
       },
       {
         "name": "passwordElement",
-        "type": "Microsoft.Compute.CredentialsCombo",
+        "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "authenticationType": "Authentication type - Choose Password",
           "password": "FortiGate Password",
-          "confirmPassword": "Confirm Password",
-          "sshPublicKey": "'SSH Public Key' option not currently compatible with FortiGate"
+          "confirmPassword": "Confirm Password"
         },
         "toolTip": {
-          "authenticationType": "Authentication Type for the Linux VM - !Fortigate Web UI requires password!",
-          "password": "Password for the Virtual Machine",
-          "sshPublicKey": "SSH Public Key - !Fortigate Web UI requires password option - don't use SSH Key!"
+          "password": "Password for the Virtual Machine"
         },
         "constraints": {
           "required": true
         },
         "options": {
           "hideConfirmation": false
-        },
-        "osPlatform": "Linux"
+        }
       }
     ],
     "steps": [
@@ -144,7 +139,7 @@
     "outputs": {
       "vmName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('password')]",
+      "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
       "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
       "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
