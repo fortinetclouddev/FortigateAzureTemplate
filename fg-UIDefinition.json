@@ -27,7 +27,7 @@
           "confirmPassword": "Confirm Password"
         },
         "toolTip": {
-          "password": "Password for the Virtual Machine"
+          "password": "Admin account password for the Virtual FortiGate"
         },
         "constraints": {
           "required": true
