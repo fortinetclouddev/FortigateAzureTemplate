@@ -90,7 +90,7 @@
             }
           },
           {
-            "name": "Size",
+            "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
