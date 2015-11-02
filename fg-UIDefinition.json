@@ -120,8 +120,8 @@
           {
             "name": "storageAccount",
             "type": "Microsoft.Storage.StorageAccountSelector",
-            "label": "Storage account",
-            "toolTip": "Storage Account for the Virtual Machine's Disks",
+            "label": "Storage Account",
+            "toolTip": "Storage Account for the disk drive of the Virtual FortiGate.",
             "defaultValue": {
               "type": "Standard_LRS"
             },
