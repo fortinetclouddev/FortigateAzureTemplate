@@ -9,7 +9,9 @@
         "label": "FortiGate VM name",
         "toolTip": "This is the name of the FortiGate virtual appliance.",
         "constraints": {
-          "required": true
+          "required": true,
+          "regex": "^[a?z0?9A?Z]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1?15 characters."
         }
       },
       {
@@ -17,7 +19,10 @@
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "Admin Username for the Fortigate",
         "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
-        "osPlatform": "Linux"
+        "osPlatform": "Linux",
+        "constraints": {
+          "required": true
+        }
       },
       {
         "name": "passwordElement",
@@ -72,7 +77,8 @@
                   "label": "Dynamic",
                   "value": "Dynamic"
                 }
-              ]
+              ],
+              "required": true
             }
           },
           {
@@ -81,7 +87,9 @@
             "label": "Unique DNS Prefix for the Public IP",
             "toolTip": "Prefix will be used in DNS record for the new public IP.",
             "constraints": {
-              "required": true
+              "required": true,
+              "regex": "^[a-z0-9-]{3,50}$",
+              "validationMessage": "Globally unique domain name prefix must be between 3 and 50 characters long and can contain only dashes, numbers, and lowercase letters. The domain name suffix (e.g. westus.cloudapp.zure.com) will be automatically updated based on the selected location."
             }
           },
           {
@@ -107,7 +115,8 @@
                 "Standard_DS4",
                 "Standard_DS13",
                 "Standard_DS14"
-              ]
+              ],
+              "required": true
             },
             "osPlatform": "Linux",
             "imageReference": {
@@ -130,7 +139,8 @@
                 "Standard_LRS",
                 "Standard_GRS",
                 "Premium_LRS"
-              ]
+              ],
+              "required": true
             }
           }
         ]
