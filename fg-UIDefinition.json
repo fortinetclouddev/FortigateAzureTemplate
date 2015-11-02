@@ -148,7 +148,7 @@
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
       "storageAccountExistingRG": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]",
-      "location": "location()"
+      "location": "[location()]"
     }
   }
 }
