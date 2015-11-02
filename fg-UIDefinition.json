@@ -1,4 +1,4 @@
-{
+﻿{
   "handler": "Microsoft.Compute.MultiVm",
   "version": "0.0.1-preview",
   "parameters": {
@@ -10,8 +10,8 @@
         "toolTip": "This is the name of the FortiGate virtual appliance.",
         "constraints": {
           "required": true,
-          "regex": "^[a?z0?9A?Z]{1,15}$",
-          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1?15 characters."
+          "regex": "^[A-Za-z0-9]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
         }
       },
       {
