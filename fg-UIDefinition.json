@@ -100,16 +100,6 @@
             }
           },
           {
-            "name": "fGateIP1",
-            "type": "Microsoft.Common.TextBox",
-            "label": "FortiGate Outside Address",
-            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
             "name": "publicIPAddressTypeElement",
             "type": "Microsoft.Common.OptionsGroup",
             "label": "Public IP Address Type",
@@ -147,7 +137,7 @@
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
               "Standard_A3",
-              "Standard_D3",
+              "Standard_A4",
               "Standard_D4"
             ],
             "constraints": {
@@ -203,13 +193,27 @@
         "bladeTitle": "FortiGate IP Assignment",
         "elements": [
           {
-            "name": "fGateIP2",
+            "name": "fGateIP1",
             "type": "Microsoft.Common.TextBox",
             "label": "FortiGate Outside Address",
             "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
+          },
+          {
+            "name": "fGateIP2",
+            "type": "Microsoft.Common.TextBox",
+            "label": "FortiGate Inside Address",
+            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
             "constraints": {
-              "required": true
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
             }
           }
         ]
