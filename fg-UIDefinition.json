@@ -53,10 +53,56 @@
         "bladeTitle": "Network and Storage Settings",
         "elements": [
           {
-            "name": "VnetName",
+            "name": "virtualNetwork",
+            "type": "Microsoft.Network.VirtualNetworkCombo",
+            "label": {
+              "virtualNetwork": "Virtual network",
+              "subnets": "Subnets"
+            },
+            "toolTip": {
+              "virtualNetwork": "Virtual Network Name",
+              "subnets": "Subnets requied for the FortiGate solution"
+            },
+            "defaultValue": {
+              "name": "vnet01",
+              "addressPrefixSize": "/16"
+            },
+            "constraints": {
+              "minAddressPrefixSize": "/16"
+            },
+            "subnets": {
+              "subnet1": {
+                "label": "First subnet",
+                "defaultValue": {
+                  "name": "Subnet-1",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": false
+                }
+              },
+              "subnet2": {
+                "label": "Second subnet",
+                "defaultValue": {
+                  "name": "Subnet-2",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": false
+                }
+              }
+            }
+          },
+          {
+            "name": "fGateIP1",
             "type": "Microsoft.Common.TextBox",
-            "label": "New VnetName",
-            "toolTip": "This is a new virtual network for this deployment.",
+            "label": "FortiGate Outside Address",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[basics('vmName')]"
             "constraints": {
               "required": true,
               "regex": "^[A-Za-z0-9]{1,15}$",
