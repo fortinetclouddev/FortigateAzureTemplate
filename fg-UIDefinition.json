@@ -102,7 +102,7 @@
             "type": "Microsoft.Common.TextBox",
             "label": "FortiGate Outside Address",
             "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
-            "defaultValue": "[basics('vmName')]"
+            "defaultValue": "[basics('vmName')]",
             "constraints": {
               "required": true,
               "regex": "^[A-Za-z0-9]{1,15}$",
