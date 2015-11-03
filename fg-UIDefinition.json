@@ -177,7 +177,7 @@
               "domainNameLabel": "[basics('vmName')]"
             },
             "options": {
-              "hideNone": true,
+              "hideNone": false,
               "hideDomainNameLabel": false
             },
             "constraints": {
