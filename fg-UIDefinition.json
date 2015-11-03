@@ -104,9 +104,7 @@
             "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
             "constraints": {
-              "required": true,
-              "regex": "^[A-Za-z0-9]{1,15}$",
-              "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+              "required": true
             }
           },
           {
@@ -209,9 +207,7 @@
             "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
             "constraints": {
-              "required": true,
-              "regex": "^[A-Za-z0-9]{1,15}$",
-              "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+              "required": true
             }
           }
         ]
