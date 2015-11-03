@@ -190,8 +190,31 @@
           "preValidation": "Configure the IP Addresses for each NIC on the FortiGate",
           "postValidation": "Done"
         },
-        "bladeTitle": "FortiGate IP Assignment",
+        "bladeTitle": "IP Assignment",
         "elements": [
+          {
+            "name": "publicIP",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Public IP address name",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Name of the public IP address object",
+              "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "publicip-haivision",
+              "domainNameLabel": "[basics('vmName')]"
+            },
+            "options": {
+              "hideNone": true,
+              "hideDomainNameLabel": false
+            },
+            "constraints": {
+              "required": true
+            }
+          },
           {
             "name": "fGateIP1",
             "type": "Microsoft.Common.TextBox",
