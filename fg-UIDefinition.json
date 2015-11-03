@@ -181,7 +181,7 @@
               "hideDomainNameLabel": false
             },
             "constraints": {
-              "required": true
+              "required": false
             }
           },
           {
