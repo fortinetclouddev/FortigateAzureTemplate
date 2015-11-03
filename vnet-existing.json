@@ -38,7 +38,7 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-	"subnet2Name": {
+    "subnet2Name": {
       "type": "string",
       "metadata": {
         "description": "Server will be deployed into this subnet within the Virtual Network"
@@ -57,47 +57,51 @@
       "type": "string"
     }
   },
-    "variables": {
-      "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-      "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
-	  "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
-	  "routeTable1Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-      "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
-    },
-    "resources": [
-      {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet1Name'))]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable1Id')]"
-          }
-        }
-      },
-      {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet2Name'))]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-          "[concat('Microsoft.Network/virtualNetworks/',parameters('vnetName'),'/subnets/',parameters('Subnet2Name'))]"
-        ],
-        "properties": {
-          "addressPrefix": "[parameters('subnet2AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable2Id')]"
-          }
+  "variables": {
+    "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
+    "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
+    "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
+    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "name": "[concat(parameters('vnetName'),'/',parameters('Subnet1Name'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressPrefix": "[parameters('subnet1AddressPrefix')]",
+        "routeTable": {
+          "id": "[variables('routeTable1Id')]"
         }
       }
-    ],
-    "outputs": {
-        "subnet1ID": {
-            "value": "[variables('subnet1ID')]",
-            "type": "string"
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "name": "[concat(parameters('vnetName'),'/',parameters('Subnet2Name'))]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/',parameters('vnetName'),'/subnets/',parameters('Subnet2Name'))]"
+      ],
+      "properties": {
+        "addressPrefix": "[parameters('subnet2AddressPrefix')]",
+        "routeTable": {
+          "id": "[variables('routeTable2Id')]"
         }
+      }
     }
+  ],
+  "outputs": {
+    "subnet1ID": {
+      "value": "[variables('subnet1ID')]",
+      "type": "string"
+    },
+    "subnet2ID": {
+      "value": "[variables('subnet2ID')]",
+      "type": "string"
+    }
+  }
 }
 
