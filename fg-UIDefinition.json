@@ -192,6 +192,29 @@
             }
           }
         ]
+      },
+      {
+        "name": "IPConfig",
+        "label": "FortiGate IP Address Assignment",
+        "subLabel": {
+          "preValidation": "Configure the IP Addresses for each NIC on the FortiGate",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "FortiGate IP Assignment",
+        "elements": [
+          {
+            "name": "fGateIP2",
+            "type": "Microsoft.Common.TextBox",
+            "label": "FortiGate Outside Address",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^[A-Za-z0-9]{1,15}$",
+              "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+            }
+          }
+        ]
       }
     ],
     "outputs": {
