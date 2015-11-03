@@ -100,37 +100,6 @@
             }
           },
           {
-            "name": "publicIPAddressTypeElement",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Public IP Address Type",
-            "toolTip": "",
-            "defaultValue": "Static",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Static",
-                  "value": "Static"
-                },
-                {
-                  "label": "Dynamic",
-                  "value": "Dynamic"
-                }
-              ],
-              "required": true
-            }
-          },
-          {
-            "name": "uniqueDNSPrefix",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Unique DNS Prefix for the Public IP",
-            "toolTip": "Prefix will be used in DNS record for the new public IP.",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-z0-9-]{3,50}$",
-              "validationMessage": "Globally unique domain name prefix must be between 3 and 50 characters long and can contain only dashes, numbers, and lowercase letters. The domain name suffix (e.g. westus.cloudapp.zure.com) will be automatically updated based on the selected location."
-            }
-          },
-          {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Virtual machine size",
@@ -185,9 +154,9 @@
       },
       {
         "name": "IPConfig",
-        "label": "FortiGate IP Address Assignment",
+        "label": "FortiGate IP Address Assignments",
         "subLabel": {
-          "preValidation": "Configure the IP Addresses for each NIC on the FortiGate",
+          "preValidation": "Configure the Public IP and the IP Addresses for each NIC on the FortiGate",
           "postValidation": "Done"
         },
         "bladeTitle": "IP Assignment",
@@ -204,7 +173,7 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-haivision",
+              "publicIpAddressName": "publicip-fortigate",
               "domainNameLabel": "[basics('vmName')]"
             },
             "options": {
@@ -212,6 +181,26 @@
               "hideDomainNameLabel": false
             },
             "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "publicIPAddressTypeElement",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Public IP Address Type",
+            "toolTip": "",
+            "defaultValue": "Static",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Static",
+                  "value": "Static"
+                },
+                {
+                  "label": "Dynamic",
+                  "value": "Dynamic"
+                }
+              ],
               "required": true
             }
           },
@@ -248,8 +237,8 @@
       "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
       "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
-      "publicIPAddressType": "[steps('StorageNetworkConfig').publicIPAddressTypeElement]",
-      "uniqueDnsPrefixForPublicIP": "[steps('StorageNetworkConfig').uniqueDNSPrefix]",
+      "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
+      "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.name]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
