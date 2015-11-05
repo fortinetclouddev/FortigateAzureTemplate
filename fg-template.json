@@ -22,15 +22,15 @@
         "description": "Virtual Machine size selection"
       }
     },
-    "newStorageAccountName": {
+    "StorageAccountName": {
       "type": "string",
-      "defaultValue": "Standard_LRS",
       "metadata": {
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
     "StorageAccountType": {
       "type": "string",
+      "defaultValue": "Standard_LRS",
       "metadata": {
         "description": "Storage Account Type."
       }
@@ -185,7 +185,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/ExistingVnetPublicIP",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -242,7 +242,7 @@
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[parameters('vmName')]",
-    "compute_VM_fg1_VHD_URI": "[concat('https://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',variables('compute_VM_fg1_Name'),'-osdisk.vhd')]",
+    "compute_VM_fg1_VHD_URI": "[concat('https://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/',variables('compute_VM_fg1_Name'),'-osdisk.vhd')]",
     "compute_VM_fg1_Image_URI": "[concat('https://','fortios','.blob.core.windows.net/fortios/fortios-4968.vhd/','fortios-4968.vhd')]",
 
     "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
@@ -250,7 +250,7 @@
     "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
 
-    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
+    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
@@ -276,51 +276,10 @@
             "value": "[parameters('storageAccountType')]"
           },
           "storageAccountName": {
-            "value": "[parameters('newStorageAccountName')]"
+            "value": "[parameters('StorageAccountName')]"
           },
           "storageAccountExistingRG": {
             "value": "[parameters('storageAccountExistingRG')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
-      "type": "Microsoft.Resources/deployments",
-      "name": "SettingUpPublicIPandFollowing",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('publicIPSetupURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "publicIPAddressName": {
-            "value": "[parameters('publicIPAddressName')]"
-          },
-          "publicIPAddressType": {
-            "value": "Dynamic"
-          },
-          "dnsName": {
-            "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
-          },
-          "publicIPAddressResourceGroup": {
-            "value": "[parameters('publicIPAddressResourceGroup')]"
-          },
-          "VMName": {
-            "value": "[parameters('vmName')]"
-          },
-          "VNetName": {
-            "value": "[parameters('virtualnetName')]"
-          },
-          "FGPubFacingAddress": {
-            "value": "[variables('FGPubFacingAddress')]"
-          },
-          "subnet1Ref": {
-            "value": "[variables('subnet1Ref')]"
           }
         }
       }
@@ -456,6 +415,50 @@
       }
     },
     {
+      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Resources/deployments",
+      "name": "SettingUpPublicIPandFollowing",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('publicIPSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publicIPAddressName": {
+            "value": "[parameters('publicIPAddressName')]"
+          },
+          "publicIPAddressType": {
+            "value": "Dynamic"
+          },
+          "dnsName": {
+            "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
+          },
+          "publicIPAddressResourceGroup": {
+            "value": "[parameters('publicIPAddressResourceGroup')]"
+          },
+          "VMName": {
+            "value": "[parameters('vmName')]"
+          },
+          "VNetName": {
+            "value": "[parameters('virtualnetName')]"
+          },
+          "FGPubFacingAddress": {
+            "value": "[variables('FGPubFacingAddress')]"
+          },
+          "subnet1Ref": {
+            "value": "[variables('subnet1Ref')]"
+          }
+        }
+      }
+    },
+    {
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fg12_Name')]",
@@ -510,7 +513,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": true,
-            "storageUri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net')]"
+            "storageUri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.windows.net')]"
           }
         },
         "storageProfile": {
@@ -525,7 +528,7 @@
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
             }
           }
         },

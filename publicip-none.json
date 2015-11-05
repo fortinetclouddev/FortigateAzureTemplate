@@ -66,9 +66,6 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('VMName'),'FGNic0')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', parameters('VNetName'))]"
-      ],
       "properties": {
         "ipConfigurations": [
           {
