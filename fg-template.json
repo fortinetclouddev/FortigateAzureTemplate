@@ -381,28 +381,28 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "virtualNetworkName": {
+          "vnetName": {
             "value": "[parameters('virtualnetName')]"
           },
           "location": {
             "value": "[parameters('location')]"
           },
-          "virtualNetworkAddressPrefix": {
+          "vnetAddressPrefix": {
             "value": "[parameters('virtualNetworkAddressPrefix')]"
           },
-          "Subnet1Name": {
+          "subnet1Name": {
             "value": "[parameters('Subnet1Name')]"
           },
-          "Subnet1Prefix": {
+          "subnet1AddressPrefix": {
             "value": "[parameters('Subnet1Prefix')]"
           },
-          "Subnet2Name": {
+          "subnet2Name": {
             "value": "[parameters('Subnet2Name')]"
           },
-          "Subnet2Prefix": {
+          "subnet2AddressPrefix": {
             "value": "[parameters('Subnet2Prefix')]"
           },
-          "vnetExistingRGName": {
+          "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
           },
           "routeTable1Name": {
