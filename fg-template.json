@@ -129,7 +129,7 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "CSR_Network",
+      "defaultValue": "",
       "metadata": {
         "description": "VNet name"
       }
@@ -466,7 +466,7 @@
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('VNetName'))]"
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
       ],
       "properties": {
         "ipConfigurations": [
