@@ -113,15 +113,8 @@
               "allowedSizes": [
                 "Standard_A3",
                 "Standard_A4",
-                "Standard_A8",
-                "Standard_A9",
                 "Standard_D3",
-                "Standard_D4",
-                "Standard_D13",
-                "Standard_D14",
-                "Standard_DS4",
-                "Standard_DS13",
-                "Standard_DS14"
+                "Standard_D4"
               ],
               "required": true
             },
@@ -239,11 +232,20 @@
       "virtualnetName": "[steps('StorageNetworkConfig').VnetName]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
       "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.name]",
+      "fortiGateIP1": "[steps('IPConfig').fGateIP1]",
+      "fortiGateIP2": "[steps('IPConfig').fGateIP2]",
       "newStorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
       "storageAccountExistingRG": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]",
-      "location": "[location()]"
+      "location": "[location()]",
+      "vnetNewOrExisting": "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
+      "virtualNetworkName" : "[steps('StorageNetworkConfig').virtualNetwork.name]",
+      "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
 }

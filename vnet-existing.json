@@ -11,7 +11,7 @@
     "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "Virtual Network name (e.g. vnet-haivision)"
+        "description": "Virtual Network name"
       }
     },
     "vnetResourceGroup": {
