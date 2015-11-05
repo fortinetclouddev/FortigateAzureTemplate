@@ -4,6 +4,7 @@
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
+      "defaultValue": "Standard_A3",
       "allowedValues": [
         "Standard_A3",
         "Standard_A4",
@@ -23,6 +24,7 @@
     },
     "newStorageAccountName": {
       "type": "string",
+      "defaultValue": "Standard_LRS",
       "metadata": {
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
@@ -125,13 +127,6 @@
       "type": "string",
       "metadata": {
         "description": "Name for FortiGate virtual appliance."
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "VNet name"
       }
     },
     "virtualNetworkExistingRGName": {
@@ -428,7 +423,7 @@
         },
         "parameters": {
           "virtualNetworkName": {
-            "value": "[parameters('virtualNetworkName')]"
+            "value": "[parameters('virtualnetName')]"
           },
           "location": {
             "value": "[parameters('location')]"
