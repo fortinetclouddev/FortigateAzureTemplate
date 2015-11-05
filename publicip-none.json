@@ -55,6 +55,12 @@
       "metadata": {
         "description": "subnet 1 reference ID"
       }
+    },
+    "network_NIC_fg11_Name": {
+      "type": "string",
+      "metadata": {
+		  "description": "NIC0 interface name"
+      }
     }
   },
   "variables": {
@@ -64,7 +70,7 @@
     {
       "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(parameters('VMName'),'FGNic0')]",
+      "name": "[parameters('network_NIC_fg11_Name')]",
       "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": [
