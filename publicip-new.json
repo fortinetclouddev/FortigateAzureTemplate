@@ -96,49 +96,6 @@
           }
         }
       },
-      {
-        "apiVersion": "[variables('apiVer')]",
-        "type": "Microsoft.Network/networkInterfaces",
-        "name": "[parameters('network_NIC_fg11_Name')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "Static",
-                "privateIPAddress": "[parameters('FGPubFacingAddress')]",
-                "subnet": {
-                  "id": "[parameters('subnet1Ref')]"
-                },
-                "loadBalancerBackendAddressPools": [
-                  {
-                    "id": "[variables('network_LB_Public_BEId')]"
-                  }
-                ],
-                "loadBalancerInboundNatRules": [
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_IKE500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Id')]"
-                  }
-                ]
-              }
-            }
-          ],
-          "enableIPForwarding": true
-        }
-      },
 	  {
         "type": "Microsoft.Network/loadBalancers",
         "name": "[variables('network_LB_Public_Name')]",
