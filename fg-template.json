@@ -239,7 +239,6 @@
     "routeTable2Name": "[concat(parameters('vmName'),'ProtectedSubnetRoutes')]",
     "FGProtectedAddress": "[parameters('fortiGateIP2')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
-    "nsgname": "[concat(parameters('vmName'),'DefaultNSG')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[parameters('vmName')]",
@@ -283,44 +282,6 @@
             "value": "[parameters('storageAccountExistingRG')]"
           }
         }
-      }
-    },
-    {
-      "apiVersion": "[variables('apiVer')]",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "DefaultNSG",
-      "location": "[parameters('location')]",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "AllowAllInbound",
-            "properties": {
-              "description": "AllowIn",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "AllowAllOutbound",
-            "properties": {
-              "description": "AllowOut",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 105,
-              "direction": "Outbound"
-            }
-          }
-        ]
       }
     },
     {
