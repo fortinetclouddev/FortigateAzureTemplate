@@ -63,14 +63,153 @@
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
+    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
+    "apiVer": "2015-06-15",
+    "nsg1name": "[concat(parameters('subnet1Name'),'NSG')]",
+	"nsg2name": "[concat(parameters('subnet2Name'),'NSG')]"
   },
   "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsg1name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowLocalInbound",
+            "properties": {
+              "description": "AllowLocalIn",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "destinationAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowLocalOutbound",
+            "properties": {
+              "description": "AllowLocalOut",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "destinationAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "DenyAllInbound",
+            "properties": {
+              "description": "DenyAllIn",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 400,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "DenyAllOutbound",
+            "properties": {
+              "description": "DenyAllOut",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 405,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    },
+	{
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsg2name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowLocalInbound",
+            "properties": {
+              "description": "AllowLocalIn",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[parameters('subnet2AddressPrefix')]",
+              "destinationAddressPrefix": "[parameters('subnet2AddressPrefix')]",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowLocalOutbound",
+            "properties": {
+              "description": "AllowLocalOut",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "[parameters('subnet2AddressPrefix')]",
+              "destinationAddressPrefix": "[parameters('subnet2AddressPrefix')]",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "DenyAllInbound",
+            "properties": {
+              "description": "DenyAllIn",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 400,
+              "direction": "Inbound"
+            }
+          },
+		  {
+            "name": "DenyAllOutbound",
+            "properties": {
+              "description": "DenyAllOut",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 405,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsg1name'))]",
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsg2name'))]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -82,6 +221,9 @@
             "name": "[parameters('subnet1Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg1name'))]"
+              },
               "routeTable": {
                 "id": "[variables('routeTable1Id')]"
               }
@@ -91,6 +233,9 @@
             "name": "[parameters('Subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg2name'))]"
+              },
               "routeTable": {
                 "id": "[variables('routeTable2Id')]"
               }
