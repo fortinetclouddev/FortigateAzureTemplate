@@ -85,9 +85,6 @@
             "name": "[parameters('subnet1Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg1name'))]"
-              },
               "routeTable": {
                 "id": "[variables('routeTable1Id')]"
               }
@@ -97,9 +94,6 @@
             "name": "[parameters('Subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg2name'))]"
-              },
               "routeTable": {
                 "id": "[variables('routeTable2Id')]"
               }
