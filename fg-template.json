@@ -498,7 +498,7 @@
           },
           "dataDisks": [
             {
-              "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
+              "name": "[concat(variables('compute_VM_fg1_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
