@@ -77,28 +77,28 @@
       "properties": {
         "securityRules": [
           {
-            "name": "AllowLocalInbound",
+            "name": "AllowAllInbound",
             "properties": {
-              "description": "AllowLocalIn",
+              "description": "AllowAlllIn",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
-              "sourceAddressPrefix": "[parameters('subnet1AddressPrefix')]",
-              "destinationAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
             }
           },
           {
-            "name": "AllowLocalOutbound",
+            "name": "AllowAllOutbound",
             "properties": {
-              "description": "AllowLocalOut",
+              "description": "AllowAllOut",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
-              "sourceAddressPrefix": "[parameters('subnet1AddressPrefix')]",
-              "destinationAddressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 105,
               "direction": "Outbound"
