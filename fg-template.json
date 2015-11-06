@@ -4,7 +4,7 @@
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_A3",
+      "defaultValue": "Standard_D2",
       "allowedValues": [
         "Standard_A3",
         "Standard_A4",
