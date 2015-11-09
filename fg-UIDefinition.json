@@ -6,7 +6,7 @@
       {
         "name": "VMName",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiGate VM name",
+        "label": "FortiGate VM Name",
         "toolTip": "This is the name of the FortiGate virtual appliance.",
         "constraints": {
           "required": true,
@@ -17,7 +17,7 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "Admin Username for the Fortigate",
+        "label": "FortiGate Administrative Username",
         "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
         "osPlatform": "Linux",
         "constraints": {
