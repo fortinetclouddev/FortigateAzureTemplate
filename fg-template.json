@@ -242,8 +242,6 @@
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[parameters('vmName')]",
-    "compute_VM_fg1_VHD_URI": "[concat('https://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/',variables('compute_VM_fg1_Name'),'-osdisk.vhd')]",
-    "compute_VM_fg1_Image_URI": "[concat('https://','fortios','.blob.core.windows.net/fortios/fortios-4968.vhd/','fortios-4968.vhd')]",
 
     "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
