@@ -38,6 +38,12 @@
         "description": "FortiGate name"
       }
     },
+    "VM2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate name"
+      }
+    },
     "VNetName": {
       "type": "string",
       "metadata": {
@@ -47,7 +53,13 @@
     "FGPubFacingAddress": {
       "type": "string",
       "metadata": {
-        "description": "Outside address of FortiGate"
+        "description": "Outside address of FortiGate A"
+      }
+    },
+    "FGBPubFacingAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "Outside address of FortiGate B"
       }
     },
     "subnet1Ref": {
@@ -59,178 +71,249 @@
     "network_NIC_fg11_Name": {
       "type": "string",
       "metadata": {
-		  "description": "NIC0 interface name"
+        "description": "FortiGate A NIC0 interface name"
+      }
+    },
+    "network_NIC_fg21_Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate B NIC0 interface name"
       }
     }
   },
   "variables": {
-    "publicIPID": "[resourceId(parameters('publicIPAddressResourceGroup'),concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
-	"network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
+    "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
+    "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
-	"network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
+    "network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
     "network_LB_Public_NatRule_IKE4500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg1_Name'))]",
-	"network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
+    "network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
     "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
-	"network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
+    "network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
     "network_LB_Public_NatRule_HTTPS_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
-	"network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
+    "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
+    "network_LB_Public_NatRule_HTTPS_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS')]",
+    "network_LB_Public_NatRule_HTTPS_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg2_Name'))]",
+    "network_LB_Public_NatRule_SSH_fg2_Name": "[concat(parameters('VM2Name'),'SSH')]",
+    "network_LB_Public_NatRule_SSH_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg2_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('VMName'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
     "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
     "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
     "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
-	"apiVer": "2015-06-15"
+    "apiVer": "2015-06-15"
   },
-    "resources": [
-      {
-        "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[parameters('publicIPAddressName')]",
-        "apiVersion": "[variables('apiVer')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
-          "dnsSettings": {
-            "domainNameLabel": "[parameters('dnsName')]"
-          }
-        }
-      },
-	  {
-        "type": "Microsoft.Network/loadBalancers",
-        "name": "[variables('network_LB_Public_Name')]",
-        "apiVersion": "[variables('apiVer')]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-          "[variables('publicIPID')]"
-        ],
-        "properties": {
-          "frontendIPConfigurations": [
-            {
-              "name": "[variables('network_LB_Public_FEName')]",
-              "properties": {
-                "publicIPAddress": {
-                  "id": "[variables('publicIPID')]"
-                }
-              }
-            }
-          ],
-          "backendAddressPools": [
-            {
-              "name": "[variables('network_LB_Public_BEName')]"
-            }
-          ],
-          "inboundNatRules": [
-            {
-              "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "tcp",
-                "frontendPort": 22,
-                "backendPort": 22,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "tcp",
-                "frontendPort": 443,
-                "backendPort": 443,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_IKE500_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "udp",
-                "frontendPort": 500,
-                "backendPort": 500,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "udp",
-                "frontendPort": 4500,
-                "backendPort": 4500,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "udp",
-                "frontendPort": 1701,
-                "backendPort": 1701,
-                "enableFloatingIP": false
-              }
-            }
-          ]
-        }
-      },
-      {
-        "apiVersion": "[variables('apiVer')]",
-        "type": "Microsoft.Network/networkInterfaces",
-        "name": "[parameters('network_NIC_fg11_Name')]",
-        "location": "[parameters('location')]",
-		"dependsOn": [
-          "[variables('network_LB_Public_Id')]"
-        ],
-        "properties": {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "Static",
-                "privateIPAddress": "[parameters('FGPubFacingAddress')]",
-                "subnet": {
-                  "id": "[parameters('subnet1Ref')]"
-                },
-                "loadBalancerBackendAddressPools": [
-                  {
-                    "id": "[variables('network_LB_Public_BEId')]"
-                  }
-                ],
-                "loadBalancerInboundNatRules": [
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_IKE500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Id')]"
-                  }
-                ]
-              }
-            }
-          ],
-          "enableIPForwarding": true
+  "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[parameters('publicIPAddressName')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsName')]"
         }
       }
-    ],
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('network_LB_Public_Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('publicIPID')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('network_LB_Public_FEName')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPID')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('network_LB_Public_BEName')]"
+          }
+        ],
+        "inboundNatRules": [
+          {
+            "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 22,
+              "backendPort": 22,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 443,
+              "backendPort": 443,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_IKE500_fg1_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "udp",
+              "frontendPort": 500,
+              "backendPort": 500,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "udp",
+              "frontendPort": 4500,
+              "backendPort": 4500,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "udp",
+              "frontendPort": 1701,
+              "backendPort": 1701,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_SSH_fg2_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 8022,
+              "backendPort": 22,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 8443,
+              "backendPort": 443,
+              "enableFloatingIP": false
+            }
+          },
+        ]
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('network_NIC_fg11_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_LB_Public_Id')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "subnet": {
+                "id": "[parameters('subnet1Ref')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[variables('network_LB_Public_BEId')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_IKE500_fg1_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Id')]"
+                }
+              ]
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('network_NIC_fg21_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_LB_Public_Id')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('FGBPubFacingAddress')]",
+              "subnet": {
+                "id": "[parameters('subnet1Ref')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[variables('network_LB_Public_BEId')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[variables('network_LB_Public_NatRule_SSH_fg2_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Id')]"
+                },
+              ]
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    }
+  ],
     "outputs": {
         "publicIPID": {
             "value": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
