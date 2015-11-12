@@ -290,7 +290,7 @@
                 },
                 {
                   "id": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Id')]"
-                },
+                }
               ]
             }
           }
