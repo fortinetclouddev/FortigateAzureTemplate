@@ -656,7 +656,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
-        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg21_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg22_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
