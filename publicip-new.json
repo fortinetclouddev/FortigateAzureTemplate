@@ -226,7 +226,7 @@
               "backendPort": 443,
               "enableFloatingIP": false
             }
-          },
+          }
         ]
       }
     },
