@@ -64,16 +64,16 @@
     }
   },
   "variables": {
-    "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
-	"network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
+    "publicIPID": "[resourceId(parameters('publicIPAddressResourceGroup'),concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
+    "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
-	"network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
+    "network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
     "network_LB_Public_NatRule_IKE4500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg1_Name'))]",
-	"network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
+    "network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
     "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
-	"network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
+    "network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
     "network_LB_Public_NatRule_HTTPS_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
-	"network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
+    "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('VMName'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
@@ -81,7 +81,7 @@
     "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
     "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
-	"apiVer": "2015-06-15"
+    "apiVer": "2015-06-15"
   },
     "resources": [
       {
