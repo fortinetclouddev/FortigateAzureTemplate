@@ -115,7 +115,10 @@
                 "Standard_A4",
                 "Standard_D2",
                 "Standard_D3",
-                "Standard_D4"
+                "Standard_D4",
+                "Standard_D2_v2",
+                "Standard_D3_v2",
+                "Standard_D4_v2"
               ],
               "required": true
             },
