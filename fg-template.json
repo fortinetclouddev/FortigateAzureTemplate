@@ -204,7 +204,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/ExistingVnetPublicIP",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -212,26 +212,6 @@
     },
     "location": {
       "type": "string",
-      "allowedValues": [
-        "westus",
-        "eastus2",
-        "centralus",
-        "southcentralus",
-        "northcentralus",
-        "westeurope",
-        "northeurope",
-        "eastasia",
-        "southeastasia",
-        "japanwest",
-        "japaneast",
-        "brazilsouth",
-        "australiaeast",
-        "australiasoutheast",
-        "centralindia",
-        "westindia",
-        "southindia",
-        "centralindia"
-      ],
       "metadata": {
         "description": "location"
       }
