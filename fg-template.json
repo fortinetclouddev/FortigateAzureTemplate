@@ -194,26 +194,6 @@
     },
     "location": {
       "type": "string",
-      "allowedValues": [
-        "westus",
-        "eastus2",
-        "centralus",
-        "southcentralus",
-        "northcentralus",
-        "westeurope",
-        "northeurope",
-        "eastasia",
-        "southeastasia",
-        "japanwest",
-        "japaneast",
-        "brazilsouth",
-        "australiaeast",
-        "australiasoutheast",
-        "centralindia",
-        "westindia",
-        "southindia",
-        "centralindia"
-      ],
       "metadata": {
         "description": "location"
       }
