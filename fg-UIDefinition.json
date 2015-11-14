@@ -159,7 +159,7 @@
         "bladeTitle": "IP Assignment",
         "elements": [
           {
-            "name": "publicIP",
+            "name": "publicIPAddress",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
               "publicIpAddress": "Public IP address name",
