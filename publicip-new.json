@@ -175,7 +175,7 @@
               "protocol": "Udp",
               "frontendPort": 500,
               "backendPort": 500,
-              "idleTimeoutInMinutes": 55,
+              "idleTimeoutInMinutes": 30,
               "loadDistribution": "sourceIP"
             },
             "Name": "LBRuleIKE500"
@@ -194,7 +194,7 @@
               "protocol": "Udp",
               "frontendPort": 4500,
               "backendPort": 4500,
-              "idleTimeoutInMinutes": 55,
+              "idleTimeoutInMinutes": 30,
               "loadDistribution": "sourceIP"
             },
             "Name": "LBRuleIKE4500"
@@ -213,7 +213,7 @@
               "protocol": "Udp",
               "frontendPort": 1701,
               "backendPort": 1701,
-              "idleTimeoutInMinutes": 55,
+              "idleTimeoutInMinutes": 30,
               "loadDistribution": "sourceIP"
             },
             "Name": "LBRuleL2TP"
