@@ -146,10 +146,10 @@
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/frontendIpConfigurations/network_LB_Public_FEName')]"
+                "id": "[variables('network_LB_Public_FEId')]"
               },
               "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/backendAddressPools/network_LB_Public_BEName')]"
+                "id": "[variables('network_LB_Public_BEId')]"
               },
               "probe": {
                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
