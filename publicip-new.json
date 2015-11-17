@@ -159,14 +159,71 @@
               "backendPort": 9022,
               "idleTimeoutInMinutes": 15
             },
-            "Name": "lbrule"
+            "Name": "LBRule9022"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('network_LB_Public_BEId')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 500,
+              "backendPort": 500,
+              "idleTimeoutInMinutes": 55,
+              "loadDistribution": "sourceIP"
+            },
+            "Name": "LBRuleIKE500"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('network_LB_Public_BEId')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 4500,
+              "backendPort": 4500,
+              "idleTimeoutInMinutes": 55,
+              "loadDistribution": "sourceIP"
+            },
+            "Name": "LBRuleIKE4500"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('network_LB_Public_BEId')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 1701,
+              "backendPort": 1701,
+              "idleTimeoutInMinutes": 55,
+              "loadDistribution": "sourceIP"
+            },
+            "Name": "LBRuleL2TP"
           }
         ],
         "probes": [
           {
             "properties": {
               "protocol": "Tcp",
-              "port": 80,
+              "port": 22,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
@@ -195,42 +252,6 @@
               "protocol": "tcp",
               "frontendPort": 443,
               "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_IKE500_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "udp",
-              "frontendPort": 500,
-              "backendPort": 500,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "udp",
-              "frontendPort": 4500,
-              "backendPort": 4500,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "udp",
-              "frontendPort": 1701,
-              "backendPort": 1701,
               "enableFloatingIP": false
             }
           },
