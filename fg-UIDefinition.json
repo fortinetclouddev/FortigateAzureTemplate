@@ -15,6 +15,17 @@
         }
       },
       {
+        "name": "VM2Name",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Secondary FortiGate VM Name",
+        "toolTip": "This is the name of the FortiGate virtual appliance.",
+        "constraints": {
+          "required": true,
+          "regex": "^[A-Za-z0-9]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "FortiGate Administrative Username",
@@ -115,7 +126,10 @@
                 "Standard_A4",
                 "Standard_D2",
                 "Standard_D3",
-                "Standard_D4"
+                "Standard_D4",
+                "Standard_D2_v2",
+                "Standard_D3_v2",
+                "Standard_D4_v2"
               ],
               "required": true
             },
@@ -156,7 +170,7 @@
         "bladeTitle": "IP Assignment",
         "elements": [
           {
-            "name": "publicIP",
+            "name": "publicIpAddress",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
               "publicIpAddress": "Public IP address name",
@@ -221,12 +235,37 @@
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
               "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
             }
+          },
+          {
+            "name": "fGateBIP1",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Secondary FortiGate Outside Address",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
+          },
+          {
+            "name": "fGateBIP2",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Secondary FortiGate Inside Address",
+            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
           }
         ]
       }
     ],
     "outputs": {
       "vmName": "[basics('VMName')]",
+      "vm2Name": "[basics('VM2Name')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
@@ -237,6 +276,8 @@
       "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
       "fortiGateIP1": "[steps('IPConfig').fGateIP1]",
       "fortiGateIP2": "[steps('IPConfig').fGateIP2]",
+      "fortiGateBIP1": "[steps('IPConfig').fGateBIP1]",
+      "fortiGateBIP2": "[steps('IPConfig').fGateBIP2]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
@@ -244,12 +285,12 @@
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
       "virtualnetName": "[steps('StorageNetworkConfig').virtualNetwork.name]",
-      "virtualNetworkExistingRGName":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
-      "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
-      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "virtualNetworkExistingRGName": "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
+      "virtualNetworkAddressPrefix": "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
       "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
-}
+  }
