@@ -104,6 +104,7 @@
       "type": "string",
       "allowedValues": [
         "westus",
+        "eastus",
         "eastus2",
         "centralus",
         "southcentralus",
