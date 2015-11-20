@@ -35,19 +35,19 @@
     "VMName": {
       "type": "string",
       "metadata": {
-        "description": "FortiGate name"
+        "description": "FortiWeb name"
       }
     },
     "VNetName": {
       "type": "string",
       "metadata": {
-        "description": "FortiGate name"
+        "description": "Vnet name"
       }
     },
     "FGPubFacingAddress": {
       "type": "string",
       "metadata": {
-        "description": "Outside address of FortiGate"
+        "description": "Outside address of FortiWeb"
       }
     },
 	"subnet1Ref": {
@@ -65,16 +65,13 @@
   },
   "variables": {
     "publicIPID": "[resourceId(parameters('publicIPAddressResourceGroup'),concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
-    "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
-    "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
-    "network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
-    "network_LB_Public_NatRule_IKE4500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg1_Name'))]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
-    "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
-    "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
+    "network_LB_Public_NatRule_HTTP_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTP_fw1_Name'))]",
+    "network_LB_Public_NatRule_HTTP_fw1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
+    "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTP_fw1_Name'))]",
+    "network_LB_Public_NatRule_HTTPS_fw1_Name": "[concat(parameters('VMName'),'HTTPS')]",
+    "network_LB_Public_NatRule_HTTPS_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fw1_Name'))]",
+    "network_LB_Public_NatRule_SSH_fw1_Name": "[concat(parameters('VMName'),'SSH')]",
+    "network_LB_Public_NatRule_SSH_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fw1_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('VMName'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
     "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
@@ -107,7 +104,7 @@
           ],
           "inboundNatRules": [
             {
-              "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
+              "name": "[variables('network_LB_Public_NatRule_SSH_fw1_Name')]",
               "properties": {
                 "frontendIPConfiguration": {
                   "id": "[variables('network_LB_Public_FEId')]"
@@ -119,7 +116,7 @@
               }
             },
             {
-              "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
+              "name": "[variables('network_LB_Public_NatRule_HTTPS_fw1_Name')]",
               "properties": {
                 "frontendIPConfiguration": {
                   "id": "[variables('network_LB_Public_FEId')]"
@@ -131,38 +128,14 @@
               }
             },
             {
-              "name": "[variables('network_LB_Public_NatRule_IKE500_fg1_Name')]",
+              "name": "[variables('network_LB_Public_NatRule_HTTP_fw1_Name')]",
               "properties": {
                 "frontendIPConfiguration": {
                   "id": "[variables('network_LB_Public_FEId')]"
                 },
-                "protocol": "udp",
-                "frontendPort": 500,
-                "backendPort": 500,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "udp",
-                "frontendPort": 4500,
-                "backendPort": 4500,
-                "enableFloatingIP": false
-              }
-            },
-            {
-              "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
-              "properties": {
-                "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEId')]"
-                },
-                "protocol": "udp",
-                "frontendPort": 1701,
-                "backendPort": 1701,
+                "protocol": "tcp",
+                "frontendPort": 80,
+                "backendPort": 80,
                 "enableFloatingIP": false
               }
             }
@@ -194,19 +167,13 @@
                 ],
                 "loadBalancerInboundNatRules": [
                   {
-                    "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
+                    "id": "[variables('network_LB_Public_NatRule_SSH_fw1_Id')]"
                   },
                   {
-                    "id": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Id')]"
+                    "id": "[variables('network_LB_Public_NatRule_HTTPS_fw1_Id')]"
                   },
                   {
-                    "id": "[variables('network_LB_Public_NatRule_IKE500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Id')]"
-                  },
-                  {
-                    "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Id')]"
+                    "id": "[variables('network_LB_Public_NatRule_HTTP_fw1_Id')]"
                   }
                 ]
               }
