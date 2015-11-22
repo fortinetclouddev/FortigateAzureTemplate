@@ -124,13 +124,7 @@
         "description": "Type of public IP address"
       }
     },
-    "vmName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name for FortiGate virtual appliance."
-      }
-    },
-    "vm2Name": {
+    "vmNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name for FortiGate virtual appliance."
@@ -236,26 +230,29 @@
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
-    "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('vmName'),'ProtectedSubnetRoutes')]",
+    "vmName": "[concat(parameters('vmNamePrefix'),'-A')",
+    "vm2Name": "[concat(parameters('vmNamePrefix'),'-B')",
+
+    "routeTable1Name": "[concat(variables('vmName'),'PublicFacingSubnetRoutes')]",
+    "routeTable2Name": "[concat(variables('vmName'),'ProtectedSubnetRoutes')]",
     "FGProtectedAddress": "[parameters('fortiGateIP2')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
-    "routeTable1BName": "[concat(parameters('vm2Name'),'PublicFacingSubnetRoutes')]",
-    "routeTable2BName": "[concat(parameters('vm2Name'),'ProtectedSubnetRoutes')]",
+    "routeTable1BName": "[concat(variables('vm2Name'),'PublicFacingSubnetRoutes')]",
+    "routeTable2BName": "[concat(variables('vm2Name'),'ProtectedSubnetRoutes')]",
     "FGBProtectedAddress": "[parameters('fortiGateBIP2')]",
     "FGBPubFacingAddress": "[parameters('fortiGateBIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[parameters('vmName')]",
-    "compute_VM_fg2_Name": "[parameters('vm2Name')]",
+    "compute_VM_fg1_Name": "[variables('vmName')]",
+    "compute_VM_fg2_Name": "[variables('vm2Name')]",
 
-    "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(variables('vmName'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(variables('vmName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg21_Name": "[concat(parameters('vm2Name'),'Nic0')]",
+    "network_NIC_fg21_Name": "[concat(variables('vm2Name'),'Nic0')]",
     "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
-    "network_NIC_fg22_Name": "[concat(parameters('vm2Name'),'Nic1')]",
+    "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'Nic1')]",
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
@@ -451,11 +448,14 @@
           "location": {
             "value": "[parameters('location')]"
           },
+          "vmNamePrefix": {
+            "value": "[parameters('vmNamePrefix')]"
+          },
           "publicIPAddressName": {
             "value": "[parameters('publicIPAddressName')]"
           },
           "publicIPAddressType": {
-            "value": "Dynamic"
+            "value": "[parameters('publicIPAddressType')]"
           },
           "dnsName": {
             "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
@@ -464,10 +464,10 @@
             "value": "[parameters('publicIPAddressResourceGroup')]"
           },
           "VMName": {
-            "value": "[parameters('vmName')]"
+            "value": "[variables('vmName')]"
           },
           "VM2Name": {
-            "value": "[parameters('vm2Name')]"
+            "value": "[variables('vm2Name')]"
           },
           "VNetName": {
             "value": "[parameters('virtualnetName')]"

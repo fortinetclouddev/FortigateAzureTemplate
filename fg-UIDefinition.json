@@ -253,7 +253,7 @@
       }
     ],
     "outputs": {
-      "vmName": "[basics('VMName')]",
+      "vmNamePrefix": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
