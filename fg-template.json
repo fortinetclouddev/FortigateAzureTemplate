@@ -230,8 +230,8 @@
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
-    "vmName": "[concat(parameters('vmNamePrefix'),'-A')",
-    "vm2Name": "[concat(parameters('vmNamePrefix'),'-B')",
+    "vmName": "[concat(parameters('vmNamePrefix'),'-A')]",
+    "vm2Name": "[concat(parameters('vmNamePrefix'),'-B')]",
 
     "routeTable1Name": "[concat(variables('vmName'),'PublicFacingSubnetRoutes')]",
     "routeTable2Name": "[concat(variables('vmName'),'ProtectedSubnetRoutes')]",
