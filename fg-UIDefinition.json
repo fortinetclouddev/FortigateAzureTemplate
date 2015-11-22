@@ -6,8 +6,8 @@
       {
         "name": "VMName",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiGate VM name",
-        "toolTip": "This is the name of the FortiGate virtual appliance.",
+        "label": "FortiGate set name prefix",
+        "toolTip": "This will be used to name the pair of FortiGate virtual appliances.",
         "constraints": {
           "required": true,
           "regex": "^[A-Za-z0-9]{1,15}$",
