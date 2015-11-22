@@ -38,6 +38,12 @@
         "description": "FortiGate name"
       }
     },
+    "vmNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "VM set prefix"
+      }
+    },
     "VNetName": {
       "type": "string",
       "metadata": {
