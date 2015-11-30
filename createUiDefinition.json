@@ -6,8 +6,8 @@
       {
         "name": "VMName",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiWeb VM Name",
-        "toolTip": "This is the name of the FortiWeb virtual appliance.",
+        "label": "FortiGate set name prefix",
+        "toolTip": "This will be used to name the pair of FortiGate virtual appliances.",
         "constraints": {
           "required": true,
           "regex": "^[A-Za-z0-9]{1,15}$",
@@ -17,8 +17,8 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "FortiWeb Administrative Username",
-        "toolTip": "Admin username for the FortiWeb virtual appliance. Must not be 'admin'.",
+        "label": "FortiGate administrative username",
+        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
         "osPlatform": "Linux",
         "constraints": {
           "required": true
@@ -28,11 +28,11 @@
         "name": "passwordElement",
         "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "password": "FortiWeb Password",
-          "confirmPassword": "Confirm Password"
+          "password": "FortiGate password",
+          "confirmPassword": "Confirm password"
         },
         "toolTip": {
-          "password": "Admin account password for the Virtual FortiWeb"
+          "password": "Admin account password for the virtual FortiGate"
         },
         "constraints": {
           "required": true,
@@ -52,7 +52,7 @@
           "preValidation": "Configure the network and storage options",
           "postValidation": "Done"
         },
-        "bladeTitle": "Network and Storage Settings",
+        "bladeTitle": "Network and storage settings",
         "elements": [
           {
             "name": "virtualNetwork",
@@ -62,11 +62,11 @@
               "subnets": "Subnets"
             },
             "toolTip": {
-              "virtualNetwork": "Virtual Network Name",
-              "subnets": "Subnets requied for the FortiWeb solution"
+              "virtualNetwork": "Virtual network name",
+              "subnets": "Subnets requied for the FortiGate solution"
             },
             "defaultValue": {
-              "name": "FortiWebProtectedVNet",
+              "name": "FortigateProtectedVNet",
               "addressPrefixSize": "/16"
             },
             "constraints": {
@@ -74,7 +74,7 @@
             },
             "subnets": {
               "subnet1": {
-                "label": "Outside Subnet",
+                "label": "Outside subnet",
                 "defaultValue": {
                   "name": "PublicFacingSubnet",
                   "addressPrefixSize": "/24"
@@ -86,9 +86,9 @@
                 }
               },
               "subnet2": {
-                "label": "Inside Subnet",
+                "label": "Inside subnet",
                 "defaultValue": {
-                  "name": "FortiWebProtectedSubnet",
+                  "name": "FortigateProtectedSubnet",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -125,16 +125,16 @@
             "osPlatform": "Linux",
             "imageReference": {
               "publisher": "Fortinet",
-              "offer": "fortinet_fortiweb-vm_v5",
-              "sku": "fortinet_fw-vm"
+              "offer": "fortinet_fortigate-vm_v5",
+              "sku": "fortinet_fg-vm"
             },
             "count": "1"
           },
           {
             "name": "storageAccount",
             "type": "Microsoft.Storage.StorageAccountSelector",
-            "label": "Storage Account",
-            "toolTip": "Storage Account for the disk drive of the Virtual FortiWeb.",
+            "label": "Storage account",
+            "toolTip": "Storage Account for the disk drive of the Virtual FortiGate.",
             "defaultValue": {
               "type": "Standard_LRS"
             },
@@ -151,12 +151,12 @@
       },
       {
         "name": "IPConfig",
-        "label": "FortiWeb IP Address Assignments",
+        "label": "FortiGate IP address assignments",
         "subLabel": {
-          "preValidation": "Configure the Public IP and the IP Addresses for each NIC on the FortiWeb",
+          "preValidation": "Configure the Public IP and the IP Addresses for each NIC on the FortiGate",
           "postValidation": "Done"
         },
-        "bladeTitle": "IP Assignment",
+        "bladeTitle": "IP assignment",
         "elements": [
           {
             "name": "publicIpAddress",
@@ -170,7 +170,7 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-FortiWeb",
+              "publicIpAddressName": "publicip-fortigate",
               "domainNameLabel": "[basics('vmName')]"
             },
             "options": {
@@ -184,7 +184,7 @@
           {
             "name": "publicIPAddressTypeElement",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Public IP Address Type",
+            "label": "Public IP address type",
             "toolTip": "",
             "defaultValue": "Static",
             "constraints": {
@@ -204,8 +204,8 @@
           {
             "name": "fGateIP1",
             "type": "Microsoft.Common.TextBox",
-            "label": "FortiWeb Outside Address",
-            "toolTip": "This is the IP address of the outside interface of the FortiWeb virtual appliance.",
+            "label": "FortiGate outside address",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
             "constraints": {
               "required": true,
@@ -216,8 +216,32 @@
           {
             "name": "fGateIP2",
             "type": "Microsoft.Common.TextBox",
-            "label": "FortiWeb Inside Address",
-            "toolTip": "This is the IP address of the inside interface of the FortiWeb virtual appliance.",
+            "label": "FortiGate inside address",
+            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
+          },
+          {
+            "name": "fGateBIP1",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Secondary FortiGate outside address",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
+          },
+          {
+            "name": "fGateBIP2",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Secondary FortiGate inside address",
+            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
             "constraints": {
               "required": true,
@@ -229,7 +253,7 @@
       }
     ],
     "outputs": {
-      "vmName": "[basics('VMName')]",
+      "vmNamePrefix": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
@@ -238,8 +262,10 @@
       "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.domainNameLabel]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
       "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
-      "FortiWebIP1": "[steps('IPConfig').fGateIP1]",
-      "FortiWebIP2": "[steps('IPConfig').fGateIP2]",
+      "fortiGateIP1": "[steps('IPConfig').fGateIP1]",
+      "fortiGateIP2": "[steps('IPConfig').fGateIP2]",
+      "fortiGateBIP1": "[steps('IPConfig').fGateBIP1]",
+      "fortiGateBIP2": "[steps('IPConfig').fGateBIP2]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
@@ -247,12 +273,12 @@
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
       "virtualnetName": "[steps('StorageNetworkConfig').virtualNetwork.name]",
-      "virtualNetworkExistingRGName":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
-      "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
-      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "virtualNetworkExistingRGName": "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
+      "virtualNetworkAddressPrefix": "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
       "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
-}
+  }
