@@ -6,21 +6,8 @@
       "type": "string",
       "defaultValue": "Standard_D2",
       "allowedValues": [
-        "Standard_A3",
-        "Standard_A4",
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_D2",
-        "Standard_D3",
         "Standard_D4",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_DS4",
-        "Standard_DS13",
-        "Standard_DS14"
+        "Standard_D4_v2"
       ],
       "metadata": {
         "description": "Virtual Machine size selection"
@@ -230,6 +217,18 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
     "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
+    "network_NIC_fg13_Name": "[concat(parameters('vmName'),'Nic2')]",
+    "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
+    "network_NIC_fg14_Name": "[concat(parameters('vmName'),'Nic3')]",
+    "network_NIC_fg14_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg14_Name'))]",
+    "network_NIC_fg15_Name": "[concat(parameters('vmName'),'Nic4')]",
+    "network_NIC_fg15_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg15_Name'))]",
+    "network_NIC_fg16_Name": "[concat(parameters('vmName'),'Nic5')]",
+    "network_NIC_fg16_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg16_Name'))]",
+    "network_NIC_fg17_Name": "[concat(parameters('vmName'),'Nic6')]",
+    "network_NIC_fg17_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg17_Name'))]",
+    "network_NIC_fg18_Name": "[concat(parameters('vmName'),'Nic7')]",
+    "network_NIC_fg18_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg18_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -429,6 +428,144 @@
       }
     },
     {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg13_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg14_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg15_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg16_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg17_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg18_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
       "apiVersion": "[variables('apiVer')]",
@@ -445,6 +582,12 @@
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg13_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg14_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg15_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg16_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg17_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg18_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
@@ -502,6 +645,42 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg12_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg13_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg14_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg15_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg16_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg17_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg18_Id')]"
             }
           ]
         }
