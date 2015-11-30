@@ -86,7 +86,7 @@
         "apiVersion": "[variables('apiVer')]",
         "location": "[parameters('location')]",
         "properties": {
-          "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+          "publicIPAllocationMethod": "Static",
           "dnsSettings": {
             "domainNameLabel": "[parameters('dnsName')]"
           }
