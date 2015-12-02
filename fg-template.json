@@ -378,7 +378,7 @@
             "value": "[parameters('publicIPAddressName')]"
           },
           "publicIPAddressType": {
-            "value": "[parameters('publicIPAddressType')"
+            "value": "[parameters('publicIPAddressType')]"
           },
           "dnsName": {
             "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
