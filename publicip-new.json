@@ -67,8 +67,12 @@
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
     "network_LB_Public_NatRule_HTTP_fw1_Name": "[concat(parameters('VMName'),'HTTP')]",
     "network_LB_Public_NatRule_HTTP_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTP_fw1_Name'))]",
+    "network_LB_Public_NatRule_HTTP2_fw1_Name": "[concat(parameters('VMName'),'HTTP')]",
+    "network_LB_Public_NatRule_HTTP2_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTP2_fw1_Name'))]",
     "network_LB_Public_NatRule_HTTPS_fw1_Name": "[concat(parameters('VMName'),'HTTPS')]",
     "network_LB_Public_NatRule_HTTPS_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fw1_Name'))]",
+    "network_LB_Public_NatRule_HTTPS2_fw1_Name": "[concat(parameters('VMName'),'HTTP')]",
+    "network_LB_Public_NatRule_HTTPS2_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS2_fw1_Name'))]",
     "network_LB_Public_NatRule_SSH_fw1_Name": "[concat(parameters('VMName'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fw1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fw1_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('VMName'),'publicLB')]",
@@ -142,6 +146,18 @@
               }
             },
             {
+              "name": "[variables('network_LB_Public_NatRule_HTTPS2_fw1_Name')]",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[variables('network_LB_Public_FEId')]"
+                },
+                "protocol": "tcp",
+                "frontendPort": 8443,
+                "backendPort": 8443,
+                "enableFloatingIP": false
+              }
+            },
+            {
               "name": "[variables('network_LB_Public_NatRule_HTTP_fw1_Name')]",
               "properties": {
                 "frontendIPConfiguration": {
@@ -150,6 +166,18 @@
                 "protocol": "tcp",
                 "frontendPort": 80,
                 "backendPort": 80,
+                "enableFloatingIP": false
+              }
+            },
+            {
+              "name": "[variables('network_LB_Public_NatRule_HTTP2_fw1_Name')]",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[variables('network_LB_Public_FEId')]"
+                },
+                "protocol": "tcp",
+                "frontendPort": 8080,
+                "backendPort": 8080,
                 "enableFloatingIP": false
               }
             }
@@ -187,9 +215,14 @@
                     "id": "[variables('network_LB_Public_NatRule_HTTPS_fw1_Id')]"
                   },
                   {
+                    "id": "[variables('network_LB_Public_NatRule_HTTPS2_fw1_Id')]"
+                  },
+                  {
                     "id": "[variables('network_LB_Public_NatRule_HTTP_fw1_Id')]"
+                  },
+                  {
+                    "id": "[variables('network_LB_Public_NatRule_HTTP2_fw1_Id')]"
                   }
- 
                 ]
               }
             }
