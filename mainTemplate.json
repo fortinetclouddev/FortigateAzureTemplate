@@ -130,7 +130,7 @@
     "vmName": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiGate virtual appliance."
+        "description": "Name for FortiWeb virtual appliance."
       }
     },
     "virtualNetworkExistingRGName": {
@@ -175,16 +175,16 @@
         "description": "Subnet 2 Name"
       }
     },
-    "fortiGateIP1": {
+    "fortiWebIP1": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP for public facing NIC of the FortiWeb virtual appliance."
       }
     },
-    "fortiGateIP2": {
+    "fortiWebIP2": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP for protected network facing NIC of the FortiWeb virtual appliance."
       }
     },
     "artifactsBaseUrl": {
@@ -220,8 +220,8 @@
 
     "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
     "routeTable2Name": "[concat(parameters('vmName'),'ProtectedSubnetRoutes')]",
-    "FGProtectedAddress": "[parameters('fortiGateIP2')]",
-    "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
+    "FGProtectedAddress": "[parameters('fortiWebIP2')]",
+    "FGPubFacingAddress": "[parameters('fortiWebIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[parameters('vmName')]",
@@ -273,7 +273,7 @@
       "properties": {
         "routes": [
           {
-            "name": "PublicFacingtoFortigateProtected",
+            "name": "PublicFacingtoFortiWebProtected",
             "properties": {
               "addressPrefix": "[variables('subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -291,7 +291,7 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateProtectedtoPublicFacing",
+            "name": "FortiWebProtectedtoPublicFacing",
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -299,7 +299,7 @@
             }
           },
           {
-            "name": "FortigateProtectedtoDefault",
+            "name": "FortiWebProtectedtoDefault",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -434,9 +434,9 @@
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "plan": {
-        "name": "fortinet_fg-vm",
+        "name": "fortinet_fw-vm",
         "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "product": "fortinet_fortiweb-vm_v5-preview"
       },
       "copy": {
         "name": "vmLoop",
@@ -465,8 +465,8 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
-            "sku": "fortinet_fg-vm",
+            "offer": "fortinet_fortiweb-vm_v5-preview",
+            "sku": "fortinet_fw-vm",
             "version": "latest"
           },
           "osDisk": {
@@ -509,3 +509,6 @@
     }
   ]
   }
+{
+
+}
