@@ -436,7 +436,7 @@
       "plan": {
         "name": "fortinet_fw-vm",
         "publisher": "fortinet",
-        "product": "fortinet_fortiweb-vm_v5-preview"
+        "product": "fortinet_fortiweb-vm_v5"
       },
       "copy": {
         "name": "vmLoop",
@@ -465,7 +465,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet_fortiweb-vm_v5-preview",
+            "offer": "fortinet_fortiweb-vm_v5",
             "sku": "fortinet_fw-vm",
             "version": "latest"
           },
