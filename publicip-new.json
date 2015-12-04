@@ -290,7 +290,7 @@
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "tcp",
-              "frontendPort": 8022,
+              "frontendPort": 7022,
               "backendPort": 22,
               "enableFloatingIP": false
             }
@@ -314,7 +314,7 @@
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "tcp",
-              "frontendPort": 9022,
+              "frontendPort": 8022,
               "backendPort": 22,
               "enableFloatingIP": false
             }
