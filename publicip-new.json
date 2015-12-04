@@ -44,6 +44,12 @@
         "description": "FortiGate name"
       }
     },
+    "VM3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate name"
+      }
+    },
     "vmNamePrefix": {
       "type": "string",
       "metadata": {
@@ -68,6 +74,12 @@
         "description": "Outside address of FortiGate B"
       }
     },
+    "FGCPubFacingAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "Outside address of FortiGate B"
+      }
+    },
     "subnet1Ref": {
       "type": "string",
       "metadata": {
@@ -81,6 +93,12 @@
       }
     },
     "network_NIC_fg21_Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate B NIC0 interface name"
+      }
+    },
+    "network_NIC_fg31_Name": {
       "type": "string",
       "metadata": {
         "description": "FortiGate B NIC0 interface name"
@@ -103,6 +121,10 @@
     "network_LB_Public_NatRule_HTTPS_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg2_Name'))]",
     "network_LB_Public_NatRule_SSH_fg2_Name": "[concat(parameters('VM2Name'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg2_Name'))]",
+    "network_LB_Public_NatRule_HTTPS_fg3_Name": "[concat(parameters('VM3Name'),'HTTPS')]",
+    "network_LB_Public_NatRule_HTTPS_fg3_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg3_Name'))]",
+    "network_LB_Public_NatRule_SSH_fg3_Name": "[concat(parameters('VM3Name'),'SSH')]",
+    "network_LB_Public_NatRule_SSH_fg3_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg3_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('vmNamePrefix'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
     "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
@@ -284,6 +306,30 @@
               "backendPort": 443,
               "enableFloatingIP": false
             }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_SSH_fg3_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 9022,
+              "backendPort": 22,
+              "enableFloatingIP": false
+            }
+          },
+          {
+            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg3_Name')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FEId')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 9443,
+              "backendPort": 443,
+              "enableFloatingIP": false
+            }
           }
         ]
       }
@@ -354,6 +400,43 @@
                 },
                 {
                   "id": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Id')]"
+                }
+              ]
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('network_NIC_fg31_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_LB_Public_Id')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('FGCPubFacingAddress')]",
+              "subnet": {
+                "id": "[parameters('subnet1Ref')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[variables('network_LB_Public_BEId')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[variables('network_LB_Public_NatRule_SSH_fg3_Id')]"
+                },
+                {
+                  "id": "[variables('network_LB_Public_NatRule_HTTPS_fg3_Id')]"
                 }
               ]
             }
