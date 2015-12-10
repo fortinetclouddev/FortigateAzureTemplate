@@ -337,7 +337,7 @@
                 "id": "[parameters('subnet1Ref')]"
               },
               "publicIPAddress": {
-                "id": "[parameters('vm1PublicIPID')]"
+                "id": "[variables('vm1PublicIPID')]"
               },
               "loadBalancerBackendAddressPools": [
                 {
@@ -377,7 +377,7 @@
                 "id": "[parameters('subnet1Ref')]"
               },
               "publicIPAddress": {
-                "id": "[parameters('vm2PublicIPID')]"
+                "id": "[variables('vm2PublicIPID')]"
               },
               "loadBalancerBackendAddressPools": [
                 {
