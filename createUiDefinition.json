@@ -70,7 +70,7 @@
               "addressPrefixSize": "/16"
             },
             "constraints": {
-              "minAddressPrefixSize": "/16"
+              "minAddressPrefixSize": "/24"
             },
             "subnets": {
               "subnet1": {
@@ -80,7 +80,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -92,7 +92,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -170,8 +170,7 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-fortigate",
-              "domainNameLabel": "[basics('vmName')]"
+              "publicIpAddressName": "publicip-loadbalancer"
             },
             "options": {
               "hideNone": false,
