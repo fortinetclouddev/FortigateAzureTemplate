@@ -85,6 +85,18 @@
       "metadata": {
         "description": "FortiGate B NIC0 interface name"
       }
+    },
+    "vm1PublicIPID": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Resource ID to be assigned to vm 1."
+      }
+    },
+    "vm2PublicIPID": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Resource ID to be assigned to vm 2."
+      }
     }
   },
   "variables": {
@@ -109,7 +121,13 @@
     "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
     "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
-    "apiVer": "2015-06-15"
+    "apiVer": "2015-06-15",
+    "vm1PublicIPName": "[concat(parameters('VMName'),'-publicIP')]",
+    "vm2PublicIPName": "[concat(parameters('VM2Name'),'-publicIP')]",
+    "vm1PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPName'))]",
+    "vm2PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPName'))]",
+    "vm1PublicDNS": "[concat(parameters('dnsName'),'a')]",
+    "vm2PublicDNS": "[concat(parameters('dnsName'),'b')]"
   },
   "resources": [
     {
@@ -121,6 +139,30 @@
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
           "domainNameLabel": "[parameters('dnsName')]"
+        }
+      }
+    },
+     {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('vm1PublicIPName')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('vm1PublicDNS')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('vm2PublicIPName')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('vm2PublicDNS')]"
         }
       }
     },
@@ -306,6 +348,9 @@
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               },
+              "publicIPAddress": {
+                "id": "[parameters('vm1PublicIPID')]"
+              },
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('network_LB_Public_BEId')]"
@@ -342,6 +387,9 @@
               "privateIPAddress": "[parameters('FGBPubFacingAddress')]",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
+              },
+              "publicIPAddress": {
+                "id": "[parameters('vm2PublicIPID')]"
               },
               "loadBalancerBackendAddressPools": [
                 {

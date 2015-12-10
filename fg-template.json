@@ -198,7 +198,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.1",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.2",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -260,7 +260,6 @@
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
-
   },
   "resources": [
     {
@@ -389,7 +388,9 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+        "[variables('vm1PublicIPID')]",
+        "[variables('vm2PublicIPID')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -427,6 +428,12 @@
           },
           "routeTable2Name": {
             "value": "[variables('routeTable2Name')]"
+          },
+          "vm1PublicIPID": {
+            "value": "[variables('vm1PublicIPID')]"
+          },
+          "vm2PublicIPID": {
+            "value": "[variables('vm2PublicIPID')]"
           }
         }
       }
