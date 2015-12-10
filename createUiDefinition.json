@@ -169,10 +169,6 @@
               "publicIpAddress": "Name of the public IP address object",
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
-            "defaultValue": {
-              "publicIpAddressName": "publicip-loadbalancer",
-              "domainNameLabel": ""
-            },
             "options": {
               "hideNone": false,
               "hideDomainNameLabel": false
