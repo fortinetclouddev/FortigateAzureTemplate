@@ -389,8 +389,6 @@
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
         "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
-        "[variables('vm1PublicIPID')]",
-        "[variables('vm2PublicIPID')]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -428,12 +426,6 @@
           },
           "routeTable2Name": {
             "value": "[variables('routeTable2Name')]"
-          },
-          "vm1PublicIPID": {
-            "value": "[variables('vm1PublicIPID')]"
-          },
-          "vm2PublicIPID": {
-            "value": "[variables('vm2PublicIPID')]"
           }
         }
       }

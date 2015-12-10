@@ -85,18 +85,6 @@
       "metadata": {
         "description": "FortiGate B NIC0 interface name"
       }
-    },
-    "vm1PublicIPID": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP Resource ID to be assigned to vm 1."
-      }
-    },
-    "vm2PublicIPID": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP Resource ID to be assigned to vm 2."
-      }
     }
   },
   "variables": {
