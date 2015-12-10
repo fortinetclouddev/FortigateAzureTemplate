@@ -170,7 +170,7 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddress": "FortiGate-LB-PublicIP"
+              "publicIpAddressName": "FortiGate-LB-PublicIP"
             },
             "options": {
               "hideNone": false,
