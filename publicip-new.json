@@ -235,7 +235,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 443,
-              "backendPort": 444,
+              "backendPort": 8443,
               "idleTimeoutInMinutes": 15
             },
             "Name": "FE2LBRule443"
