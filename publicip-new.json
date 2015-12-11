@@ -89,6 +89,7 @@
   },
   "variables": {
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
+    "publicIP2ID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('publicIPAddress2Name'))]",
     "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
     "network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
@@ -107,6 +108,8 @@
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
     "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
     "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
+    "network_LB_Public_FE2Name": "[concat(parameters('VMName'),'publicLBFE2')]",
+    "network_LB_Public_FE2Id": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FE2Name'))]",
     "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
     "apiVer": "2015-06-15",
@@ -115,12 +118,25 @@
     "vm1PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPName'))]",
     "vm2PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPName'))]",
     "vm1PublicDNS": "[concat(parameters('dnsName'),'a')]",
-    "vm2PublicDNS": "[concat(parameters('dnsName'),'b')]"
+    "vm2PublicDNS": "[concat(parameters('dnsName'),'b')]",
+    "publicIPAddress2Name": "[concat(parameters('publicIPAddressName'),'2')]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsName')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddress2Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -171,6 +187,14 @@
                 "id": "[variables('publicIPID')]"
               }
             }
+          },
+          {
+            "name": "[variables('network_LB_Public_FE2Name')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIP2ID')]"
+              }
+            }
           }
         ],
         "backendAddressPools": [
@@ -195,7 +219,25 @@
               "backendPort": 443,
               "idleTimeoutInMinutes": 15
             },
-            "Name": "LBRule443"
+            "Name": "FE1LBRule443"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('network_LB_Public_FE2Id')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('network_LB_Public_BEId')]"
+              },
+              "probe": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 443,
+              "backendPort": 444,
+              "idleTimeoutInMinutes": 15
+            },
+            "Name": "FE2LBRule443"
           },
           {
             "properties": {
