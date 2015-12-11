@@ -136,7 +136,7 @@
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
           "domainNameLabel": "[variables('vm1PublicDNS')]"
         }
@@ -148,7 +148,7 @@
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
+        "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
           "domainNameLabel": "[variables('vm2PublicDNS')]"
         }
