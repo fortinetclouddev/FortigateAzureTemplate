@@ -119,7 +119,8 @@
     "vm2PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPName'))]",
     "vm1PublicDNS": "[concat(parameters('dnsName'),'a')]",
     "vm2PublicDNS": "[concat(parameters('dnsName'),'b')]",
-    "publicIPAddress2Name": "[concat(parameters('publicIPAddressName'),'2')]"
+    "publicIPAddress2Name": "[concat(parameters('publicIPAddressName'),'2')]",
+    "dns2Name": "[concat(parameters('dnsName'),'2')]"
   },
   "resources": [
     {
@@ -142,7 +143,7 @@
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsName')]"
+          "domainNameLabel": "[variables('dns2Name')]"
         }
       }
     },
