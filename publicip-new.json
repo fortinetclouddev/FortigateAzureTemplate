@@ -217,6 +217,9 @@
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               },
+              "publicIPAddress": {
+                "id": "[variables('vm1PublicIPID')]"
+              },
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('network_LB_Public_BEId')]"
