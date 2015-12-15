@@ -439,9 +439,9 @@
                 },
                 {
                   "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg2_Id')]",
+                },
                 {
                   "id": "[variables('network_LB_Public_NatRule_SSH_fg2_Id')]"
-                }
                 }
               ]
             }
