@@ -135,97 +135,66 @@
             "name": "[variables('network_LB_Public_BEName')]"
           }
         ],
-        "loadBalancingRules": [
+        "inboundNatRules": [
           {
-            "name": "[variables('network_LB_Public_LBRule_SSH_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
               },
               "protocol": "tcp",
               "frontendPort": 22,
               "backendPort": 22,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
+              "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_LBRule_HTTPS_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
               },
               "protocol": "tcp",
               "frontendPort": 443,
               "backendPort": 443,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
+              "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_LBRule_IKE500_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_IKE500_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
               },
               "protocol": "udp",
               "frontendPort": 500,
               "backendPort": 500,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
+              "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_LBRule_IKE4500_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
               },
               "protocol": "udp",
               "frontendPort": 4500,
               "backendPort": 4500,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
+              "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_LBRule_L2TP1701_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
               },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
-              },
               "protocol": "udp",
               "frontendPort": 1701,
               "backendPort": 1701,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
+              "enableFloatingIP": false
             }
-          }
-        ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 22,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
           }
         ]
       }
