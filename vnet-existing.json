@@ -99,63 +99,6 @@
     "routeTable4Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]"
   },
   "resources": [
-	  {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet1Name'))]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable1Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet2Name'))]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/',parameters('vnetName'),'/subnets/',parameters('Subnet1Name'))]"           
-        ],
-        "properties": {
-          "addressPrefix": "[parameters('subnet2AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable2Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet3Name'))]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/',parameters('vnetName'),'/subnets/',parameters('Subnet2Name'))]"           
-        ],
-        "properties": {
-          "addressPrefix": "[parameters('subnet3AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable3Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('Subnet4Name'))]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/',parameters('vnetName'),'/subnets/',parameters('Subnet3Name'))]"           
-        ],
-        "properties": {
-          "addressPrefix": "[parameters('subnet4AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable4Id')]"
-          }
-        }
-    }
   ],
   "outputs": {
     "subnet1ID": {
