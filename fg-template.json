@@ -286,10 +286,19 @@
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
+    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
+
+    "compute_AvailabilitySet_FG_Name": "fgAvailabilitySet",
+    "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
   "resources": [
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('compute_AvailabilitySet_FG_Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]"
+    },
     {
       "name": "SettingUpStorageAccount",
       "type": "Microsoft.Resources/deployments",
@@ -672,6 +681,9 @@
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
+        "availabilitySet": {
+          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
+        },
         "osProfile": {
           "computerName": "[variables('compute_VM_fg1_Name')]",
           "adminUsername": "[parameters('adminUsername')]",
@@ -706,7 +718,7 @@
               "vhd": {
                 "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
               },
-              "createOption":"Empty" 
+              "createOption": "Empty"
             }
           ]
         },
