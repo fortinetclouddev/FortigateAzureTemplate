@@ -189,7 +189,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWeb5.1.1",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWeb5.1.2",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -340,7 +340,7 @@
             "value": "[variables('FGPubFacingAddress')]"
           },
           "subnet1Ref": {
-            "value": "[variables('subnet1Ref')]"
+            "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
@@ -364,7 +364,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGProtectedAddress')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
             }
           }
