@@ -133,7 +133,7 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
-    "virtualNetworkExistingRGName": {
+    "virtualNetworkResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -189,7 +189,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.2.8",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.0",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -235,10 +235,19 @@
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
+    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
+
+    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmName'),'AvailSet')]",
+    "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
   "resources": [
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('compute_AvailabilitySet_FG_Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]"
+    },
     {
       "name": "SettingUpStorageAccount",
       "type": "Microsoft.Resources/deployments",
@@ -346,7 +355,7 @@
             "value": "[parameters('Subnet2Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+            "value": "[parameters('virtualNetworkResourceGroup')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"
@@ -396,7 +405,7 @@
             "value": "[variables('FGPubFacingAddress')]"
           },
           "subnet1Ref": {
-            "value": "[variables('subnet1Ref')]"
+            "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
@@ -420,7 +429,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGProtectedAddress')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
             }
           }
@@ -450,6 +459,9 @@
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
         },
         "osProfile": {
           "computerName": "[variables('compute_VM_fg1_Name')]",
@@ -485,7 +497,7 @@
               "vhd": {
                 "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
               },
-              "createOption":"Empty" 
+              "createOption": "Empty"
             }
           ]
         },
