@@ -349,7 +349,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 443,
-              "backendPort": 443,
+              "backendPort": 7443,
               "idleTimeoutInMinutes": 15
             },
             "Name": "FE1LBRule443"
