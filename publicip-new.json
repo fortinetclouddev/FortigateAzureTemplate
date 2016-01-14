@@ -154,30 +154,6 @@
       }
     },
     {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('vm1PublicIPName')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[variables('vm1PublicDNS')]"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('vm2PublicIPName')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[variables('vm2PublicDNS')]"
-        }
-      }
-    },
-    {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('network_LB_Public_Name')]",
       "apiVersion": "[variables('apiVer')]",
@@ -376,9 +352,6 @@
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               },
-              "publicIPAddress": {
-                "id": "[variables('vm1PublicIPID')]"
-              },
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('network_LB_Public_BEId')]"
@@ -421,9 +394,6 @@
               "privateIPAddress": "[parameters('FGBPubFacingAddress')]",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
-              },
-              "publicIPAddress": {
-                "id": "[variables('vm2PublicIPID')]"
               },
               "loadBalancerBackendAddressPools": [
                 {
