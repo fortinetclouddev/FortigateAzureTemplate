@@ -102,16 +102,16 @@
     "network_LB_Public_NatRule_L2TP1701_fg2_Name": "[concat(parameters('VM2Name'),'L2TP1701')]",
     "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
     "network_LB_Public_NatRule_L2TP1701_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg2_Name'))]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
-    "network_LB_Public_NatRule_HTTPS9443_fg1_Name": "[concat(parameters('VMName'),'HTTPS9443')]",
-    "network_LB_Public_NatRule_HTTPS9443_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS9443_fg1_Name'))]",
+    "network_LB_Public_NatRule_FGAdminInit_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
+    "network_LB_Public_NatRule_FGAdminInit_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
+    "network_LB_Public_NatRule_FGAdminPerm_fg1_Name": "[concat(parameters('VMName'),'HTTPS9443')]",
+    "network_LB_Public_NatRule_FGAdminPerm_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Name'))]",
     "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
-    "network_LB_Public_NatRule_HTTPS_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS')]",
-    "network_LB_Public_NatRule_HTTPS_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg2_Name'))]",
-    "network_LB_Public_NatRule_HTTPS9443_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS9443')]",
-    "network_LB_Public_NatRule_HTTPS9443_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS9443_fg2_Name'))]",
+    "network_LB_Public_NatRule_FGAdminInit_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS')]",
+    "network_LB_Public_NatRule_FGAdminInit_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminInit_fg2_Name'))]",
+    "network_LB_Public_NatRule_FGAdminPerm_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS9443')]",
+    "network_LB_Public_NatRule_FGAdminPerm_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Name'))]",
     "network_LB_Public_NatRule_SSH_fg2_Name": "[concat(parameters('VM2Name'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg2_Name'))]",
     "network_LB_Public_Name": "[concat(parameters('vmNamePrefix'),'publicLB')]",
@@ -239,19 +239,19 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_FGAdminInit_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
               },
               "protocol": "tcp",
-              "frontendPort": 443,
+              "frontendPort": 21443,
               "backendPort": 443,
               "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS9443_fg1_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FEId')]"
@@ -311,19 +311,19 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_FGAdminInit_fg2_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FE2Id')]"
               },
               "protocol": "tcp",
-              "frontendPort": 443,
+              "frontendPort": 21443,
               "backendPort": 443,
               "enableFloatingIP": false
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS9443_fg2_Name')]",
+            "name": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Name')]",
             "properties": {
               "frontendIPConfiguration": {
                 "id": "[variables('network_LB_Public_FE2Id')]"
@@ -459,10 +459,10 @@
                   "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Id')]"
+                  "id": "[variables('network_LB_Public_NatRule_FGAdminInit_fg1_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_HTTPS9443_fg1_Id')]"
+                  "id": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Id')]"
                 }
               ]
             }
@@ -508,10 +508,10 @@
                   "id": "[variables('network_LB_Public_NatRule_SSH_fg2_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Id')]"
+                  "id": "[variables('network_LB_Public_NatRule_FGAdminInit_fg2_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_HTTPS9443_fg2_Id')]"
+                  "id": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Id')]"
                 }
               ]
             }
