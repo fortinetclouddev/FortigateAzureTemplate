@@ -98,6 +98,18 @@
         "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
       }
     },
+    "uniqueDnsPrefixForPublicIP2": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "uniqueDnsPrefixForPublicIP3": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+      }
+    },
     "virtualnetName": {
       "type": "string",
       "metadata": {
@@ -108,6 +120,18 @@
       "type": "string",
       "metadata": {
         "description": "Name of Public IP address element."
+      }
+    },
+    "publicIPAddress2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Second Public IP address element."
+      }
+    },
+     "publicIPAddress3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Third Public IP address element."
       }
     },
     "publicIPAddressResourceGroup": {
@@ -175,6 +199,20 @@
         "description": "Subnet 2 Name"
       }
     },
+    "Subnet3Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "Subnet3Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
     "fortiGateIP1": {
       "type": "string",
       "metadata": {
@@ -187,9 +225,15 @@
         "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
       }
     },
+    "fortiGateIP3": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+      }
+    },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.0",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/SparkData",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -210,17 +254,22 @@
     "VNetName": "[parameters('virtualnetName')]",
     "Subnet1Name": "[parameters('Subnet1Name')]",
     "Subnet2Name": "[parameters('Subnet2Name')]",
+    "Subnet3Name": "[parameters('Subnet3Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
+    "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet3Name'))]",
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
+    "Subnet3Prefix": "[parameters('Subnet3Prefix')]",
 
     "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
     "routeTable2Name": "[concat(parameters('vmName'),'ProtectedSubnetRoutes')]",
+    "routeTable3Name": "[concat(parameters('vmName'),'Protected2SubnetRoutes')]",
     "FGProtectedAddress": "[parameters('fortiGateIP2')]",
+    "FGProtected2Address": "[parameters('fortiGateIP3')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
@@ -230,6 +279,8 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
     "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
+    "network_NIC_fg13_Name": "[concat(parameters('vmName'),'Nic2')]",
+    "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -288,6 +339,14 @@
               "nextHopType": "VirtualAppliance",
               "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
             }
+          },
+          {
+            "name": "PublicFacingtoFortigateProtected2",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
+            }
           }
         ]
       }
@@ -308,11 +367,53 @@
             }
           },
           {
+            "name": "FortigateProtectedtoProtected2",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGProtectedAddress')]"
+            }
+          },
+          {
             "name": "FortigateProtectedtoDefault",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
               "nextHopIPAddress": "[variables('FGProtectedAddress')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTable3Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "FortigateProtected2toPublicFacing",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGProtected2Address')]"
+            }
+          },
+	  {
+            "name": "FortigateProtected2toProtected1",
+            "properties": {
+              "addressPrefix": "[variables('subnet2Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGProtected2Address')]"
+            }
+          },
+          {
+            "name": "FortigateProtectedtoDefault",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('FGProtected2Address')]"
             }
           }
         ]
@@ -354,6 +455,12 @@
           "subnet2AddressPrefix": {
             "value": "[parameters('Subnet2Prefix')]"
           },
+          "subnet3Name": {
+            "value": "[parameters('Subnet3Name')]"
+          },
+          "subnet3AddressPrefix": {
+            "value": "[parameters('Subnet3Prefix')]"
+          },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkResourceGroup')]"
           },
@@ -362,6 +469,9 @@
           },
           "routeTable2Name": {
             "value": "[variables('routeTable2Name')]"
+          },
+          "routeTable3Name": {
+            "value": "[variables('routeTable3Name')]"
           }
         }
       }
@@ -386,11 +496,23 @@
           "publicIPAddressName": {
             "value": "[parameters('publicIPAddressName')]"
           },
+          "publicIPAddress2Name": {
+            "value": "[parameters('publicIPAddressName')]"
+          },
+          "publicIPAddress3Name": {
+            "value": "[parameters('publicIPAddressName')]"
+          },
           "publicIPAddressType": {
             "value": "[parameters('publicIPAddressType')]"
           },
           "dnsName": {
             "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
+          },
+          "dns2Name": {
+            "value": "[parameters('uniqueDnsPrefixForPublicIP2')]"
+          },
+          "dns3Name": {
+            "value": "[parameters('uniqueDnsPrefixForPublicIP3')]"
           },
           "publicIPAddressResourceGroup": {
             "value": "[parameters('publicIPAddressResourceGroup')]"
@@ -438,6 +560,30 @@
       }
     },
     {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg13_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[variables('FGProtected2Address')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet3ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
       "apiVersion": "[variables('apiVer')]",
@@ -454,6 +600,7 @@
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg13_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
@@ -514,6 +661,12 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg12_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg13_Id')]"
             }
           ]
         }
