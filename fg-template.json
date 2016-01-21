@@ -497,10 +497,10 @@
             "value": "[parameters('publicIPAddressName')]"
           },
           "publicIPAddress2Name": {
-            "value": "[parameters('publicIPAddressName')]"
+            "value": "[parameters('publicIPAddress2Name')]"
           },
           "publicIPAddress3Name": {
-            "value": "[parameters('publicIPAddressName')]"
+            "value": "[parameters('publicIPAddress3Name')]"
           },
           "publicIPAddressType": {
             "value": "[parameters('publicIPAddressType')]"
