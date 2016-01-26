@@ -180,6 +180,7 @@
               "required": {
                 "domainNameLabel": true
               }
+            }
           },
           {
             "name": "publicIPAddressTypeElement",
