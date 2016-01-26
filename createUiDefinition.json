@@ -141,8 +141,7 @@
             "constraints": {
               "allowedTypes": [
                 "Standard_LRS",
-                "Standard_GRS",
-                "Premium_LRS"
+                "Standard_GRS"
               ],
               "required": true
             }
@@ -178,8 +177,9 @@
               "hideDomainNameLabel": false
             },
             "constraints": {
-              "required": false
-            }
+              "required": {
+                "domainNameLabel": true
+              }
           },
           {
             "name": "publicIPAddressTypeElement",
