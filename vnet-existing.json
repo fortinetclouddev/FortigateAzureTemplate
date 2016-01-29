@@ -64,7 +64,7 @@
     "subnet3ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet3Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
-    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
+    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]"
   },
   "resources": [
   ],
