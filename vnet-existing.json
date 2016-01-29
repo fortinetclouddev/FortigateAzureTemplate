@@ -61,42 +61,24 @@
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
+    "subnet3ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet3Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
+    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
+    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
   },
   "resources": [
-	  {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[variables('subnet1ID')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable1Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[variables('subnet2ID')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet2AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable2Id')]"
-          }
-        }
-    }
   ],
   "outputs": {
-    "subnet1ID": {
+   "subnet1ID": {
       "value": "[variables('subnet1ID')]",
       "type": "string"
     },
     "subnet2ID": {
       "value": "[variables('subnet2ID')]",
+      "type": "string"
+    },
+     "subnet3ID": {
+      "value": "[variables('subnet3ID')]",
       "type": "string"
     }
   }
