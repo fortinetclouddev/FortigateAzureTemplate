@@ -20,6 +20,18 @@
         "description": "Public IP Address Name"
       }
     },
+    "publicIPAddress2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Address Name"
+      }
+    },
+    "publicIPAddress3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Address Name"
+      }
+    },
     "publicIPAddressType": {
       "type": "string",
       "metadata": {
