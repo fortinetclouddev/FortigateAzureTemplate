@@ -32,6 +32,18 @@
         "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
       }
     },
+    "dns2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
+      }
+    },
+    "dns3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
+      }
+    },
     "VMName": {
       "type": "string",
       "metadata": {
