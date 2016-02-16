@@ -86,7 +86,7 @@
         "name": "[parameters('network_NIC_fg11_Name')]",
         "location": "[parameters('location')]",
 		"dependsOn": [
-          "[variables('network_LB_Public_Id')]"
+          "[variables('publicIPID')]"
         ],
         "properties": {
           "ipConfigurations": [
