@@ -89,26 +89,6 @@
   },
   "variables": {
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
-    "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
-    "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
-    "network_LB_Public_NatRule_IKE4500_fg1_Name": "[concat(parameters('VMName'),'IKE4500')]",
-    "network_LB_Public_NatRule_IKE4500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg1_Name'))]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Name": "[concat(parameters('VMName'),'HTTPS')]",
-    "network_LB_Public_NatRule_HTTPS_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg1_Name'))]",
-    "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
-    "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
-    "network_LB_Public_NatRule_HTTPS_fg2_Name": "[concat(parameters('VM2Name'),'HTTPS')]",
-    "network_LB_Public_NatRule_HTTPS_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS_fg2_Name'))]",
-    "network_LB_Public_NatRule_SSH_fg2_Name": "[concat(parameters('VM2Name'),'SSH')]",
-    "network_LB_Public_NatRule_SSH_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg2_Name'))]",
-    "network_LB_Public_Name": "[concat(parameters('vmNamePrefix'),'publicLB')]",
-    "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
-    "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
-    "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
-    "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
-    "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
     "apiVer": "2015-06-15"
   },
   "resources": [
@@ -122,170 +102,6 @@
         "dnsSettings": {
           "domainNameLabel": "[parameters('dnsName')]"
         }
-      }
-    },
-    {
-      "type": "Microsoft.Network/loadBalancers",
-      "name": "[variables('network_LB_Public_Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[variables('publicIPID')]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[variables('network_LB_Public_FEName')]",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[variables('network_LB_Public_BEName')]"
-          }
-        ],
-        "loadBalancingRules": [
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('network_LB_Public_BEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 9022,
-              "backendPort": 9022,
-              "idleTimeoutInMinutes": 15
-            },
-            "Name": "LBRule9022"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('network_LB_Public_BEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
-              },
-              "protocol": "Udp",
-              "frontendPort": 500,
-              "backendPort": 500,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
-            },
-            "Name": "LBRuleIKE500"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('network_LB_Public_BEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
-              },
-              "protocol": "Udp",
-              "frontendPort": 4500,
-              "backendPort": 4500,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
-            },
-            "Name": "LBRuleIKE4500"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('network_LB_Public_BEId')]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('network_LB_Public_Name')), '/probes/lbprobe')]"
-              },
-              "protocol": "Udp",
-              "frontendPort": 1701,
-              "backendPort": 1701,
-              "idleTimeoutInMinutes": 30,
-              "loadDistribution": "sourceIP"
-            },
-            "Name": "LBRuleL2TP"
-          }
-        ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 22,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
-          }
-        ],
-        "inboundNatRules": [
-          {
-            "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 22,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 443,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_SSH_fg2_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 8022,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('network_LB_Public_NatRule_HTTPS_fg2_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 8443,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          }
-        ]
       }
     },
     {
@@ -303,6 +119,9 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "publicIPAddress": {
+                "id": "[variables('publicIPID')]" 
+              },
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               },
