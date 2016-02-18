@@ -80,7 +80,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -92,7 +92,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -169,8 +169,8 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-fortiweb",
-              "domainNameLabel": "[basics('vmName')]"
+              "publicIpAddressName": "",
+              "domainNameLabel": ""
             },
             "options": {
               "hideNone": false,
