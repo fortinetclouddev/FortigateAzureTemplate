@@ -90,12 +90,14 @@
     },
     "publicIPAddressName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
     },
     "publicIPAddressResourceGroup": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
       }
