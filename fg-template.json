@@ -92,18 +92,21 @@
     },
     "uniqueDnsPrefixForPublicIP": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
       }
     },
     "uniqueDnsPrefixForPublicIP2": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
       }
     },
     "uniqueDnsPrefixForPublicIP3": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
       }
@@ -116,24 +119,28 @@
     },
     "publicIPAddressName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
     },
     "publicIPAddress2Name": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Second Public IP address element."
       }
     },
      "publicIPAddress3Name": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Third Public IP address element."
       }
     },
     "publicIPAddressResourceGroup": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
       }
