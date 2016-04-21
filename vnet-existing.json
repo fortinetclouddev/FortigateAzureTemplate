@@ -83,42 +83,6 @@
     "apiVer": "2015-06-15"
   },
   "resources": [
-	  {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('OutsideSubnetName'))]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable1Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('DMZSubnetName'))]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet2AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable2Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[concat(parameters('vnetName'),'/',parameters('InternalSubnetName'))]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet3AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable3Id')]"
-          }
-        }
-    }
   ],
   "outputs": {
     "subnet1ID": {
