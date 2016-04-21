@@ -86,9 +86,21 @@
                 }
               },
               "subnet2": {
-                "label": "Inside Subnet",
+                "label": "DMZ Subnet",
                 "defaultValue": {
-                  "name": "FortigateProtectedSubnet",
+                  "name": "FortigateDMZSubnet",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/28",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": false
+                }
+              },
+              "subnet3": {
+                "label": "Internal Subnet",
+                "defaultValue": {
+                  "name": "FortigateInternalSubnet",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -110,12 +122,9 @@
             ],
             "constraints": {
               "allowedSizes": [
-                "Standard_A3",
                 "Standard_A4",
-                "Standard_D2",
                 "Standard_D3",
                 "Standard_D4",
-                "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2"
               ],
@@ -251,7 +260,9 @@
       "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
       "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
       "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
-      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
+      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]",
+      "Subnet3Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet3.name]",
+      "Subnet3Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet3.addressPrefix]"
     }
   }
 }
