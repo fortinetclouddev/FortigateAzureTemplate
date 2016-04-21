@@ -388,7 +388,8 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]"
       ],
       "properties": {
         "mode": "Incremental",

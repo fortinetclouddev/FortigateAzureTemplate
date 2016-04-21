@@ -50,7 +50,7 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "InsideSubnetName": {
+    "InternalSubnetName": {
       "type": "string",
       "metadata": {
         "description": "Server will be deployed into this subnet within the Virtual Network"
