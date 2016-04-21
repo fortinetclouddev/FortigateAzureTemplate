@@ -216,6 +216,7 @@
     "VNetName": "[parameters('virtualnetName')]",
     "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
     "DMZSubnetName": "[parameters('DMZSubnetName')]",
+    "InternalSubnetName": "[parameters('InternalSubnetName')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('OutsideSubnetName'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('DMZSubnetName'))]",
