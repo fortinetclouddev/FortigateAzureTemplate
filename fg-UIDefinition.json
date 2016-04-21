@@ -70,7 +70,7 @@
               "addressPrefixSize": "/16"
             },
             "constraints": {
-              "minAddressPrefixSize": "/16"
+              "minAddressPrefixSize": "/27"
             },
             "subnets": {
               "subnet1": {
@@ -80,7 +80,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -92,7 +92,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24",
+                  "minAddressPrefixSize": "/28",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -105,9 +105,8 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_A3",
-              "Standard_A4",
-              "Standard_D4"
+              "Standard_D3_v2",
+              "Standard_D4_v2"
             ],
             "constraints": {
               "allowedSizes": [
