@@ -38,6 +38,12 @@
         "description": "FortiGate name"
       }
     },
+    "VM2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate name"
+      }
+    },
     "vmNamePrefix": {
       "type": "string",
       "metadata": {
@@ -56,6 +62,12 @@
         "description": "Outside address of FortiGate"
       }
     },
+    "FGBPubFacingAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "Outside address of FortiGate B"
+      }
+    },
     "subnet1Ref": {
       "type": "string",
       "metadata": {
@@ -65,7 +77,13 @@
     "network_NIC_fg11_Name": {
       "type": "string",
       "metadata": {
-		  "description": "NIC0 interface name"
+        "description": "NIC0 interface name"
+      }
+    },
+    "network_NIC_fg21_Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiGate B NIC0 interface name"
       }
     }
   },
@@ -78,6 +96,9 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('network_NIC_fg11_Name')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_LB_Public_Id')]"
+      ],
       "properties": {
         "ipConfigurations": [
           {
@@ -92,7 +113,30 @@
           }
         ],
         "enableIPForwarding": true
-
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('network_NIC_fg21_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_LB_Public_Id')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('FGBPubFacingAddress')]",
+              "subnet": {
+                "id": "[parameters('subnet1Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
       }
     }
   ],

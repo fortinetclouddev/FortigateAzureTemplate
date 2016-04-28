@@ -4,7 +4,7 @@
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D2",
+      "defaultValue": "Standard_D3_v2",
       "allowedValues": [
         "Standard_A3",
         "Standard_A4",
@@ -198,7 +198,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.3",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.4",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
