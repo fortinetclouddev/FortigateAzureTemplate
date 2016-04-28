@@ -65,30 +65,6 @@
     "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
   },
   "resources": [
-	  {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[variables('subnet1ID')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable1Id')]"
-          }
-        }
-    },
-    {
-        "apiVersion": "2015-06-15",
-        "type": "Microsoft.Network/virtualNetworks/subnets",
-        "name": "[variables('subnet2ID')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressPrefix": "[parameters('subnet2AddressPrefix')]",
-          "routeTable": {
-            "id": "[variables('routeTable2Id')]"
-          }
-        }
-    }
   ],
   "outputs": {
     "subnet1ID": {
