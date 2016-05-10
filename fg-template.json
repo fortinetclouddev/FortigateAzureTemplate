@@ -223,7 +223,7 @@
     "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', variables('InternalSubnetName'))]",
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
-    "OutsideSubnetPrefix": "[parameters('OutsideSubnetPrefix')]",
+    "OutsideSubnetPrefix": "[parameters('Subnet1Prefix')]",
     "DMZSubnetPrefix": "[parameters('Subnet2Prefix')]",
     "InternalSubnetPrefix": "[parameters('Subnet3Prefix')]",
 
@@ -411,7 +411,7 @@
             "value": "[parameters('Subnet1Name')]"
           },
           "subnet1AddressPrefix": {
-            "value": "[parameters('OutsideSubnetPrefix')]"
+            "value": "[parameters('Subnet1Prefix')]"
           },
           "DMZSubnetName": {
             "value": "[parameters('Subnet2Name')]"
