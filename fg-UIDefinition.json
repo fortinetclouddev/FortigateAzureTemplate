@@ -224,9 +224,21 @@
           {
             "name": "fGateIP2",
             "type": "Microsoft.Common.TextBox",
-            "label": "FortiGate Inside Address",
-            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
+            "label": "FortiGate Inside/DMZ Address",
+            "toolTip": "This is the IP address of an internal or DMZ interface of the FortiGate virtual appliance.",
             "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
+            "constraints": {
+              "required": true,
+              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+            }
+          },
+          {
+            "name": "fGateIP3",
+            "type": "Microsoft.Common.TextBox",
+            "label": "FortiGate Internal Address",
+            "toolTip": "This is the IP address of a second internal interface of the FortiGate virtual appliance.",
+            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet3.startAddress]",
             "constraints": {
               "required": true,
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
@@ -248,6 +260,7 @@
       "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
       "fortiGateIP1": "[steps('IPConfig').fGateIP1]",
       "fortiGateIP2": "[steps('IPConfig').fGateIP2]",
+      "fortiGateIP3": "[steps('IPConfig').fGateIP3]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
