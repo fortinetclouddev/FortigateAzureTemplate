@@ -119,7 +119,7 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
-    "virtualNetworkResourceGroup": {
+    "virtualNetworkExistingRGName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -133,42 +133,42 @@
         "description": "Virtual Network Address prefix"
       }
     },
-    "OutsideSubnetPrefix": {
+    "Subnet1Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
-    "OutsideSubnetName": {
+    "Subnet1Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
-    "DMZSubnetPrefix": {
+    "Subnet2Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
-    "DMZSubnetName": {
+    "Subnet2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
-    "InternalSubnetPrefix": {
+    "Subnet3Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 3 Prefix"
       }
     },
-    "InternalSubnetName": {
+    "Subnet3Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -215,8 +215,8 @@
 
     "VNetName": "[parameters('virtualnetName')]",
     "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
-    "DMZSubnetName": "[parameters('DMZSubnetName')]",
-    "InternalSubnetName": "[parameters('InternalSubnetName')]",
+    "DMZSubnetName": "[parameters('Subnet2Name')]",
+    "InternalSubnetName": "[parameters('Subnet3Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('OutsideSubnetName'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('DMZSubnetName'))]",
@@ -224,8 +224,8 @@
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
     "OutsideSubnetPrefix": "[parameters('OutsideSubnetPrefix')]",
-    "DMZSubnetPrefix": "[parameters('DMZSubnetPrefix')]",
-    "InternalSubnetPrefix": "[parameters('InternalSubnetPrefix')]",
+    "DMZSubnetPrefix": "[parameters('Subnet2Prefix')]",
+    "InternalSubnetPrefix": "[parameters('Subnet3Prefix')]",
 
     "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
     "routeTable2Name": "[concat(parameters('vmName'),'DMZSubnetRoutes')]",
@@ -414,19 +414,19 @@
             "value": "[parameters('OutsideSubnetPrefix')]"
           },
           "DMZSubnetName": {
-            "value": "[parameters('DMZSubnetName')]"
+            "value": "[parameters('Subnet2Name')]"
           },
           "subnet2AddressPrefix": {
-            "value": "[parameters('DMZSubnetPrefix')]"
+            "value": "[parameters('Subnet2Prefix')]"
           },
           "InternalSubnetName": {
-            "value": "[parameters('InternalSubnetName')]"
+            "value": "[parameters('Subnet3Name')]"
           },
           "subnet3AddressPrefix": {
-            "value": "[parameters('InternalSubnetPrefix')]"
+            "value": "[parameters('Subnet3Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkResourceGroup')]"
+            "value": "[parameters('virtualNetworkExistingRGName')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"

@@ -81,7 +81,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/28",
-                  "minAddressCount": 12,
+                  "minAddressCount": 6,
                   "requireContiguousAddresses": false
                 }
               },
@@ -93,7 +93,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/28",
-                  "minAddressCount": 12,
+                  "minAddressCount": 6,
                   "requireContiguousAddresses": false
                 }
               },
@@ -105,7 +105,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/28",
-                  "minAddressCount": 12,
+                  "minAddressCount": 6,
                   "requireContiguousAddresses": false
                 }
               }
