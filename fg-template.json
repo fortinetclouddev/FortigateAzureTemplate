@@ -214,7 +214,7 @@
     "vmSize": "[parameters('VirtualMachineSize')]",
 
     "VNetName": "[parameters('virtualnetName')]",
-    "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
+    "OutsideSubnetName": "[parameters('Subnet1Name')]",
     "DMZSubnetName": "[parameters('Subnet2Name')]",
     "InternalSubnetName": "[parameters('Subnet3Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
@@ -408,7 +408,7 @@
             "value": "[parameters('virtualNetworkAddressPrefix')]"
           },
           "OutsideSubnetName": {
-            "value": "[parameters('OutsideSubnetName')]"
+            "value": "[parameters('Subnet1Name')]"
           },
           "subnet1AddressPrefix": {
             "value": "[parameters('OutsideSubnetPrefix')]"
