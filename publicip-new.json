@@ -32,16 +32,22 @@
         "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
       }
     },
+    "VMNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiWebs name prefix"
+      }
+    },
     "VM1Name": {
       "type": "string",
       "metadata": {
-        "description": "FortiWeb name"
+        "description": "FortiWeb A name"
       }
     },
     "VM2Name": {
       "type": "string",
       "metadata": {
-        "description": "FortiWeb name"
+        "description": "FortiWeb B name"
       }
     },
     "VNetName": {
@@ -106,13 +112,13 @@
     "network_LB_Public_NatRule_HTTPS2_fw2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_HTTPS2_fw1_Name'))]",
     "network_LB_Public_NatRule_SSH_fw2_Name": "[concat(parameters('VM2Name'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fw2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fw1_Name'))]",
-    "network_LB_Public_Name": "[concat(parameters('VMName'),'publicLB')]",
+    "network_LB_Public_Name": "[concat(parameters('VMNamePrefix'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
-    "network_LB_Public_FEName": "[concat(parameters('VMName'),'publicLBFE')]",
+    "network_LB_Public_FEName": "[concat(parameters('VMNamePrefix'),'publicLBFE')]",
     "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
-    "network_LB_Public_FE2Name": "[concat(parameters('VMName'),'publicLBFE2')]",
+    "network_LB_Public_FE2Name": "[concat(parameters('VMNamePrefix'),'publicLBFE2')]",
     "network_LB_Public_FE2Id": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FE2Name'))]",
-    "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
+    "network_LB_Public_BEName": "[concat(parameters('VMNamePrefix'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
     "apiVer": "2015-06-15"
   },

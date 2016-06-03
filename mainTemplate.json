@@ -340,6 +340,9 @@
           "publicIPAddressResourceGroup": {
             "value": "[parameters('publicIPAddressResourceGroup')]"
           },
+          "VMNamePrefix": {
+            "value": "[parameters('VMNamePrefix')]"
+          },
           "VM1Name": {
             "value": "[variables('compute_VM_fw1_Name')]"
           },
