@@ -137,7 +137,7 @@
       },
        {
         "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[parameters('publicIP2AddressName')]",
+        "name": "[variables('publicIP2AddressName')]",
         "apiVersion": "[variables('apiVer')]",
         "location": "[parameters('location')]",
         "properties": {
