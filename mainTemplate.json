@@ -113,7 +113,7 @@
         "description": "Type of public IP address"
       }
     },
-    "vmName": {
+    "vmNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name for FortiWeb virtual appliance."
@@ -161,21 +161,33 @@
         "description": "Subnet 2 Name"
       }
     },
-    "fortiWebIP1": {
+    "fortiWeb-A-IP1": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the FortiWeb virtual appliance."
+        "description": "Static IP for public facing NIC of the first FortiWeb virtual appliance."
       }
     },
-    "fortiWebIP2": {
+    "fortiWeb-A-IP2": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for protected network facing NIC of the FortiWeb virtual appliance."
+        "description": "Static IP for protected network facing NIC of the first FortiWeb virtual appliance."
+      }
+    },
+    "fortiWeb-B-IP1": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for public facing NIC of the second FortiWeb virtual appliance."
+      }
+    },
+    "fortiWeb-B-IP2": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected network facing NIC of the second FortiWeb virtual appliance."
       }
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWeb5.1.4",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWebHA5.1.5",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -204,16 +216,19 @@
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
-    "FGProtectedAddress": "[parameters('fortiWebIP2')]",
-    "FGPubFacingAddress": "[parameters('fortiWebIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[parameters('vmName')]",
+    "compute_VM_fg1_Name": "[concat(parameters('vmNamePrefix'),'-A')]",
+    "compute_VM_fg2_Name": "[concat(parameters('vmNamePrefix'),'-B')]",
 
-    "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(variables('compute_VM_fg1_Name'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(variables('compute_VM_fg1_Name'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
+    "network_NIC_fg21_Name": "[concat(variables('compute_VM_fg2_Name'),'Nic0')]",
+    "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
+    "network_NIC_fg22_Name": "[concat(variables('compute_VM_fg2_Name'),'Nic1')]",
+    "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -325,20 +340,29 @@
           "publicIPAddressResourceGroup": {
             "value": "[parameters('publicIPAddressResourceGroup')]"
           },
-          "VMName": {
-            "value": "[parameters('vmName')]"
+          "VM1Name": {
+            "value": "[parameters('ompute_VM_fg1_Name')]"
+          },
+          "VM2Name": {
+            "value": "[parameters('ompute_VM_fg2_Name')]"
           },
           "VNetName": {
             "value": "[parameters('virtualnetName')]"
           },
-          "FGPubFacingAddress": {
-            "value": "[variables('FGPubFacingAddress')]"
+          "FWAPubFacingAddress": {
+            "value": "[parameters('fortiWeb-A-IP1')]"
+          },
+          "FWBPubFacingAddress": {
+            "value": "[parameters('fortiWeb-B-IP1')]"
           },
           "subnet1Ref": {
             "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
+          },
+          "network_NIC_fg21_Name": {
+            "value": "[variables('network_NIC_fg21_Name')]"
           }
         }
       }
@@ -357,7 +381,31 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('FGProtectedAddress')]",
+              "privateIPAddress": "[parameters('fortiWeb-A-IP2')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg22_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('fortiWeb-B-IP2')]",
               "subnet": {
                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
@@ -440,6 +488,84 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg12_Id')]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('compute_VM_fg2_Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "plan": {
+        "name": "fortinet_fw-vm",
+        "publisher": "fortinet",
+        "product": "fortinet_fortiweb-vm_v5"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg22_Name'))]",
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('compute_VM_fg2_Name')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.windows.net')]"
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "fortinet",
+            "offer": "fortinet_fortiweb-vm_v5",
+            "sku": "fortinet_fw-vm",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[concat(variables('compute_VM_fg2_Name'),'-osDisk')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg2_Name'), '-osdisk', '.vhd')]"
+            }
+          },
+          "dataDisks": [
+            {
+              "name": "[concat(variables('compute_VM_fg2_Name'),'-dataDisk')]",
+              "diskSizeGB": "30",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg2_Name'), '-datadisk', '.vhd')]"
+              },
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[variables('network_NIC_fg21_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg22_Id')]"
             }
           ]
         }
