@@ -218,16 +218,16 @@
 
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[concat(parameters('vmNamePrefix'),'-A')]",
-    "compute_VM_fg2_Name": "[concat(parameters('vmNamePrefix'),'-B')]",
+    "compute_VM_fw1_Name": "[concat(parameters('vmNamePrefix'),'-A')]",
+    "compute_VM_fw2_Name": "[concat(parameters('vmNamePrefix'),'-B')]",
 
-    "network_NIC_fg11_Name": "[concat(variables('compute_VM_fg1_Name'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(variables('compute_VM_fw1_Name'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(variables('compute_VM_fg1_Name'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(variables('compute_VM_fw1_Name'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg21_Name": "[concat(variables('compute_VM_fg2_Name'),'Nic0')]",
+    "network_NIC_fg21_Name": "[concat(variables('compute_VM_fw2_Name'),'Nic0')]",
     "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
-    "network_NIC_fg22_Name": "[concat(variables('compute_VM_fg2_Name'),'Nic1')]",
+    "network_NIC_fg22_Name": "[concat(variables('compute_VM_fw2_Name'),'Nic1')]",
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
@@ -236,7 +236,7 @@
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
 
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmName'),'AvailSet')]",
+    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmNamePrefix'),'AvailSet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
@@ -341,10 +341,10 @@
             "value": "[parameters('publicIPAddressResourceGroup')]"
           },
           "VM1Name": {
-            "value": "[parameters('ompute_VM_fg1_Name')]"
+            "value": "[variables('compute_VM_fw1_Name')]"
           },
           "VM2Name": {
-            "value": "[parameters('ompute_VM_fg2_Name')]"
+            "value": "[variables('compute_VM_fw2_Name')]"
           },
           "VNetName": {
             "value": "[parameters('virtualnetName')]"
@@ -417,7 +417,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('compute_VM_fg1_Name')]",
+      "name": "[variables('compute_VM_fw1_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "plan": {
@@ -438,7 +438,7 @@
           "id": "[variables('compute_AvailabilitySet_FG_Id')]"
         },
         "osProfile": {
-          "computerName": "[variables('compute_VM_fg1_Name')]",
+          "computerName": "[variables('compute_VM_fw1_Name')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -456,20 +456,20 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
+            "name": "[concat(variables('compute_VM_fw1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fw1_Name'), '-osdisk', '.vhd')]"
             }
           },
           "dataDisks": [
             {
-              "name": "[concat(variables('compute_VM_fg1_Name'),'-dataDisk')]",
+              "name": "[concat(variables('compute_VM_fw1_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fw1_Name'), '-datadisk', '.vhd')]"
               },
               "createOption": "Empty"
             }
@@ -495,7 +495,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('compute_VM_fg2_Name')]",
+      "name": "[variables('compute_VM_fw2_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "plan": {
@@ -516,7 +516,7 @@
           "id": "[variables('compute_AvailabilitySet_FG_Id')]"
         },
         "osProfile": {
-          "computerName": "[variables('compute_VM_fg2_Name')]",
+          "computerName": "[variables('compute_VM_fw2_Name')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -534,20 +534,20 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(variables('compute_VM_fg2_Name'),'-osDisk')]",
+            "name": "[concat(variables('compute_VM_fw2_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg2_Name'), '-osdisk', '.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fw2_Name'), '-osdisk', '.vhd')]"
             }
           },
           "dataDisks": [
             {
-              "name": "[concat(variables('compute_VM_fg2_Name'),'-dataDisk')]",
+              "name": "[concat(variables('compute_VM_fw2_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg2_Name'), '-datadisk', '.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fw2_Name'), '-datadisk', '.vhd')]"
               },
               "createOption": "Empty"
             }

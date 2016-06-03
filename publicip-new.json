@@ -83,7 +83,7 @@
   },
   "variables": {
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
-    "publicIP2AddressName": "[concat(parameters('publicIPAddressName')','-2)]",
+    "publicIP2AddressName": "[concat(parameters('publicIPAddressName'),'-2')]",
     "publicIP2ID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('publicIP2AddressName'))]",
     "dns2Name": "[concat(parameters('dnsName'),'2')]",
     "network_LB_Public_NatRule_HTTP_fw1_Name": "[concat(parameters('VM1Name'),'HTTP')]",
