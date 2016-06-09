@@ -64,7 +64,7 @@
     }
   },
   "variables": {
-    "publicIPID": "[reference('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
+    "publicIPID": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
 	"apiVer": "2015-06-15"
   },
     "resources": [
