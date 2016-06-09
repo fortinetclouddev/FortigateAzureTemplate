@@ -98,7 +98,7 @@
     ],
     "outputs": {
         "publicIPID": {
-            "value": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
+            "value": "[variables(publicIPID)]",
             "type": "string"
         },
         "fqdn": {

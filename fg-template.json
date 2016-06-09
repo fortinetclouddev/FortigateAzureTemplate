@@ -205,7 +205,7 @@
     "DMZSubnetPrefix": "[parameters('DMZSubnetPrefix')]",
 
     "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('vmName'),'DMZSubnetRoutes')]",
+    "routeTable2Name": "[concat(parameters('vmName'),'InternalRoutes')]",
 
     "FGDMZAddress": "[parameters('fortiGateIP2')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
