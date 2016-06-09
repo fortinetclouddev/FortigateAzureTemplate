@@ -98,7 +98,7 @@
     ],
     "outputs": {
         "publicIPID": {
-            "value": "[variables(publicIPID)]",
+            "value": "[variables('publicIPID')]",
             "type": "string"
         },
         "fqdn": {
