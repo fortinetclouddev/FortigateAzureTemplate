@@ -161,20 +161,6 @@
         "description": "Subnet 2 Name"
       }
     },
-    "InternalSubnetPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 3 Prefix"
-      }
-    },
-    "InternalSubnetName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 3 Name"
-      }
-    },
     "fortiGateIP1": {
       "type": "string",
       "metadata": {
@@ -185,12 +171,6 @@
       "type": "string",
       "metadata": {
         "description": "Static IP for dmz network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP3": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
       }
     },
     "artifactsBaseUrl": {
@@ -216,23 +196,18 @@
     "VNetName": "[parameters('virtualnetName')]",
     "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
     "DMZSubnetName": "[parameters('DMZSubnetName')]",
-    "InternalSubnetName": "[parameters('InternalSubnetName')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('OutsideSubnetName'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('DMZSubnetName'))]",
-    "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', variables('InternalSubnetName'))]",
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
     "OutsideSubnetPrefix": "[parameters('OutsideSubnetPrefix')]",
     "DMZSubnetPrefix": "[parameters('DMZSubnetPrefix')]",
-    "InternalSubnetPrefix": "[parameters('InternalSubnetPrefix')]",
 
     "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
     "routeTable2Name": "[concat(parameters('vmName'),'DMZSubnetRoutes')]",
-    "routeTable3Name": "[concat(parameters('vmName'),'InternalSubnetRoutes')]",
 
     "FGDMZAddress": "[parameters('fortiGateIP2')]",
-    "FGInternalAddress": "[parameters('fortiGateIP3')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
 
     "apiVer": "2015-06-15",
@@ -242,8 +217,6 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
     "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg13_Name": "[concat(parameters('vmName'),'Nic2')]",
-    "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -296,17 +269,9 @@
       "properties": {
         "routes": [
           {
-            "name": "PublicFacingtoFortigateDMZ",
-            "properties": {
-              "addressPrefix": "[variables('DMZSubnetPrefix')]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
-            }
-          },
-          {
             "name": "PublicFacingtoFortigateInternal",
             "properties": {
-              "addressPrefix": "[variables('InternalSubnetPrefix')]",
+              "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
               "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
             }
@@ -322,53 +287,11 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateDMZtoPublicFacing",
-            "properties": {
-              "addressPrefix": "[variables('OutsideSubnetPrefix')]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGDMZAddress')]"
-            }
-          },
-          {
-            "name": "FortigateDMZtoInternalFacing",
-            "properties": {
-              "addressPrefix": "[variables('InternalSubnetPrefix')]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGDMZAddress')]"
-            }
-          },
-          {
-            "name": "FortigateDMZtoDefault",
-            "properties": {
-              "AddressPrefix": "0.0.0.0/0",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('FGDMZAddress')]"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/routeTables",
-      "name": "[variables('routeTable3Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "routes": [
-          {
             "name": "FortigateInternaltoPublicFacing",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGInternalAddress')]"
-            }
-          },
-          {
-            "name": "FortigateInternaltoDMZ",
-            "properties": {
-              "addressPrefix": "[variables('DMZSubnetPrefix')]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGInternalAddress')]"
+              "nextHopIpAddress": "[variables('FGDMZAddress')]"
             }
           },
           {
@@ -376,7 +299,7 @@
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('FGInternalAddress')]"
+              "nextHopIPAddress": "[variables('FGDMZAddress')]"
             }
           }
         ]
@@ -388,8 +311,7 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]"
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -419,12 +341,6 @@
           "subnet2AddressPrefix": {
             "value": "[parameters('DMZSubnetPrefix')]"
           },
-          "InternalSubnetName": {
-            "value": "[parameters('InternalSubnetName')]"
-          },
-          "subnet3AddressPrefix": {
-            "value": "[parameters('InternalSubnetPrefix')]"
-          },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkResourceGroup')]"
           },
@@ -433,9 +349,6 @@
           },
           "routeTable2Name": {
             "value": "[variables('routeTable2Name')]"
-          },
-          "routeTable3Name": {
-            "value": "[variables('routeTable3Name')]"
           }
         }
       }
@@ -504,30 +417,6 @@
               "privateIPAddress": "[variables('FGDMZAddress')]",
               "subnet": {
                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
-              }
-            }
-          }
-        ],
-        "enableIPForwarding": true
-      }
-    },
-    {
-      "apiVersion": "[variables('apiVer')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg13_Name')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('FGInternalAddress')]",
-              "subnet": {
-                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet3ID.value]"
               }
             }
           }
@@ -608,12 +497,6 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg12_Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('network_NIC_fg13_Id')]"
             }
           ]
         }

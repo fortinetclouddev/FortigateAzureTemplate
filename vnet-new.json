@@ -50,25 +50,10 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "InternalSubnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet3AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
     "routeTable1Name": {
       "type": "string"
     },
     "routeTable2Name": {
-      "type": "string"
-    },
-    "routeTable3Name": {
       "type": "string"
     }
   },
@@ -76,10 +61,8 @@
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('OutsideSubnetName'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('DMZSubnetName'))]",
-    "subnet3ID": "[concat(variables('vnetID'),'/subnets/',parameters('InternalSubnetName'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
-    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
     "apiVer": "2015-06-15"
   },
   "resources": [
@@ -112,15 +95,6 @@
                 "id": "[variables('routeTable2Id')]"
               }
             }
-          },
-          {
-            "name": "[parameters('InternalSubnetName')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet3AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable3Id')]"
-              }
-            }
           }
         ]
       }
@@ -133,10 +107,6 @@
     },
     "subnet2ID": {
       "value": "[variables('subnet2ID')]",
-      "type": "string"
-    },
-    "subnet3ID": {
-      "value": "[variables('subnet3ID')]",
       "type": "string"
     }
   }

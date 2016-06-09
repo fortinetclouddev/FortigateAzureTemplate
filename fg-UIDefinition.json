@@ -86,18 +86,6 @@
                 }
               },
               "subnet2": {
-                "label": "DMZ Subnet",
-                "defaultValue": {
-                  "name": "FortigateDMZSubnet",
-                  "addressPrefixSize": "/24"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/28",
-                  "minAddressCount": 12,
-                  "requireContiguousAddresses": false
-                }
-              },
-              "subnet3": {
                 "label": "Internal Subnet",
                 "defaultValue": {
                   "name": "FortigateInternalSubnet",
@@ -117,14 +105,16 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_D3_v2",
-              "Standard_D4_v2"
+              "Standard_D3",
+              "Standard_D4"
             ],
             "constraints": {
               "allowedSizes": [
                 "Standard_A4",
+                "Standard_D2",
                 "Standard_D3",
                 "Standard_D4",
+                "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2"
               ],
@@ -149,8 +139,7 @@
             "constraints": {
               "allowedTypes": [
                 "Standard_LRS",
-                "Standard_GRS",
-                "Premium_LRS"
+                "Standard_GRS"
               ],
               "required": true
             }
@@ -181,12 +170,14 @@
               "publicIpAddressName": "publicip-fortigate",
               "domainNameLabel": "[basics('vmName')]"
             },
+            "constraints": {
+              "required": {
+                "domainNameLabel": true
+              }
+            },
             "options": {
               "hideNone": false,
               "hideDomainNameLabel": false
-            },
-            "constraints": {
-              "required": false
             }
           },
           {
@@ -260,9 +251,7 @@
       "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
       "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
       "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
-      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]",
-      "Subnet3Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet3.name]",
-      "Subnet3Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet3.addressPrefix]"
+      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
 }
