@@ -97,9 +97,5 @@
       }
     ],
     "outputs": {
-        "publicIPID": {
-            "value": "[variables('publicIPID')]",
-            "type": "string"
-        }
     }
 }
