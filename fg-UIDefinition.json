@@ -246,12 +246,12 @@
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
       "virtualnetName": "[steps('StorageNetworkConfig').virtualNetwork.name]",
-      "virtualNetworkExistingRGName":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
+      "virtualNetworkResourceGroup":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
       "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
-      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
-      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
+      "OutsideSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "OutsideSubnetPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "DMZSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "DMZSubnetPrefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
 }
