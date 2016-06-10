@@ -70,7 +70,7 @@
               "addressPrefixSize": "/16"
             },
             "constraints": {
-              "minAddressPrefixSize": "/16"
+              "minAddressPrefixSize": "/28"
             },
             "subnets": {
               "subnet1": {
@@ -80,7 +80,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/28",
+                  "minAddressPrefixSize": "/29",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -92,7 +92,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/28",
+                  "minAddressPrefixSize": "/29",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -172,14 +172,14 @@
               "publicIpAddressName": "",
               "domainNameLabel": ""
             },
-            "options": {
-              "hideNone": false,
-              "hideDomainNameLabel": false
-            },
             "constraints": {
               "required": {
                 "domainNameLabel": true
               }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": false
             }
           },
           {
