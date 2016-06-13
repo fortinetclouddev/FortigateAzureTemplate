@@ -70,7 +70,7 @@
               "addressPrefixSize": "/16"
             },
             "constraints": {
-              "minAddressPrefixSize": "/24"
+              "minAddressPrefixSize": "/28"
             },
             "subnets": {
               "subnet1": {
@@ -80,7 +80,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/28",
+                  "minAddressPrefixSize": "/29",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -92,7 +92,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/28",
+                  "minAddressPrefixSize": "/29",
                   "minAddressCount": 12,
                   "requireContiguousAddresses": false
                 }
@@ -106,7 +106,7 @@
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
               "Standard_A3",
-              "Standard_A4",
+              "Standard_D3",
               "Standard_D4"
             ],
             "constraints": {
@@ -141,8 +141,7 @@
             "constraints": {
               "allowedTypes": [
                 "Standard_LRS",
-                "Standard_GRS",
-                "Premium_LRS"
+                "Standard_GRS"
               ],
               "required": true
             }
@@ -172,12 +171,14 @@
             "defaultValue": {
               "publicIpAddressName": "FortiGate-LB-PublicIP"
             },
+            "constraints": {
+              "required": {
+                "domainNameLabel": true
+              }
+            },
             "options": {
               "hideNone": false,
               "hideDomainNameLabel": false
-            },
-            "constraints": {
-              "required": false
             }
           },
           {
