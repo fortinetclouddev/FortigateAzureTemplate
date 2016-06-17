@@ -34,9 +34,16 @@
     }
   },
   "variables": {
+    "publicIP2ID": "None",
     "apiVer": "2015-06-15"
   },
   "resources": [
-  ]
+  ],
+  "outputs": {
+      "public2IPID": {
+          "value": "[variables('publicIP2ID')]",
+          "type": "string"
+      }
+  }
 
 }
