@@ -1,4 +1,4 @@
-﻿{
+{
   "handler": "Microsoft.Compute.MultiVm",
   "version": "0.0.1-preview",
   "parameters": {
@@ -81,7 +81,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29",
-                  "minAddressCount": 12,
+                  "minAddressCount": 3,
                   "requireContiguousAddresses": false
                 }
               },
@@ -93,7 +93,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29",
-                  "minAddressCount": 12,
+                  "minAddressCount": 3,
                   "requireContiguousAddresses": false
                 }
               }
@@ -105,9 +105,9 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_A3",
-              "Standard_D3",
-              "Standard_D4"
+              "Standard_D2_v2",
+              "Standard_D3_v2",
+              "Standard_D4_v2"
             ],
             "constraints": {
               "allowedSizes": [
@@ -161,7 +161,7 @@
             "name": "publicIpAddress",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "Public IP address name",
+              "publicIpAddress": "First public IP address resource name",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
@@ -169,16 +169,36 @@
               "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
             },
             "defaultValue": {
-              "publicIpAddressName": "FortiGate-LB-PublicIP"
-            },
-            "constraints": {
-              "required": {
-                "domainNameLabel": true
-              }
+              "publicIpAddressName": "FortiGate-LB-PublicIP-A"
             },
             "options": {
-              "hideNone": false,
+              "hideNone": true,
               "hideDomainNameLabel": false
+            },
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "publicIpAddress2",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Second public IP address resource name",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Name of the public IP address object",
+              "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "FortiGate-LB-PublicIP-B"
+            },
+            "options": {
+              "hideNone": true,
+              "hideDomainNameLabel": false
+            },
+            "constraints": {
+              "required": true
             }
           },
           {
@@ -190,7 +210,7 @@
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "Static/Reserved",
+                  "label": "Static",
                   "value": "Static"
                 },
                 {
@@ -210,7 +230,7 @@
             "constraints": {
               "required": true,
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
-              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+              "validationMessage": "Must be a valid and available IPv4 address on the first subnet configured in the previous step."
             }
           },
           {
@@ -229,19 +249,19 @@
             "name": "fGateBIP1",
             "type": "Microsoft.Common.TextBox",
             "label": "Secondary FortiGate outside address",
-            "toolTip": "This is the IP address of the outside interface of the second FortiGate virtual appliance.",
+            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
             "defaultValue": "",
             "constraints": {
               "required": true,
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
-              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
+              "validationMessage": "Must be a valid and available IPv4 address on the first subnet configured in the previous step."
             }
           },
           {
             "name": "fGateBIP2",
             "type": "Microsoft.Common.TextBox",
             "label": "Secondary FortiGate inside address",
-            "toolTip": "This is the IP address of the inside interface of the second FortiGate virtual appliance.",
+            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
             "defaultValue": "",
             "constraints": {
               "required": true,
@@ -258,10 +278,14 @@
       "adminPassword": "[basics('passwordElement')]",
       "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
+      "publicIPAddress2Name": "[steps('IPConfig').publicIpAddress2.name]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
       "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.domainNameLabel]",
+      "uniqueDnsPrefixForPublicIP2": "[steps('IPConfig').publicIpAddress2.domainNameLabel]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
+      "publicIP2NewOrExistingOrNone": "[steps('IPConfig').publicIpAddress2.newOrExistingOrNone]",
       "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
+      "publicIPAddress2ResourceGroup": "[steps('IPConfig').publicIpAddress2.resourceGroup]",
       "fortiGateIP1": "[steps('IPConfig').fGateIP1]",
       "fortiGateIP2": "[steps('IPConfig').fGateIP2]",
       "fortiGateBIP1": "[steps('IPConfig').fGateBIP1]",
