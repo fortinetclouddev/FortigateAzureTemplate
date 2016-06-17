@@ -124,9 +124,6 @@
       "name": "[variables('network_LB_Public_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[variables('publicIPID')]"
-      ],
       "properties": {
         "frontendIPConfigurations": [
           {
