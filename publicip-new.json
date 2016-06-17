@@ -32,6 +32,9 @@
         "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
       }
     },
+    "publicIP2ID": {
+      "type": "string"
+    },
     "VMName": {
       "type": "string",
       "metadata": {
@@ -89,7 +92,6 @@
   },
   "variables": {
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
-    "publicIP2ID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('publicIPAddress2Name'))]",
     "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg2_Name": "[concat(parameters('VM2Name'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
@@ -98,18 +100,10 @@
     "network_LB_Public_NatRule_IKE4500_fg2_Name": "[concat(parameters('VM2Name'),'IKE4500')]",
     "network_LB_Public_NatRule_IKE4500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg1_Name'))]",
     "network_LB_Public_NatRule_IKE4500_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE4500_fg2_Name'))]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Name": "[concat(parameters('VMName'),'L2TP1701')]",
-    "network_LB_Public_NatRule_L2TP1701_fg2_Name": "[concat(parameters('VM2Name'),'L2TP1701')]",
-    "network_LB_Public_NatRule_L2TP1701_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg1_Name'))]",
-    "network_LB_Public_NatRule_L2TP1701_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_L2TP1701_fg2_Name'))]",
-    "network_LB_Public_NatRule_FGAdminInit_fg1_Name": "[concat(parameters('VMName'),'FGAdminInit')]",
-    "network_LB_Public_NatRule_FGAdminInit_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminInit_fg1_Name'))]",
     "network_LB_Public_NatRule_FGAdminPerm_fg1_Name": "[concat(parameters('VMName'),'FGAdminPerm')]",
     "network_LB_Public_NatRule_FGAdminPerm_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Name'))]",
     "network_LB_Public_NatRule_SSH_fg1_Name": "[concat(parameters('VMName'),'SSH')]",
     "network_LB_Public_NatRule_SSH_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_SSH_fg1_Name'))]",
-    "network_LB_Public_NatRule_FGAdminInit_fg2_Name": "[concat(parameters('VM2Name'),'FGAdminInit')]",
-    "network_LB_Public_NatRule_FGAdminInit_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminInit_fg2_Name'))]",
     "network_LB_Public_NatRule_FGAdminPerm_fg2_Name": "[concat(parameters('VM2Name'),'FGAdminPerm')]",
     "network_LB_Public_NatRule_FGAdminPerm_fg2_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Name'))]",
     "network_LB_Public_NatRule_SSH_fg2_Name": "[concat(parameters('VM2Name'),'SSH')]",
@@ -122,15 +116,7 @@
     "network_LB_Public_FE2Id": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FE2Name'))]",
     "network_LB_Public_BEName": "[concat(parameters('VMName'),'publicLBBE')]",
     "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
-    "apiVer": "2015-06-15",
-    "vm1PublicIPName": "[concat(parameters('VMName'),'-publicIP')]",
-    "vm2PublicIPName": "[concat(parameters('VM2Name'),'-publicIP')]",
-    "vm1PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPName'))]",
-    "vm2PublicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPName'))]",
-    "vm1PublicDNS": "[concat(parameters('dnsName'),'a')]",
-    "vm2PublicDNS": "[concat(parameters('dnsName'),'b')]",
-    "publicIPAddress2Name": "[concat(parameters('publicIPAddressName'),'2')]",
-    "dns2Name": "[concat(parameters('dnsName'),'2')]"
+    "apiVer": "2015-06-15"
   },
   "resources": [
     {
@@ -142,18 +128,6 @@
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
           "domainNameLabel": "[parameters('dnsName')]"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddress2Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[variables('dns2Name')]"
         }
       }
     },
@@ -179,7 +153,7 @@
             "name": "[variables('network_LB_Public_FE2Name')]",
             "properties": {
               "publicIPAddress": {
-                "id": "[variables('publicIP2ID')]"
+                "id": "[parameters('publicIP2ID')]"
               }
             }
           }
@@ -215,18 +189,6 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "udp",
-              "frontendPort": 1701,
-              "backendPort": 1701,
-              "enableFloatingIP": false
-            }
-          },
-          {
             "name": "[variables('network_LB_Public_NatRule_SSH_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
@@ -239,18 +201,6 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_FGAdminInit_fg1_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FEId')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 21443,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          },
-          {
             "name": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Name')]",
             "properties": {
               "frontendIPConfiguration": {
@@ -258,7 +208,7 @@
               },
               "protocol": "tcp",
               "frontendPort": 9443,
-              "backendPort": 9443,
+              "backendPort": 443,
               "enableFloatingIP": false
             }
           },
@@ -287,18 +237,6 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_L2TP1701_fg2_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FE2Id')]"
-              },
-              "protocol": "udp",
-              "frontendPort": 1701,
-              "backendPort": 1701,
-              "enableFloatingIP": false
-            }
-          },
-          {
             "name": "[variables('network_LB_Public_NatRule_SSH_fg2_Name')]",
             "properties": {
               "frontendIPConfiguration": {
@@ -311,18 +249,6 @@
             }
           },
           {
-            "name": "[variables('network_LB_Public_NatRule_FGAdminInit_fg2_Name')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('network_LB_Public_FE2Id')]"
-              },
-              "protocol": "tcp",
-              "frontendPort": 21443,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          },
-          {
             "name": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Name')]",
             "properties": {
               "frontendIPConfiguration": {
@@ -330,7 +256,7 @@
               },
               "protocol": "tcp",
               "frontendPort": 9443,
-              "backendPort": 9443,
+              "backendPort": 443,
               "enableFloatingIP": false
             }
           }
@@ -349,7 +275,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 443,
-              "backendPort": 7443,
+              "backendPort": 1443,
               "idleTimeoutInMinutes": 15
             },
             "Name": "FE1LBRule443"
@@ -367,7 +293,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 443,
-              "backendPort": 8443,
+              "backendPort": 2443,
               "idleTimeoutInMinutes": 15
             },
             "Name": "FE2LBRule443"
@@ -403,7 +329,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 80,
-              "backendPort": 8080,
+              "backendPort": 2080,
               "idleTimeoutInMinutes": 15
             },
             "Name": "FE2LBRule80"
@@ -453,13 +379,7 @@
                   "id": "[variables('network_LB_Public_NatRule_IKE4500_fg1_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg1_Id')]"
-                },
-                {
                   "id": "[variables('network_LB_Public_NatRule_SSH_fg1_Id')]"
-                },
-                {
-                  "id": "[variables('network_LB_Public_NatRule_FGAdminInit_fg1_Id')]"
                 },
                 {
                   "id": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Id')]"
@@ -502,13 +422,7 @@
                   "id": "[variables('network_LB_Public_NatRule_IKE4500_fg2_Id')]"
                 },
                 {
-                  "id": "[variables('network_LB_Public_NatRule_L2TP1701_fg2_Id')]"
-                },
-                {
                   "id": "[variables('network_LB_Public_NatRule_SSH_fg2_Id')]"
-                },
-                {
-                  "id": "[variables('network_LB_Public_NatRule_FGAdminInit_fg2_Id')]"
                 },
                 {
                   "id": "[variables('network_LB_Public_NatRule_FGAdminPerm_fg2_Id')]"
@@ -522,13 +436,6 @@
     }
   ],
     "outputs": {
-        "publicIPID": {
-            "value": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
-            "type": "string"
-        },
-        "fqdn": {
-            "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName')),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).dnsSettings.fqdn]",
-            "type": "string"
-        }
+
     }
 }

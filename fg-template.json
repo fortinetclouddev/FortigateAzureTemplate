@@ -5,21 +5,6 @@
     "VirtualMachineSize": {
       "type": "string",
       "defaultValue": "Standard_D3_v2",
-      "allowedValues": [
-        "Standard_A3",
-        "Standard_A4",
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D3_v2",
-        "Standard_D4",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_DS4",
-        "Standard_DS13",
-        "Standard_DS14"
-      ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -60,6 +45,18 @@
         "description": "Identify if to use a public IP and if so whether it is new"
       }
     },
+    "publicIP2NewOrExistingOrNone": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing",
+        "none"
+      ],
+      "metadata": {
+        "description": "Whether to use a public IP and if so whether it is new"
+      }
+    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -90,12 +87,6 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "uniqueDnsPrefixForPublicIP": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
     "virtualnetName": {
       "type": "string",
       "metadata": {
@@ -108,8 +99,36 @@
         "description": "Name of Public IP address element."
       }
     },
+    "uniqueDnsPrefixForPublicIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+      }
+    },
     "publicIPAddressResourceGroup": {
       "type": "string",
+      "metadata": {
+        "description": "Resource group to which the Public IP belongs."
+      }
+    },
+    "publicIPAddress2Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address element."
+      }
+    },
+     "uniqueDnsPrefixForPublicIP2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Second Public IP used to access the Virtual Machine."
+      }
+    },
+    "publicIPAddress2ResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
       }
@@ -199,7 +218,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.4",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.5",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -260,6 +279,7 @@
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
+    "publicIP2SetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip2-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
   },
   "resources": [
@@ -434,6 +454,38 @@
     {
       "apiVersion": "2015-01-01",
       "type": "Microsoft.Resources/deployments",
+      "name": "SettingUpPublicIP2",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('publicIP2SetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publicIPAddress2ResourceGroup": {
+            "value": "[parameters('publicIPAddress2ResourceGroup')]"
+          },
+          "publicIPAddress2Name": {
+            "value": "[parameters('publicIPAddress2Name')]"
+          },
+          "publicIPAddressType": {
+            "value": "[parameters('publicIPAddressType')]"
+          },
+          "dns2Name": {
+            "value": "[parameters('uniqueDnsPrefixForPublicIP2')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "type": "Microsoft.Resources/deployments",
       "name": "SettingUpPublicIPandFollowing",
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
@@ -462,6 +514,9 @@
           },
           "publicIPAddressResourceGroup": {
             "value": "[parameters('publicIPAddressResourceGroup')]"
+          },
+          "publicIP2ID": {
+            "value": "[reference('Microsoft.Resources/deployments/SettingUpPublicIP2', '2015-01-01').outputs.public2IPID.value]"
           },
           "VMName": {
             "value": "[variables('vmName')]"

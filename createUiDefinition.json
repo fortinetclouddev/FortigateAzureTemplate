@@ -190,7 +190,7 @@
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "Static",
+                  "label": "Static/Reserved",
                   "value": "Static"
                 },
                 {
@@ -229,8 +229,8 @@
             "name": "fGateBIP1",
             "type": "Microsoft.Common.TextBox",
             "label": "Secondary FortiGate outside address",
-            "toolTip": "This is the IP address of the outside interface of the FortiGate virtual appliance.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+            "toolTip": "This is the IP address of the outside interface of the second FortiGate virtual appliance.",
+            "defaultValue": "",
             "constraints": {
               "required": true,
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
@@ -241,8 +241,8 @@
             "name": "fGateBIP2",
             "type": "Microsoft.Common.TextBox",
             "label": "Secondary FortiGate inside address",
-            "toolTip": "This is the IP address of the inside interface of the FortiGate virtual appliance.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
+            "toolTip": "This is the IP address of the inside interface of the second FortiGate virtual appliance.",
+            "defaultValue": "",
             "constraints": {
               "required": true,
               "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
