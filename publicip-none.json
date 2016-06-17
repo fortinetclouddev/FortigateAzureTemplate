@@ -32,6 +32,9 @@
         "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
       }
     },
+    "publicIP2ID": {
+      "type": "string"
+    },
     "VMName": {
       "type": "string",
       "metadata": {
