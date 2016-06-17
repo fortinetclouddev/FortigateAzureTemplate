@@ -91,7 +91,7 @@
     }
   },
   "variables": {
-    "publicIPID": "[resourceId(parameters('publicIPAddressResourceGroup'),'Microsoft.Network/publicIPAddresses'),parameters('publicIPAddressName'))]",
+    "publicIPID": "[resourceId(parameters('publicIPAddressResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
     "network_LB_Public_NatRule_IKE500_fg1_Name": "[concat(parameters('VMName'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg2_Name": "[concat(parameters('VM2Name'),'IKE500')]",
     "network_LB_Public_NatRule_IKE500_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_IKE500_fg1_Name'))]",
