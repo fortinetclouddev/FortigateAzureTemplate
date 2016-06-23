@@ -171,12 +171,14 @@
             "defaultValue": {
               "publicIpAddressName": "FortiGate-LB-PublicIP-A"
             },
+            "constraints": {
+              "required": {
+                "domainNameLabel": true
+              }
+            },
             "options": {
               "hideNone": true,
               "hideDomainNameLabel": false
-            },
-            "constraints": {
-              "required": true
             }
           },
           {
@@ -193,12 +195,14 @@
             "defaultValue": {
               "publicIpAddressName": "FortiGate-LB-PublicIP-B"
             },
+            "constraints": {
+              "required": {
+                "domainNameLabel": true
+              }
+            },
             "options": {
               "hideNone": true,
               "hideDomainNameLabel": false
-            },
-            "constraints": {
-              "required": true
             }
           },
           {

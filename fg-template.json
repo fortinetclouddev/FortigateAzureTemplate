@@ -281,7 +281,7 @@
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
-    "publicIP2SetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip2-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
+    "publicIP2SetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip2-',parameters('publicIP2NewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
   },
   "resources": [
@@ -490,7 +490,8 @@
       "type": "Microsoft.Resources/deployments",
       "name": "SettingUpPublicIPandFollowing",
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]",
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIP2')]"
       ],
       "properties": {
         "mode": "Incremental",
