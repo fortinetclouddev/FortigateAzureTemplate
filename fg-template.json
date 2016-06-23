@@ -714,7 +714,7 @@
           "osDisk": {
             "name": "[concat(variables('compute_VM_fg2_Name'),'-osDisk')]",
             "caching": "ReadWrite",
-            "createOptcion": "FromImage",
+            "createOption": "FromImage",
             "vhd": {
               "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg2_Name'), '-osdisk', '.vhd')]"
             }
