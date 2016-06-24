@@ -50,19 +50,24 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "routeTable1Name": {
-      "type": "string"
+    "subnet3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
     },
-    "routeTable2Name": {
-      "type": "string"
+    "subnet3AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
     }
   },
   "variables": {
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
-    "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
+    "subnet3ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet3Name'))]",
   },
   "resources": [
   ],
@@ -74,7 +79,10 @@
     "subnet2ID": {
       "value": "[variables('subnet2ID')]",
       "type": "string"
+    },
+    "subnet3ID": {
+      "value": "[variables('subnet3ID')]",
+      "type": "string"
     }
   }
 }
-
