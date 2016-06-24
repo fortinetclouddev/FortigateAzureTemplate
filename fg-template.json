@@ -106,28 +106,28 @@
         "description": "Management subnet name"
       }
     },
-    "FortiGateAOutsideIPAddress": {
+    "FortiGateAInternalIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the first FortiGate virtual appliance."
+        "description": "Static IP for internal subnet NIC of the first FortiGate virtual appliance."
       }
     },
-    "FortiGateADMZIPAddress": {
+    "FortiGateAManagementIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for DMZ network NIC of the first FortiGate virtual appliance."
+        "description": "Static IP for management subnet NIC of the first FortiGate virtual appliance."
       }
     },
-    "FortiGateBOutsideIPAddress": {
+    "FortiGateBInternalIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the second FortiGate virtual appliance."
+        "description": "Static IP for internal subnet NIC of the second FortiGate virtual appliance."
       }
     },
-    "FortiGateBDMZIPAddress": {
+    "FortiGateBManagementIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for DMZ network NIC of the second FortiGate virtual appliance."
+        "description": "Static IP for management subnet NIC of the second FortiGate virtual appliance."
       }
     },
     "artifactsBaseUrl": {
@@ -167,10 +167,10 @@
     "vmName": "[concat(parameters('FortiGateVMNamePrefix'),'-A')]",
     "vm2Name": "[concat(parameters('FortiGateVMNamePrefix'),'-B')]",
 
-    "FGProtectedAddress": "[parameters('FortiGateADMZIPAddress')]",
-    "FGPubFacingAddress": "[parameters('FortiGateAOutsideIPAddress')]",
-    "FGBProtectedAddress": "[parameters('FortiGateBDMZIPAddress')]",
-    "FGBPubFacingAddress": "[parameters('FortiGateBOutsideIPAddress')]",
+    "FGProtectedAddress": "[parameters('FortiGateAManagementIPAddress')]",
+    "FGPubFacingAddress": "[parameters('FortiGateAInternalIPAddress')]",
+    "FGBProtectedAddress": "[parameters('FortiGateBManagementIPAddress')]",
+    "FGBPubFacingAddress": "[parameters('FortiGateBInternalIPAddress')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[variables('vmName')]",
