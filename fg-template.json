@@ -58,24 +58,13 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
-    "vnetNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
-      }
-    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
     },
-    "virtualNetworkExistingResourceGroup": {
+    "virtualNetworkResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -86,7 +75,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Virtual Network Address prefix"
+        "description": "Virtual Network Address space in CIDR notation (ex. 10.1.0.0/16)"
       }
     },
     "OutsideSubnetPrefix": {
@@ -210,8 +199,6 @@
     "FGProtectedAddress": "[parameters('FortiGateADMZIPAddress')]",
     "FGPubFacingAddress": "[parameters('FortiGateAOutsideIPAddress')]",
     "FGManagementAddress": "[parameters('FortiGateAManagementIPAddress')]",
-    "routeTable1BName": "[concat(variables('vm2Name'),'PublicFacingSubnetRoutes')]",
-    "routeTable2BName": "[concat(variables('vm2Name'),'ProtectedSubnetRoutes')]",
     "FGBProtectedAddress": "[parameters('FortiGateBDMZIPAddress')]",
     "FGBPubFacingAddress": "[parameters('FortiGateBOutsideIPAddress')]",
     "FGBManagementAddress": "[parameters('FortiGateBManagementIPAddress')]",
@@ -265,7 +252,7 @@
           "storageAccountName": {
             "value": "[parameters('StorageAccountName')]"
           },
-          "storageAccountResourceGroup": {
+          "storageAccountExistingRG": {
             "value": "[parameters('storageAccountResourceGroup')]"
           }
         }
@@ -275,10 +262,6 @@
       "name": "SettingUpVirtualNetwork",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
-      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -314,7 +297,7 @@
             "value": "[parameters('ManagementSubnetPrefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkExistingResourceGroup')]"
+            "value": "[parameters('virtualNetworkResourceGroup')]"
           }
         }
       }
@@ -554,8 +537,7 @@
         "count": "[variables('scaleNumber')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
-        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg22_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg23_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
