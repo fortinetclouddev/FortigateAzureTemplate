@@ -85,7 +85,7 @@
         "description": "DMZ subnet 2 (ie. second Web server subnet) CIDR notation (ex. 10.1.2.0/24)"
       }
     },
-    "OutsideSubnetName": {
+    "DMZSubnet2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -120,16 +120,16 @@
         "description": "Management subnet name (ie. first Web server subnet)"
       }
     },
-    "FortiGateAOutsideIPAddress": {
+    "FortiGateADMZ2IPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the first FortiGate virtual appliance."
+        "description": "Static IP for DMZ 2 network NIC of the first FortiGate virtual appliance."
       }
     },
-    "FortiGateADMZIPAddress": {
+    "FortiGateAInternalIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for DMZ network NIC of the first FortiGate virtual appliance."
+        "description": "Static IP for internal network NIC of the first FortiGate virtual appliance."
       }
     },
     "FortiGateAManagementIPAddress": {
@@ -138,16 +138,16 @@
         "description": "Static IP for Management network NIC of the first FortiGate virtual appliance."
       }
     },
-    "FortiGateBOutsideIPAddress": {
+    "FortiGateBDMZ2IPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the second FortiGate virtual appliance."
+        "description": "Static IP for DMZ 2 network NIC of the second FortiGate virtual appliance."
       }
     },
-    "FortiGateBDMZIPAddress": {
+    "FortiGateBInternalIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for DMZ network NIC of the second FortiGate virtual appliance."
+        "description": "Static IP for internal network NIC of the second FortiGate virtual appliance."
       }
     },
     "FortiGateBManagementIPAddress": {
@@ -158,7 +158,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/WMPublic3NIC",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/WMTier2",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -180,11 +180,11 @@
     "vmSize": "[parameters('VirtualMachineSize')]",
 
     "VNetName": "[parameters('virtualNetworkName')]",
-    "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
+    "DMZSubnet2Name": "[parameters('DMZSubnet2Name')]",
     "InternalSubnetName": "[parameters('InternalSubnetName')]",
     "ManagementSubnetName": "[parameters('ManagementSubnetName')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('OutsideSubnetName'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('DMZSubnet2Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('InternalSubnetName'))]",
     "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', variables('ManagementSubnetName'))]",
 
@@ -196,11 +196,11 @@
     "vmName": "[concat(parameters('FortiGateVMNamePrefix'),'-A')]",
     "vm2Name": "[concat(parameters('FortiGateVMNamePrefix'),'-B')]",
 
-    "FGProtectedAddress": "[parameters('FortiGateADMZIPAddress')]",
-    "FGPubFacingAddress": "[parameters('FortiGateAOutsideIPAddress')]",
+    "FGProtectedAddress": "[parameters('FortiGateAInternalIPAddress')]",
+    "FGPubFacingAddress": "[parameters('FortiGateADMZ2IPAddress')]",
     "FGManagementAddress": "[parameters('FortiGateAManagementIPAddress')]",
-    "FGBProtectedAddress": "[parameters('FortiGateBDMZIPAddress')]",
-    "FGBPubFacingAddress": "[parameters('FortiGateBOutsideIPAddress')]",
+    "FGBProtectedAddress": "[parameters('FortiGateBInternalIPAddress')]",
+    "FGBPubFacingAddress": "[parameters('FortiGateBDMZ2IPAddress')]",
     "FGBManagementAddress": "[parameters('FortiGateBManagementIPAddress')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
@@ -279,7 +279,7 @@
             "value": "[parameters('virtualNetworkAddressPrefix')]"
           },
           "subnet1Name": {
-            "value": "[parameters('OutsideSubnetName')]"
+            "value": "[parameters('DMZSubnet2Name')]"
           },
           "subnet1AddressPrefix": {
             "value": "[parameters('DMZSubnet2Prefix')]"
@@ -461,6 +461,8 @@
         "count": "[variables('scaleNumber')]"
       },
       "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg11_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg13_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
@@ -537,6 +539,8 @@
         "count": "[variables('scaleNumber')]"
       },
       "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg21_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg22_Name'))]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg23_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
