@@ -102,7 +102,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "privateIPAddress": "[parameters('FWAPubFacingAddress')]",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               }
@@ -124,7 +124,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "privateIPAddress": "[parameters('FWBPubFacingAddress')]",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               }
