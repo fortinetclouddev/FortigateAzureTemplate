@@ -37,24 +37,11 @@
       "metadata": {
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
-    },
-    "subnet2Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet2AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
     }
   },
   "variables": {
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
-    "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
     "apiVer": "2015-06-15"
   },
   "resources": [
@@ -75,12 +62,6 @@
             "properties": {
               "addressPrefix": "[parameters('subnet1AddressPrefix')]"
             }
-          },
-          {
-            "name": "[parameters('Subnet2Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet2AddressPrefix')]"
-            }
           }
         ]
       }
@@ -89,10 +70,6 @@
   "outputs": {
     "subnet1ID": {
       "value": "[variables('subnet1ID')]",
-      "type": "string"
-    },
-    "subnet2ID": {
-      "value": "[variables('subnet2ID')]",
       "type": "string"
     }
   }

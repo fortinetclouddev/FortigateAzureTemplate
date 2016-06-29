@@ -147,30 +147,10 @@
         "description": "Subnet 1 Name"
       }
     },
-    "Subnet2Prefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 2 Prefix"
-      }
-    },
-    "Subnet2Name": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 2 Name"
-      }
-    },
     "fortiWeb-A-IP1": {
       "type": "string",
       "metadata": {
         "description": "Static IP for public facing NIC of the first FortiWeb virtual appliance."
-      }
-    },
-    "fortiWeb-A-IP2": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for protected network facing NIC of the first FortiWeb virtual appliance."
       }
     },
     "fortiWeb-B-IP1": {
@@ -179,15 +159,9 @@
         "description": "Static IP for public facing NIC of the second FortiWeb virtual appliance."
       }
     },
-    "fortiWeb-B-IP2": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for protected network facing NIC of the second FortiWeb virtual appliance."
-      }
-    },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWebHA5.1.5",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWebHASingleNIC",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -207,14 +181,11 @@
 
     "VNetName": "[parameters('virtualnetName')]",
     "Subnet1Name": "[parameters('Subnet1Name')]",
-    "Subnet2Name": "[parameters('Subnet2Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
-    "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
@@ -223,12 +194,8 @@
 
     "network_NIC_fg11_Name": "[concat(variables('compute_VM_fw1_Name'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(variables('compute_VM_fw1_Name'),'Nic1')]",
-    "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
     "network_NIC_fg21_Name": "[concat(variables('compute_VM_fw2_Name'),'Nic0')]",
     "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
-    "network_NIC_fg22_Name": "[concat(variables('compute_VM_fw2_Name'),'Nic1')]",
-    "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -299,12 +266,6 @@
           "subnet1AddressPrefix": {
             "value": "[parameters('Subnet1Prefix')]"
           },
-          "subnet2Name": {
-            "value": "[parameters('Subnet2Name')]"
-          },
-          "subnet2AddressPrefix": {
-            "value": "[parameters('Subnet2Prefix')]"
-          },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
           }
@@ -371,54 +332,6 @@
       }
     },
     {
-      "apiVersion": "[variables('apiVer')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg12_Name')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('fortiWeb-A-IP2')]",
-              "subnet": {
-                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
-              }
-            }
-          }
-        ],
-        "enableIPForwarding": true
-      }
-    },
-    {
-      "apiVersion": "[variables('apiVer')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg22_Name')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('fortiWeb-B-IP2')]",
-              "subnet": {
-                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
-              }
-            }
-          }
-        ],
-        "enableIPForwarding": true
-      }
-    },
-    {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fw1_Name')]",
       "apiVersion": "[variables('apiVer')]",
@@ -430,7 +343,6 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
-        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
@@ -485,12 +397,6 @@
                 "primary": true
               },
               "id": "[variables('network_NIC_fg11_Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('network_NIC_fg12_Id')]"
             }
           ]
         }
@@ -508,7 +414,6 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
-        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg22_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
@@ -563,12 +468,6 @@
                 "primary": true
               },
               "id": "[variables('network_NIC_fg21_Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('network_NIC_fg22_Id')]"
             }
           ]
         }
@@ -576,4 +475,3 @@
     }
   ]
   }
-
