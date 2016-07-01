@@ -126,7 +126,7 @@
             "imageReference": {
               "publisher": "Fortinet",
               "offer": "fortinet_fortiweb-vm_v5",
-              "sku": "fortinet_fg-vm"
+              "sku": "fortinet_fw-vm"
             },
             "count": "1"
           },
