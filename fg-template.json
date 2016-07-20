@@ -650,7 +650,7 @@
           },
           "dataDisks": [
             {
-              "name": "[concat(parameters('vmName'),'-dataDisk')]",
+              "name": "[concat(variables('compute_VM_fg1_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
@@ -732,7 +732,7 @@
           },
           "dataDisks": [
             {
-              "name": "[concat(parameters('vmName'),'-dataDisk')]",
+              "name": "[concat(variables('compute_VM_fg2_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
