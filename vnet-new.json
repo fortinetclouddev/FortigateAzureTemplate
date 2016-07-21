@@ -159,24 +159,6 @@
                 "id": "[variables('routeTable2Id')]"
               }
             }
-          },
-          {
-            "name": "[parameters('Subnet6Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet6AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet7Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet7AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
           }
         ]
       }
