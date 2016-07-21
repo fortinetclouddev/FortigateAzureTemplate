@@ -50,66 +50,6 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "subnet3Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet3AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
-    "subnet4Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet4AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
-    "subnet5Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet5AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
-    "subnet6Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet6AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
-    "subnet7Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet7AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
     "routeTable1Name": {
       "type": "string"
     },
@@ -151,51 +91,6 @@
             "name": "[parameters('Subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet3Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet3AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet4Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet4AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet5Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet5AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet6Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet6AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('Subnet7Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet7AddressPrefix')]",
               "routeTable": {
                 "id": "[variables('routeTable2Id')]"
               }
