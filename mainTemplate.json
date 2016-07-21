@@ -692,7 +692,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGBProtectedAddress')]",
               "subnet": {
-                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet3ID.value]"
               }
             }
           }
