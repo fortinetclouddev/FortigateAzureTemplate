@@ -161,14 +161,14 @@
     },
     "virtualNetworkAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.100.0.0/16",
+      "defaultValue": "10.10.0.0/16",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
     },
     "Subnet1Prefix": {
       "type": "string",
-      "defaultValue": "10.100.0.0/24",
+      "defaultValue": "10.10.0.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
@@ -182,119 +182,91 @@
     },
     "Subnet2Prefix": {
       "type": "string",
-      "defaultValue": "10.100.10.0/24",
+      "defaultValue": "10.10.20.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
     "Subnet2Name": {
       "type": "string",
-      "defaultValue": "ProdDMZSubA",
+      "defaultValue": "MgmtPrivateSubA",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "Subnet3Prefix": {
       "type": "string",
-      "defaultValue": "10.100.20.0/24",
+      "defaultValue": "10.10.30.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
     "Subnet3Name": {
       "type": "string",
-      "defaultValue": "ProdDMZSubB",
+      "defaultValue": "MgmtPrivateSubB",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "Subnet4Prefix": {
       "type": "string",
-      "defaultValue": "10.100.192.0/21",
+      "defaultValue": "10.10.1.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
     "Subnet4Name": {
       "type": "string",
-      "defaultValue": "ProdDBSubA",
+      "defaultValue": "MgmtDMZSubA",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "Subnet5Prefix": {
       "type": "string",
-      "defaultValue": "10.100.208.0/21",
+      "defaultValue": "10.10.2.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
     "Subnet5Name": {
       "type": "string",
-      "defaultValue": "ProdDBSubB",
-      "metadata": {
-        "description": "Subnet 2 Name"
-      }
-    },
-    "Subnet6Prefix": {
-      "type": "string",
-      "defaultValue": "10.100.96.0/21",
-      "metadata": {
-        "description": "Subnet 2 Prefix"
-      }
-    },
-    "Subnet6Name": {
-      "type": "string",
-      "defaultValue": "ProdAppSubA",
-      "metadata": {
-        "description": "Subnet 2 Name"
-      }
-    },
-    "Subnet7Prefix": {
-      "type": "string",
-      "defaultValue": "10.100.112.0/21",
-      "metadata": {
-        "description": "Subnet 2 Prefix"
-      }
-    },
-    "Subnet7Name": {
-      "type": "string",
-      "defaultValue": "ProdAppSubB",
+      "defaultValue": "MgmtDMZSubB",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "fortiGateIP1": {
       "type": "string",
-      "defaultValue": "10.100.0.10",
+      "defaultValue": "10.10.0.10",
       "metadata": {
         "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
       }
     },
     "fortiGateIP2": {
       "type": "string",
-      "defaultValue": "10.100.10.10",
+      "defaultValue": "10.10.20.10",
       "metadata": {
         "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
       }
     },
     "fortiGateBIP1": {
       "type": "string",
-      "defaultValue": "10.100.0.20",
+      "defaultValue": "10.10.0.20",
       "metadata": {
         "description": "Static IP for public facing NIC of the second FortiGate virtual appliance."
       }
     },
     "fortiGateBIP2": {
       "type": "string",
-      "defaultValue": "10.100.20.20",
+      "defaultValue": "10.10.30.20",
       "metadata": {
         "description": "Static IP for protected network facing NIC of the second FortiGate virtual appliance."
       }
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/sbprodvnet",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/sbmgmtvnet",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -532,18 +504,6 @@
           },
           "subnet5AddressPrefix": {
             "value": "[parameters('Subnet5Prefix')]"
-          },
-          "subnet6Name": {
-            "value": "[parameters('Subnet6Name')]"
-          },
-          "subnet6AddressPrefix": {
-            "value": "[parameters('Subnet6Prefix')]"
-          },
-          "subnet7Name": {
-            "value": "[parameters('Subnet7Name')]"
-          },
-          "subnet7AddressPrefix": {
-            "value": "[parameters('Subnet7Prefix')]"
           },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
