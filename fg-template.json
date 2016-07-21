@@ -161,66 +161,140 @@
     },
     "virtualNetworkAddressPrefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.100.0.0/16",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
     },
     "Subnet1Prefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.100.0.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
     "Subnet1Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "Outside",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
     "Subnet2Prefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.100.10.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
     "Subnet2Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "ProdDMZSubA",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "Subnet3Prefix": {
+      "type": "string",
+      "defaultValue": "10.100.20.0/24",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet3Name": {
+      "type": "string",
+      "defaultValue": "ProdDMZSubB",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "Subnet4Prefix": {
+      "type": "string",
+      "defaultValue": "10.100.192.0/21",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet4Name": {
+      "type": "string",
+      "defaultValue": "ProdDBSubA",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "Subnet5Prefix": {
+      "type": "string",
+      "defaultValue": "10.100.208.0/21",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet5Name": {
+      "type": "string",
+      "defaultValue": "ProdDBSubB",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "Subnet6Prefix": {
+      "type": "string",
+      "defaultValue": "10.100.96.0/21",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet6Name": {
+      "type": "string",
+      "defaultValue": "ProdAppSubA",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "Subnet7Prefix": {
+      "type": "string",
+      "defaultValue": "10.100.112.0/21",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "Subnet7Name": {
+      "type": "string",
+      "defaultValue": "ProdAppSubB",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "fortiGateIP1": {
       "type": "string",
+      "defaultValue": "10.100.0.10",
       "metadata": {
         "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
       }
     },
     "fortiGateIP2": {
       "type": "string",
+      "defaultValue": "10.100.10.10",
       "metadata": {
         "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
       }
     },
     "fortiGateBIP1": {
       "type": "string",
+      "defaultValue": "10.100.0.20",
       "metadata": {
         "description": "Static IP for public facing NIC of the second FortiGate virtual appliance."
       }
     },
     "fortiGateBIP2": {
       "type": "string",
+      "defaultValue": "10.100.20.20",
       "metadata": {
         "description": "Static IP for protected network facing NIC of the second FortiGate virtual appliance."
       }
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.6",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/StarbuckProdVnet",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -440,6 +514,36 @@
           },
           "subnet2AddressPrefix": {
             "value": "[parameters('Subnet2Prefix')]"
+          },
+          "Subnet3Name": {
+            "value": "[parameters('Subnet3Name')]"
+          },
+          "subnet3AddressPrefix": {
+            "value": "[parameters('Subnet3Prefix')]"
+          },
+          "subnet4Name": {
+            "value": "[parameters('Subnet4Name')]"
+          },
+          "subnet4AddressPrefix": {
+            "value": "[parameters('Subnet4Prefix')]"
+          },
+          "subnet5Name": {
+            "value": "[parameters('Subnet5Name')]"
+          },
+          "subnet5AddressPrefix": {
+            "value": "[parameters('Subnet5Prefix')]"
+          },
+          "subnet6Name": {
+            "value": "[parameters('Subnet6Name')]"
+          },
+          "subnet6AddressPrefix": {
+            "value": "[parameters('Subnet6Prefix')]"
+          },
+          "subnet7Name": {
+            "value": "[parameters('Subnet7Name')]"
+          },
+          "subnet7AddressPrefix": {
+            "value": "[parameters('Subnet7Prefix')]"
           },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
