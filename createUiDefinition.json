@@ -81,7 +81,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29",
-                  "minAddressCount": 12,
+                  "minAddressCount": 2,
                   "requireContiguousAddresses": false
                 }
               },
@@ -93,7 +93,7 @@
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29",
-                  "minAddressCount": 12,
+                  "minAddressCount": 2,
                   "requireContiguousAddresses": false
                 }
               }
@@ -105,7 +105,7 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_A3",
+              "Standard_D3",
               "Standard_A4",
               "Standard_D4"
             ],
@@ -152,7 +152,7 @@
         "name": "IPConfig",
         "label": "FortiWeb IP Address Assignments",
         "subLabel": {
-          "preValidation": "Configure the Public IP and the IP Addresses for each NIC on the FortiWeb",
+          "preValidation": "Configure the Public IP Address",
           "postValidation": "Done"
         },
         "bladeTitle": "IP Assignment",
@@ -201,30 +201,6 @@
               ],
               "required": true
             }
-          },
-          {
-            "name": "fGateIP1",
-            "type": "Microsoft.Common.TextBox",
-            "label": "FortiWeb Outside Address",
-            "toolTip": "This is the IP address of the outside interface of the FortiWeb virtual appliance.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
-            "constraints": {
-              "required": true,
-              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
-              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
-            }
-          },
-          {
-            "name": "fGateIP2",
-            "type": "Microsoft.Common.TextBox",
-            "label": "FortiWeb Inside Address",
-            "toolTip": "This is the IP address of the inside interface of the FortiWeb virtual appliance.",
-            "defaultValue": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
-            "constraints": {
-              "required": true,
-              "regex": "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
-              "validationMessage": "Must be a valid and available IPv4 address on the second subnet configured in the previous step."
-            }
           }
         ]
       }
@@ -239,8 +215,8 @@
       "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.domainNameLabel]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
       "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
-      "fortiWebIP1": "[steps('IPConfig').fGateIP1]",
-      "fortiWebIP2": "[steps('IPConfig').fGateIP2]",
+      "fortiWebIP1": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
+      "fortiWebIP2": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
