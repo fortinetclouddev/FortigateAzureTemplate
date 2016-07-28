@@ -45,6 +45,18 @@
         "description": "Identify if to use a public IP and if so whether it is new"
       }
     },
+    "publicIP2NewOrExistingOrNone": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing",
+        "none"
+      ],
+      "metadata": {
+        "description": "Whether to use a public IP and if so whether it is new"
+      }
+    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -75,17 +87,17 @@
         "description": "Password for the Virtual Machine."
       }
     },
+    "virtualnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Azure virtual network."
+      }
+    },
     "uniqueDnsPrefixForPublicIP": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
-    "virtualnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the Azure virtual network."
       }
     },
     "publicIPAddressName": {
@@ -96,6 +108,27 @@
       }
     },
     "publicIPAddressResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource group to which the Public IP belongs."
+      }
+    },
+    "publicIPAddress2Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address element."
+      }
+    },
+     "uniqueDnsPrefixForPublicIP2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Second Public IP used to access the Virtual Machine."
+      }
+    },
+    "publicIPAddress2ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
