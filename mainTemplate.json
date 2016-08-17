@@ -206,18 +206,6 @@
         "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
       }
     },
-    "fortiGateBIP1": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for public facing NIC of the second FortiGate virtual appliance."
-      }
-    },
-    "fortiGateBIP2": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for protected network facing NIC of the second FortiGate virtual appliance."
-      }
-    },
     "artifactsBaseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.6",
@@ -261,8 +249,6 @@
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
     "routeTable1BName": "[concat(variables('vm2Name'),'PublicFacingSubnetRoutes')]",
     "routeTable2BName": "[concat(variables('vm2Name'),'ProtectedSubnetRoutes')]",
-    "FGBProtectedAddress": "[parameters('fortiGateBIP2')]",
-    "FGBPubFacingAddress": "[parameters('fortiGateBIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[variables('vmName')]",
@@ -282,7 +268,9 @@
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "publicIP2SetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip2-',parameters('publicIP2NewOrExistingOrNone'),'.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
+    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
+    "FortiGateBIP1URL": "[concat(parameters('artifactsBaseUrl'),'/','GetFortiGateBIP1.json')]",
+    "FortiGateBIP2URL": "[concat(parameters('artifactsBaseUrl'),'/','GetFortiGateBIP2.json')]",
   },
   "resources": [
     {
@@ -362,6 +350,40 @@
       }
     },
     {
+      "name": "GetFortiGateBIP1",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('FortiGateBIP1URL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "FortiGateIP1": {
+            "value": "[parameters('FortiGateIP1')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "GetFortiGateBIP2",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('FortiGateBIP2URL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "FortiGateIP1": {
+            "value": "[parameters('FortiGateIP2')]"
+          }
+        }
+      }
+    },
+    {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable1BName')]",
       "apiVersion": "[variables('apiVer')]",
@@ -373,7 +395,7 @@
             "properties": {
               "addressPrefix": "[variables('subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGBPubFacingAddress')]"
+              "nextHopIpAddress": "[reference('Microsoft.Resources/deployments/GetFortiGateBIP1', '2015-01-01').outputs.FortiGateBIP1.value]"
             }
           }
         ]
@@ -391,7 +413,7 @@
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGBProtectedAddress')]"
+              "nextHopIpAddress": "[reference('Microsoft.Resources/deployments/GetFortiGateBIP2', '2015-01-01').outputs.FortiGateBIP2.value]"
             }
           },
           {
@@ -399,7 +421,7 @@
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('FGBProtectedAddress')]"
+              "nextHopIPAddress": "[reference('Microsoft.Resources/deployments/GetFortiGateBIP2', '2015-01-01').outputs.FortiGateBIP2.value]"
             }
           }
         ]
@@ -534,7 +556,7 @@
             "value": "[variables('FGPubFacingAddress')]"
           },
           "FGBPubFacingAddress": {
-            "value": "[variables('FGBPubFacingAddress')]"
+            "value": "[reference('Microsoft.Resources/deployments/GetFortiGateBIP1', '2015-01-01').outputs.FortiGateBIP1.value]"
           },
           "subnet1Ref": {
             "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
@@ -586,7 +608,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('FGBProtectedAddress')]",
+              "privateIPAddress": "[reference('Microsoft.Resources/deployments/GetFortiGateBIP2', '2015-01-01').outputs.FortiGateBIP2.value]",
               "subnet": {
                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
