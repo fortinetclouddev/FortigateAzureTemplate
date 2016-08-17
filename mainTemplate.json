@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+  "contentVersion": "1.0.0.1",
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
@@ -208,7 +208,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.6",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/HA5.3.9",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -270,7 +270,7 @@
     "publicIP2SetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip2-',parameters('publicIP2NewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
     "FortiGateBIP1URL": "[concat(parameters('artifactsBaseUrl'),'/','GetFortiGateBIP1.json')]",
-    "FortiGateBIP2URL": "[concat(parameters('artifactsBaseUrl'),'/','GetFortiGateBIP2.json')]",
+    "FortiGateBIP2URL": "[concat(parameters('artifactsBaseUrl'),'/','GetFortiGateBIP2.json')]"
   },
   "resources": [
     {
