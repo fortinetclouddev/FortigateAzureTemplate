@@ -377,7 +377,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "FortiGateIP1": {
+          "FortiGateIP2": {
             "value": "[parameters('FortiGateIP2')]"
           }
         }
