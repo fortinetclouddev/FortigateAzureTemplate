@@ -243,8 +243,6 @@
       "publicIPAddress2ResourceGroup": "[steps('IPConfig').publicIpAddress2.resourceGroup]",
       "fortiGateIP1": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
       "fortiGateIP2": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
-      "fortiGateBIP1": "[add(1, (steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress))]",
-      "fortiGateBIP2": "[add(1, (steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress))]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
