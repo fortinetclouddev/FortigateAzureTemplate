@@ -32,22 +32,40 @@
         "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
       }
     },
-    "VMName": {
+    "VMNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "FortiGate name"
+        "description": "FortiWebs name prefix"
+      }
+    },
+    "VM1Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiWeb A name"
+      }
+    },
+    "VM2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "FortiWeb B name"
       }
     },
     "VNetName": {
       "type": "string",
       "metadata": {
-        "description": "FortiGate name"
+        "description": "Vnet name"
       }
     },
-    "FGPubFacingAddress": {
+    "FWAPubFacingAddress": {
       "type": "string",
       "metadata": {
-        "description": "Outside address of FortiGate"
+        "description": "Outside address of FortiWeb"
+      }
+    },
+    "FWBPubFacingAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "Outside address of FortiWeb"
       }
     },
     "subnet1Ref": {
@@ -57,6 +75,12 @@
       }
     },
     "network_NIC_fg11_Name": {
+      "type": "string",
+      "metadata": {
+		  "description": "NIC0 interface name"
+      }
+    },
+    "network_NIC_fg21_Name": {
       "type": "string",
       "metadata": {
 		  "description": "NIC0 interface name"
@@ -78,15 +102,33 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "privateIPAddress": "[parameters('FWAPubFacingAddress')]",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               }
             }
           }
-        ],
-        "enableIPForwarding": true
-
+        ]
+      }
+    },
+     {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('network_NIC_fg21_Name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('FWBPubFacingAddress')]",
+              "subnet": {
+                "id": "[parameters('subnet1Ref')]"
+              }
+            }
+          }
+        ]
       }
     }
   ],
