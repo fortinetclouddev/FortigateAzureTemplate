@@ -33,29 +33,6 @@
         "description": "Identifies whether to use new or existing Storage Account"
       }
     },
-    "publicIPNewOrExistingOrNone": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing",
-        "none"
-      ],
-      "metadata": {
-        "description": "Identify if to use a public IP and if so whether it is new"
-      }
-    },
-    "vnetNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
-      }
-    },
     "storageAccountExistingRG": {
       "type": "string",
       "defaultValue": "",
@@ -75,42 +52,10 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "uniqueDnsPrefixForPublicIP": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
     "virtualnetName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Azure virtual network."
-      }
-    },
-    "publicIPAddressName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Name of Public IP address element."
-      }
-    },
-    "publicIPAddressResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource group to which the Public IP belongs."
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Dynamic",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
       }
     },
     "vmName": {
@@ -126,32 +71,11 @@
         "description": "Identifies whether to use new or existing Storage Account"
       }
     },
-    "virtualNetworkAddressPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Virtual Network Address prefix"
-      }
-    },
-    "Subnet1Prefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 1 Prefix"
-      }
-    },
     "Subnet1Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Name"
-      }
-    },
-    "Subnet2Prefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 2 Prefix"
       }
     },
     "Subnet2Name": {
@@ -173,9 +97,15 @@
         "description": "Static IP for protected network facing NIC of the FortiWeb virtual appliance."
       }
     },
+    "availabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Availability Set utilized by existing FortiWeb virtual appliance."
+      }
+    },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWeb5.1.8",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/FortiWebSingletoHA",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -218,20 +148,14 @@
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
-    "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
+    "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-','none.json')]",
+    "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-existing.json')]",
 
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmName'),'AvailSet')]",
+    "compute_AvailabilitySet_FG_Name": "[parameters('availabilitySetName')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
   "resources": [
-    {
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "location": "[parameters('location')]"
-    },
     {
       "name": "SettingUpStorageAccount",
       "type": "Microsoft.Resources/deployments",
