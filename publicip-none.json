@@ -8,30 +8,6 @@
         "description": "Location"
       }
     },
-    "publicIPAddressResourceGroup": {
-      "type": "string",
-      "metadata": {
-        "description": "Resource Group"
-      }
-    },
-    "publicIPAddressName": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP Address Name"
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP Address Type (e.g. Static or Dynamic)"
-      }
-    },
-    "dnsName": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
-      }
-    },
     "VMName": {
       "type": "string",
       "metadata": {

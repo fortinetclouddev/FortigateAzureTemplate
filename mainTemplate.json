@@ -12,7 +12,7 @@
     "StorageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+        "description": "Unique Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
     "StorageAccountType": {
@@ -130,9 +130,6 @@
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
 
-    "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
-    "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
-    "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
     "FGProtectedAddress": "[parameters('fortiWebIP2')]",
     "FGPubFacingAddress": "[parameters('fortiWebIP1')]",
@@ -199,20 +196,11 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "vnetAddressPrefix": {
-            "value": "[parameters('virtualNetworkAddressPrefix')]"
-          },
           "subnet1Name": {
             "value": "[parameters('Subnet1Name')]"
           },
-          "subnet1AddressPrefix": {
-            "value": "[parameters('Subnet1Prefix')]"
-          },
           "subnet2Name": {
             "value": "[parameters('Subnet2Name')]"
-          },
-          "subnet2AddressPrefix": {
-            "value": "[parameters('Subnet2Prefix')]"
           },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
@@ -236,18 +224,6 @@
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
-          },
-          "publicIPAddressName": {
-            "value": "[parameters('publicIPAddressName')]"
-          },
-          "publicIPAddressType": {
-            "value": "[parameters('publicIPAddressType')]"
-          },
-          "dnsName": {
-            "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
-          },
-          "publicIPAddressResourceGroup": {
-            "value": "[parameters('publicIPAddressResourceGroup')]"
           },
           "VMName": {
             "value": "[parameters('vmName')]"
