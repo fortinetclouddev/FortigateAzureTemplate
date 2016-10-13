@@ -434,11 +434,6 @@
       "name": "[variables('compute_VM_fg1_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
-      "plan": {
-        "name": "fortinet_fg-vm",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
-      },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
@@ -464,6 +459,7 @@
         },
         "storageProfile": {
           "osDisk": {
+            "osType": "Linux",
             "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
