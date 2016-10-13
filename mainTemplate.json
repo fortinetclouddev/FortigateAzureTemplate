@@ -24,13 +24,12 @@
     },
     "storageAccountNewOrExisting": {
       "type": "string",
-      "defaultValue": "new",
+      "defaultValue": "existing",
       "allowedValues": [
-        "new",
         "existing"
       ],
       "metadata": {
-        "description": "Identifies whether to use new or existing Storage Account"
+        "description": "To deploy from a local image, you must use the storage account which hosts the image."
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -171,6 +170,12 @@
       "type": "string",
       "metadata": {
         "description": "Static IP for dmz network facing NIC of the FortiGate virtual appliance."
+      }
+    },
+    "imagename":{
+      "type": "string",
+      "metadata": {
+        "description": "Name of local FortiGate image hosted in an images container in your existing storage account."
       }
     },
     "artifactsBaseUrl": {
@@ -458,16 +463,13 @@
           }
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
-            "sku": "fortinet_fg-vm",
-            "version": "latest"
-          },
           "osDisk": {
             "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
+            "image": {
+              "uri": "[concat('http://',parameters('StorageAccountName'),'blob.core.cloudapi.de/images/',parameters('imagename'))]"
+            },
             "vhd": {
               "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
             }
