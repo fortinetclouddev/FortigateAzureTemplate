@@ -464,7 +464,7 @@
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "image": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'blob.core.cloudapi.de/images/',parameters('imagename'))]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.cloudapi.de/images/',parameters('imagename'))]"
             },
             "vhd": {
               "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.cloudapi.de/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
