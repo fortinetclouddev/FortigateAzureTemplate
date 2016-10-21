@@ -14,9 +14,9 @@ Once the new load balancer rules are in place with the floating IP, the load bal
     edit "AzurePIPexampleVIP"
       set extip 13.91.41.80  # <-- this should be the public IP address assigned to the load balancer
       set extintf "any"
-      set porforward enable
-      set mappedip "10.40.121.68"
-      set export 80
+      set portforward enable
+      set mappedip "10.40.121.68" # <-- this should be the IP address of your target VM or service
+      set extport 80
       set mappedport 80
     next
   end
@@ -47,12 +47,12 @@ Finally, enable session synchronization:
 
   config system session-sync
     edit 0
-        set peerip 10.40.121.4
+        set peerip 10.40.121.4 # <-- for FortiGate A, this should be the IP of FortiGate B
         set syncvd "root"
     next
   end
 
-Note: If this is deployed to a single Virtual Network, for the return traffic to change in the event of the failure of FortiGate A, you will need a method to programatically modify the Azure User Defined Routing.  See the separate file titled HA-Monitoring for an example of this.
+Note: If this is deployed to a single Virtual Network, for the return traffic to change in the event of the failure of FortiGate A, you will need a method to programatically modify the Azure User Defined Routing.  See the separate file titled HA-Monitoring for an example of this.  Also, don't forget to replicate this config on both FortiGates.
 
 On the other hand, if you are deploying to multiple virtual networks (one for each security zone) with IPSec tunnels between those other VNets and each FortiGate, and using BGP to advertise routes, then you don't need to worry about user defined routing...
 See here:
