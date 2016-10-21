@@ -38,12 +38,21 @@ To enable the PIP, create a firewall policy to match it:
 
 Finally, enable session synchronization:
 
-  config system ha
-    set session-pickup enable
-    set session-pickup-connectionless enable
-    set session-pickup-expectation enable
-    set override disable
-  end
+##May be needed
+  ##config system global
+  ##  set vdom-admin enable
+  ##end
+
+This will force a re-auth.
+
+  config global
+    config system ha
+      set session-pickup enable
+      set session-pickup-connectionless enable
+      set session-pickup-expectation enable
+      set session-pickup-nat enable
+      set override disable
+    end
 
   config system session-sync
     edit 0
