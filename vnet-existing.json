@@ -11,7 +11,7 @@
     "vnetName": {
       "type": "string",
       "metadata": {
-        "description": "Virtual Network name"
+        "description": "Virtual Network name (e.g. vnet-haivision)"
       }
     },
     "vnetResourceGroup": {
@@ -62,6 +62,54 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
+    "subnet4Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet4AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
+    "subnet5Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet5AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
+    "subnet6Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet6AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
+    "subnet7Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet7AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
     "routeTable1Name": {
       "type": "string"
     },
@@ -70,6 +118,18 @@
     },
     "routeTable3Name": {
       "type": "string"
+    },
+    "routeTable4Name": {
+      "type": "string"
+    },
+    "routeTable5Name": {
+      "type": "string"
+    },
+    "routeTable6Name": {
+      "type": "string"
+    },
+    "routeTable7Name": {
+      "type": "string"
     }
   },
   "variables": {
@@ -77,14 +137,23 @@
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
     "subnet3ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet3Name'))]",
+    "subnet4ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet4Name'))]",
+    "subnet5ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet5Name'))]",
+    "subnet6ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet6Name'))]",
+    "subnet7ID": "[concat(variables('vnetID'),'/subnets/',parameters('subnet7Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
-    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]"
+    "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
+    "routeTable4Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]",
+    "routeTable5Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable5Name'))]",
+    "routeTable6Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable6Name'))]",
+    "routeTable7Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable7Name'))]",
+    "apiVer": "2015-06-15"
   },
   "resources": [
   ],
   "outputs": {
-   "subnet1ID": {
+    "subnet1ID": {
       "value": "[variables('subnet1ID')]",
       "type": "string"
     },
@@ -95,7 +164,22 @@
      "subnet3ID": {
       "value": "[variables('subnet3ID')]",
       "type": "string"
+    },
+     "subnet4ID": {
+      "value": "[variables('subnet4ID')]",
+      "type": "string"
+    },
+     "subnet5ID": {
+      "value": "[variables('subnet5ID')]",
+      "type": "string"
+    },
+     "subnet6ID": {
+      "value": "[variables('subnet6ID')]",
+      "type": "string"
+    },
+     "subnet7ID": {
+      "value": "[variables('subnet7ID')]",
+      "type": "string"
     }
   }
 }
-

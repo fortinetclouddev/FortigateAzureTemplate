@@ -5,21 +5,6 @@
     "VirtualMachineSize": {
       "type": "string",
       "defaultValue": "Standard_D3",
-      "allowedValues": [
-        "Standard_A4",
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_DS4",
-        "Standard_DS13",
-        "Standard_DS14"
-      ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -218,6 +203,62 @@
         "description": "Subnet 3 Name"
       }
     },
+    "Subnet4Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "Subnet4Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
+    "Subnet5Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "Subnet5Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
+    "Subnet6Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "Subnet6Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
+    "Subnet7Prefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "Subnet7Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
     "fortiGateIP1": {
       "type": "string",
       "metadata": {
@@ -236,9 +277,33 @@
         "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
       }
     },
+    "fortiGateIP4": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+      }
+    },
+    "fortiGateIP5": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+      }
+    },
+    "fortiGateIP6": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+      }
+    },
+    "fortiGateIP7": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+      }
+    },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/3NIC5.3.2",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/7NIC5.3.2",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -260,21 +325,35 @@
     "Subnet1Name": "[parameters('Subnet1Name')]",
     "Subnet2Name": "[parameters('Subnet2Name')]",
     "Subnet3Name": "[parameters('Subnet3Name')]",
+    "Subnet4Name": "[parameters('Subnet4Name')]",
+    "Subnet5Name": "[parameters('Subnet5Name')]",
+    "Subnet6Name": "[parameters('Subnet6Name')]",
+    "Subnet7Name": "[parameters('Subnet7Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
     "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet3Name'))]",
+    "subnet4Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet4Name'))]",
+    "subnet5Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet5Name'))]",
+    "subnet6Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet6Name'))]",
+    "subnet7Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet7Name'))]",
 
     "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
     "Subnet3Prefix": "[parameters('Subnet3Prefix')]",
+    "Subnet4Prefix": "[parameters('Subnet4Prefix')]",
+    "Subnet5Prefix": "[parameters('Subnet5Prefix')]",
+    "Subnet6Prefix": "[parameters('Subnet6Prefix')]",
+    "Subnet7Prefix": "[parameters('Subnet7Prefix')]",
 
-    "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('vmName'),'ProtectedSubnetRoutes')]",
-    "routeTable3Name": "[concat(parameters('vmName'),'Protected2SubnetRoutes')]",
-    "FGProtectedAddress": "[parameters('fortiGateIP2')]",
-    "FGProtected2Address": "[parameters('fortiGateIP3')]",
+    "routeTable1Name": "[concat('nextHop-',variables('network_NIC_fg11_Name'),'-RouteTable')]",
+    "routeTable2Name": "[concat('nextHop-',variables('network_NIC_fg12_Name'),'-RouteTable')]",
+    "routeTable3Name": "[concat('nextHop-',variables('network_NIC_fg13_Name'),'-RouteTable')]",
+    "routeTable4Name": "[concat('nextHop-',variables('network_NIC_fg14_Name'),'-RouteTable')]",
+    "routeTable5Name": "[concat('nextHop-',variables('network_NIC_fg15_Name'),'-RouteTable')]",
+    "routeTable6Name": "[concat('nextHop-',variables('network_NIC_fg16_Name'),'-RouteTable')]",
+    "routeTable7Name": "[concat('nextHop-',variables('network_NIC_fg17_Name'),'-RouteTable')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
@@ -286,6 +365,14 @@
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
     "network_NIC_fg13_Name": "[concat(parameters('vmName'),'Nic2')]",
     "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
+    "network_NIC_fg14_Name": "[concat(parameters('vmName'),'Nic3')]",
+    "network_NIC_fg14_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg14_Name'))]",
+    "network_NIC_fg15_Name": "[concat(parameters('vmName'),'Nic4')]",
+    "network_NIC_fg15_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg15_Name'))]",
+    "network_NIC_fg16_Name": "[concat(parameters('vmName'),'Nic5')]",
+    "network_NIC_fg16_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg16_Name'))]",
+    "network_NIC_fg17_Name": "[concat(parameters('vmName'),'Nic6')]",
+    "network_NIC_fg17_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg17_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
@@ -338,7 +425,7 @@
       "properties": {
         "routes": [
           {
-            "name": "PublicFacingtoFortigateProtected",
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -346,9 +433,41 @@
             }
           },
           {
-            "name": "PublicFacingtoFortigateProtected2",
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
               "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
             }
@@ -364,27 +483,59 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateProtectedtoPublicFacing",
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGProtectedAddress')]"
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
             }
           },
           {
-            "name": "FortigateProtectedtoProtected2",
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGProtectedAddress')]"
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
             }
           },
           {
-            "name": "FortigateProtectedtoDefault",
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
+            }
+          },
+          {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP2')]"
+            }
+          },
+          {
+            "name": "routeToDefault",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('FGProtectedAddress')]"
+              "nextHopIPAddress": "[parameters('fortiGateIP2')]"
             }
           }
         ]
@@ -398,27 +549,323 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateProtected2toPublicFacing",
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGProtected2Address')]"
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
             }
           },
-	  {
-            "name": "FortigateProtected2toProtected1",
+	        {
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('FGProtected2Address')]"
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
             }
           },
           {
-            "name": "FortigateProtectedtoDefault",
+            "name": "routeToDefault",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('FGProtected2Address')]"
+              "nextHopIpAddress": "[parameters('fortiGateIP3')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTable4Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet2Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          },
+          {
+            "name": "routeToDefault",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP4')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTable5Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet2Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          },
+          {
+            "name": "routeToDefault",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP5')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTable6Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet2Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet7Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          },
+          {
+            "name": "routeToDefault",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP6')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTable7Name')]",
+      "apiVersion": "[variables('apiVer')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('routeTo',variables('Subnet1Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet1Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet2Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet2Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet3Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet3Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet4Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet5Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+	        {
+            "name": "[concat('routeTo',variables('Subnet6Name'))]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
+            }
+          },
+          {
+            "name": "routeToDefault",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('fortiGateIP7')]"
             }
           }
         ]
@@ -430,7 +877,12 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable4Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable5Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable6Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable7Name'))]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -466,6 +918,30 @@
           "subnet3AddressPrefix": {
             "value": "[parameters('Subnet3Prefix')]"
           },
+          "subnet4Name": {
+            "value": "[parameters('Subnet4Name')]"
+          },
+          "subnet4AddressPrefix": {
+            "value": "[parameters('Subnet4Prefix')]"
+          },
+          "subnet5Name": {
+            "value": "[parameters('Subnet5Name')]"
+          },
+          "subnet5AddressPrefix": {
+            "value": "[parameters('Subnet5Prefix')]"
+          },
+          "subnet6Name": {
+            "value": "[parameters('Subnet6Name')]"
+          },
+          "subnet6AddressPrefix": {
+            "value": "[parameters('Subnet6Prefix')]"
+          },
+          "subnet7Name": {
+            "value": "[parameters('Subnet7Name')]"
+          },
+          "subnet7AddressPrefix": {
+            "value": "[parameters('Subnet7Prefix')]"
+          },
           "vnetResourceGroup": {
             "value": "[parameters('virtualNetworkResourceGroup')]"
           },
@@ -477,6 +953,18 @@
           },
           "routeTable3Name": {
             "value": "[variables('routeTable3Name')]"
+          },
+          "routeTable4Name": {
+            "value": "[variables('routeTable4Name')]"
+          },
+          "routeTable5Name": {
+            "value": "[variables('routeTable5Name')]"
+          },
+          "routeTable6Name": {
+            "value": "[variables('routeTable6Name')]"
+          },
+          "routeTable7Name": {
+            "value": "[variables('routeTable7Name')]"
           }
         }
       }
@@ -554,7 +1042,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('FGProtectedAddress')]",
+              "privateIPAddress": "[parameters('fortiGateIP2')]",
               "subnet": {
                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
@@ -578,9 +1066,105 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('FGProtected2Address')]",
+              "privateIPAddress": "[parameters('fortiGateIP3')]",
               "subnet": {
                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet3ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg14_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('fortiGateIP4')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet4ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg15_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('fortiGateIP5')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet5ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg16_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('fortiGateIP6')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet6ID.value]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": true
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('network_NIC_fg17_Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('fortiGateIP7')]",
+              "subnet": {
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet7ID.value]"
               }
             }
           }
@@ -606,6 +1190,10 @@
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg13_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg14_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg15_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg16_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg17_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
@@ -672,6 +1260,30 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg13_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg14_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg15_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg16_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg17_Id')]"
             }
           ]
         }
