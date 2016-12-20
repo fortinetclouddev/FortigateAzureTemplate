@@ -108,7 +108,14 @@
     "subnet2ID": {
       "value": "[variables('subnet2ID')]",
       "type": "string"
+    },
+    "subnet3ID": {
+      "value": "[variables('subnet3ID')]",
+      "type": "string"
+    },
+    "subnet4ID": {
+      "value": "[variables('subnet4ID')]",
+      "type": "string"
     }
   }
 }
-

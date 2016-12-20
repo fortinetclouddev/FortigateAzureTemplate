@@ -4,7 +4,7 @@
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D3",
+      "defaultValue": "Standard_D3_v2",
       "allowedValues": [
         "Standard_A4",
         "Standard_A7",
@@ -47,29 +47,6 @@
         "description": "Identifies whether to use new or existing Storage Account"
       }
     },
-    "publicIPNewOrExistingOrNone": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing",
-        "none"
-      ],
-      "metadata": {
-        "description": "Identify if to use a public IP and if so whether it is new"
-      }
-    },
-    "vnetNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
-      }
-    },
     "storageAccountExistingRG": {
       "type": "string",
       "defaultValue": "",
@@ -89,16 +66,22 @@
         "description": "Password for the Virtual Machine."
       }
     },
+    "publicIPNewOrExistingOrNone": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing",
+        "none"
+      ],
+      "metadata": {
+        "description": "Identify if to use a public IP and if so whether it is new"
+      }
+    },
     "uniqueDnsPrefixForPublicIP": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
-    "virtualnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the Azure virtual network."
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine - must be lowercase & unique in the Azure region."
       }
     },
     "publicIPAddressName": {
@@ -130,7 +113,24 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
-    "virtualNetworkExistingRGName": {
+    "vnetNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing vnet"
+      }
+    },
+    "virtualnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Azure virtual network."
+      }
+    },
+    "virtualNetworkResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -272,6 +272,8 @@
     "scaleNumber": 1,
     "apiVer": "2015-06-15",
     "compute_VM_fg1_Name": "[parameters('vmName')]",
+
+    "vnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualnetName'))]",
 
     "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
@@ -520,7 +522,7 @@
             "value": "[parameters('Subnet4Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+            "value": "[parameters('virtualNetworkResourceGroup')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"
@@ -576,7 +578,7 @@
             "value": "[variables('FGPubFacingAddress')]"
           },
           "subnet1Ref": {
-            "value": "[variables('subnet1Ref')]"
+            "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
@@ -600,7 +602,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGProtectedAddress')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
               }
             }
           }
@@ -624,7 +626,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGProtectedAddress2')]",
               "subnet": {
-                "id": "[variables('subnet3Ref')]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet3ID.value]"
               }
             }
           }
@@ -648,7 +650,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGProtectedAddress3')]",
               "subnet": {
-                "id": "[variables('subnet4Ref')]"
+                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet4ID.value]"
               }
             }
           }
