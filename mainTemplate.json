@@ -314,7 +314,7 @@
           "storageAccountName": {
             "value": "[parameters('StorageAccountName')]"
           },
-          "storageAccountResourceGroup": {
+          "storageAccountExistingRG": {
             "value": "[parameters('storageAccountResourceGroup')]"
           }
         }
