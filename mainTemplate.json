@@ -4,21 +4,12 @@
   "parameters": {
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D3",
+      "defaultValue": "Standard_D3_v2",
       "allowedValues": [
-        "Standard_A4",
-        "Standard_A8",
-        "Standard_A9",
-        "Standard_D2",
         "Standard_D3",
         "Standard_D4",
         "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_DS4",
-        "Standard_DS13",
-        "Standard_DS14"
+        "Standard_D4_v2"
       ],
       "metadata": {
         "description": "Virtual Machine size selection"
@@ -53,7 +44,6 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing",
         "none"
       ],
       "metadata": {
@@ -71,7 +61,7 @@
         "description": "Identify whether to use a new or existing vnet"
       }
     },
-    "storageAccountExistingRG": {
+    "storageAccountResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -221,24 +211,24 @@
     "fortiGateIP1": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP for public facing NIC of the FortiGate virtual appliance (on subnet1)."
       }
     },
     "fortiGateIP2": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP for protected network facing NIC of the FortiGate virtual appliance (on subnet2)."
       }
     },
     "fortiGateIP3": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP for protected2 network facing NIC of the FortiGate virtual appliance (on subnet3)."
       }
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/3NIC5.3.2",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/3NIC5.3.3",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -324,8 +314,8 @@
           "storageAccountName": {
             "value": "[parameters('StorageAccountName')]"
           },
-          "storageAccountExistingRG": {
-            "value": "[parameters('storageAccountExistingRG')]"
+          "storageAccountResourceGroup": {
+            "value": "[parameters('storageAccountResourceGroup')]"
           }
         }
       }
@@ -430,7 +420,8 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
-        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]"
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+        "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]"
       ],
       "properties": {
         "mode": "Incremental",
