@@ -2,24 +2,35 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "location - should be the same as above"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the FortiGate virtual appliance."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the FortiGate virtual appliance."
+      }
+    },
+    "FortiGateName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name for FortiGate virtual appliance."
+      }
+    },
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D4",
+      "defaultValue": "Standard_D4_v2",
       "metadata": {
         "description": "Virtual Machine size selection"
-      }
-    },
-    "StorageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
-      }
-    },
-    "StorageAccountType": {
-      "type": "string",
-      "defaultValue": "Standard_LRS",
-      "metadata": {
-        "description": "Storage Account Type."
       }
     },
     "storageAccountNewOrExisting": {
@@ -30,7 +41,27 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identifies whether to use new or existing Storage Account"
+        "description": "Identifies whether to use new or previously created Storage Account"
+      }
+    },
+    "StorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique Name for the Storage Account where the Virtual Machine's disks will be placed. Note, when deploying a custom template, Azure doesn't check these values for uniqueness."
+      }
+    },
+    "storageAcctResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing storage account - or new resource group from above (if new storage account)"
+      }
+    },
+    "StorageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "metadata": {
+        "description": "Storage Account Type."
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -42,7 +73,39 @@
         "none"
       ],
       "metadata": {
-        "description": "Identify if to use a public IP and if so whether it is new"
+        "description": "Identify whether to use a public IP and if so whether it is new or previously created"
+      }
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address resource."
+      }
+    },
+    "uniqueDnsPrefixForPublicIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "publicIPAddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address - A 'dynamic' address will change during reboot or periods of inactivity"
+      }
+    },
+    "publicIPResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the public IP - or new resource group from above (if new public IP)"
       }
     },
     "vnetNewOrExisting": {
@@ -56,88 +119,24 @@
         "description": "Identify whether to use a new or existing vnet"
       }
     },
-    "storageAccountExistingRG": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource Group containing existing storage account"
-      }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine."
-      }
-    },
-    "uniqueDnsPrefixForPublicIP": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
-    "virtualnetName": {
+    "vnetName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
     },
-    "publicIPAddressName": {
+    "vnetResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
     },
-    "publicIPAddressResourceGroup": {
+    "vnetAddressPrefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "vmName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name for FortiGate virtual appliance."
-      }
-    },
-    "virtualNetworkExistingRGName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Identifies whether to use new or existing Storage Account"
-      }
-    },
-    "virtualNetworkAddressPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Virtual Network Address prefix"
-      }
-    },
-    "Subnet1Prefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 1 Prefix"
+        "description": "Virtual network address space in CIDR notation"
       }
     },
     "Subnet1Name": {
@@ -147,11 +146,17 @@
         "description": "Subnet 1 Name"
       }
     },
-    "Subnet2Prefix": {
+    "Subnet1Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 2 Prefix"
+        "description": "Subnet 1 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port)"
+      }
+    },
+    "fortiGateIP1": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 1 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned."
       }
     },
     "Subnet2Name": {
@@ -161,11 +166,17 @@
         "description": "Subnet 2 Name"
       }
     },
-    "Subnet3Prefix": {
+    "Subnet2Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 3 Prefix"
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "fortiGateIP2": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 2 for port2 of the FortiGate virtual appliance."
       }
     },
     "Subnet3Name": {
@@ -175,11 +186,17 @@
         "description": "Subnet 3 Name"
       }
     },
-    "Subnet4Prefix": {
+    "Subnet3Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 4 Prefix"
+        "description": "Subnet 3 Prefix"
+      }
+    },
+    "fortiGateIP3": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subne 3 for port3 of the FortiGate virtual appliance."
       }
     },
     "Subnet4Name": {
@@ -189,11 +206,17 @@
         "description": "Subnet 4 Name"
       }
     },
-    "Subnet5Prefix": {
+    "Subnet4Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 5 Prefix"
+        "description": "Subnet 4 Prefix"
+      }
+    },
+    "fortiGateIP4": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 4 for port4 of the FortiGate virtual appliance."
       }
     },
     "Subnet5Name": {
@@ -203,11 +226,17 @@
         "description": "Subnet 5 Name"
       }
     },
-    "Subnet6Prefix": {
+    "Subnet5Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 6 Prefix"
+        "description": "Subnet 5 Prefix"
+      }
+    },
+    "fortiGateIP5": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 5 for port5 of the FortiGate virtual appliance."
       }
     },
     "Subnet6Name": {
@@ -217,11 +246,17 @@
         "description": "Subnet 6 Name"
       }
     },
-    "Subnet7Prefix": {
+    "Subnet6Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 7 Prefix"
+        "description": "Subnet 6 Prefix"
+      }
+    },
+    "fortiGateIP6": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 6 for port6 of the FortiGate virtual appliance."
       }
     },
     "Subnet7Name": {
@@ -231,11 +266,17 @@
         "description": "Subnet 7 Name"
       }
     },
-    "Subnet8Prefix": {
+    "Subnet7Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 8 Prefix"
+        "description": "Subnet 7 Prefix"
+      }
+    },
+    "fortiGateIP7": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 7 for port7 of the FortiGate virtual appliance."
       }
     },
     "Subnet8Name": {
@@ -245,52 +286,17 @@
         "description": "Subnet 8 Name"
       }
     },
-    "fortiGateIP1": {
+    "Subnet8Prefix": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP2": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for dmz network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP3": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP4": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP5": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP6": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
-      }
-    },
-    "fortiGateIP7": {
-      "type": "string",
-      "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
+        "description": "Subnet 8 Prefix"
       }
     },
     "fortiGateIP8": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for internal network facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP from subnet 8 for port8 of the FortiGate virtual appliance."
       }
     },
     "artifactsBaseUrl": {
@@ -300,12 +306,6 @@
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
       }
-    },
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "location"
-      }
     }
   },
   "variables": {
@@ -313,7 +313,7 @@
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('VirtualMachineSize')]",
 
-    "VNetName": "[parameters('virtualnetName')]",
+    "VNetName": "[parameters('vnetName')]",
     "OutsideSubnetName": "[parameters('Subnet1Name')]",
     "DMZSubnetName": "[parameters('Subnet2Name')]",
     "InternalSubnetName": "[parameters('Subnet3Name')]",
@@ -327,19 +327,19 @@
     "subnet7Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet7Name'))]",
     "subnet8Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet8Name'))]",
 
-    "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
+    "VNetAddressPrefix": "[parameters('vnetAddressPrefix')]",
     "OutsideSubnetPrefix": "[parameters('Subnet1Prefix')]",
     "DMZSubnetPrefix": "[parameters('Subnet2Prefix')]",
     "InternalSubnetPrefix": "[parameters('Subnet3Prefix')]",
 
-    "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('vmName'),'subnet2routes')]",
-    "routeTable3Name": "[concat(parameters('vmName'),'subnet3routes')]",
-    "routeTable4Name": "[concat(parameters('vmName'),'subnet4routes')]",
-    "routeTable5Name": "[concat(parameters('vmName'),'subnet5routes')]",
-    "routeTable6Name": "[concat(parameters('vmName'),'subnet6routes')]",
-    "routeTable7Name": "[concat(parameters('vmName'),'subnet7routes')]",
-    "routeTable8Name": "[concat(parameters('vmName'),'subnet8routes')]",
+    "routeTable1Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet1Name'),'-routes')]",
+    "routeTable2Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet2Name'),'-routes')]",
+    "routeTable3Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet3Name'),'-routes')]",
+    "routeTable4Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet4Name'),'-routes')]",
+    "routeTable5Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet5Name'),'-routes')]",
+    "routeTable6Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet6Name'),'-routes')]",
+    "routeTable7Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet7Name'),'-routes')]",
+    "routeTable8Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet8Name'),'-routes')]",
 
     "FGDMZAddress": "[parameters('fortiGateIP2')]",
     "FGInternalAddress": "[parameters('fortiGateIP3')]",
@@ -351,23 +351,23 @@
     "FGSub8Address": "[parameters('fortiGateIP8')]",
 
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[parameters('vmName')]",
+    "compute_VM_fg1_Name": "[parameters('FortiGateName')]",
 
-    "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(parameters('FortiGateName'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(parameters('FortiGateName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg13_Name": "[concat(parameters('vmName'),'Nic2')]",
+    "network_NIC_fg13_Name": "[concat(parameters('FortiGateName'),'Nic2')]",
     "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
-    "network_NIC_fg14_Name": "[concat(parameters('vmName'),'Nic3')]",
+    "network_NIC_fg14_Name": "[concat(parameters('FortiGateName'),'Nic3')]",
     "network_NIC_fg14_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg14_Name'))]",
-    "network_NIC_fg15_Name": "[concat(parameters('vmName'),'Nic4')]",
+    "network_NIC_fg15_Name": "[concat(parameters('FortiGateName'),'Nic4')]",
     "network_NIC_fg15_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg15_Name'))]",
-    "network_NIC_fg16_Name": "[concat(parameters('vmName'),'Nic5')]",
+    "network_NIC_fg16_Name": "[concat(parameters('FortiGateName'),'Nic5')]",
     "network_NIC_fg16_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg16_Name'))]",
-    "network_NIC_fg17_Name": "[concat(parameters('vmName'),'Nic6')]",
+    "network_NIC_fg17_Name": "[concat(parameters('FortiGateName'),'Nic6')]",
     "network_NIC_fg17_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg17_Name'))]",
-    "network_NIC_fg18_Name": "[concat(parameters('vmName'),'Nic7')]",
+    "network_NIC_fg18_Name": "[concat(parameters('FortiGateName'),'Nic7')]",
     "network_NIC_fg18_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg18_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
@@ -376,7 +376,7 @@
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
 
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmName'),'AvailSet')]",
+    "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'AvailSet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
@@ -408,7 +408,7 @@
             "value": "[parameters('StorageAccountName')]"
           },
           "storageAccountExistingRG": {
-            "value": "[parameters('storageAccountExistingRG')]"
+            "value": "[parameters('storageAcctResourceGroup')]"
           }
         }
       }
@@ -421,7 +421,7 @@
       "properties": {
         "routes": [
           {
-            "name": "PublicFacingtoFortigateDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -429,7 +429,7 @@
             }
           },
           {
-            "name": "PublicFacingtoFortigateInternal",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[variables('InternalSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -437,7 +437,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -445,7 +445,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -453,7 +453,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -461,7 +461,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -469,7 +469,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -487,7 +487,7 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateDMZtoPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -495,7 +495,7 @@
             }
           },
           {
-            "name": "FortigateDMZtoInternalFacing",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[variables('InternalSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -503,7 +503,7 @@
             }
           },
           {
-            "name": "FortigateDMZtoDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -511,7 +511,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -519,7 +519,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -527,7 +527,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -535,7 +535,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -543,7 +543,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -561,7 +561,7 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateInternaltoPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -569,7 +569,7 @@
             }
           },
           {
-            "name": "FortigateInternaltoDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -577,7 +577,7 @@
             }
           },
           {
-            "name": "FortigateInternaltoDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -585,7 +585,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -593,7 +593,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -601,7 +601,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -609,7 +609,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -617,7 +617,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -635,7 +635,7 @@
       "properties": {
         "routes": [
           {
-            "name": "toPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -643,7 +643,7 @@
             }
           },
           {
-            "name": "toDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -651,7 +651,7 @@
             }
           },
           {
-            "name": "toDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -659,7 +659,7 @@
             }
           },
           {
-            "name": "toSubnet3",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -667,7 +667,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -675,7 +675,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -683,7 +683,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -691,7 +691,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name":"[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -709,7 +709,7 @@
       "properties": {
         "routes": [
           {
-            "name": "toPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -717,7 +717,7 @@
             }
           },
           {
-            "name": "toDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -725,7 +725,7 @@
             }
           },
           {
-            "name": "toDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -733,7 +733,7 @@
             }
           },
           {
-            "name": "toSubnet3",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -741,7 +741,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -749,7 +749,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -757,7 +757,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -765,7 +765,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -783,7 +783,7 @@
       "properties": {
         "routes": [
           {
-            "name": "toPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -791,7 +791,7 @@
             }
           },
           {
-            "name": "toDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -799,7 +799,7 @@
             }
           },
           {
-            "name": "toDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -807,7 +807,7 @@
             }
           },
           {
-            "name": "toSubnet3",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -815,7 +815,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -823,7 +823,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -831,7 +831,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -839,7 +839,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -857,7 +857,7 @@
       "properties": {
         "routes": [
           {
-            "name": "toPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -865,7 +865,7 @@
             }
           },
           {
-            "name": "toDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -873,7 +873,7 @@
             }
           },
           {
-            "name": "toDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -881,7 +881,7 @@
             }
           },
           {
-            "name": "toSubnet3",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -889,7 +889,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -897,7 +897,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -905,7 +905,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -913,7 +913,7 @@
             }
           },
           {
-            "name": "toSubnet8",
+            "name": "[concat('to', '-', parameters('Subnet8Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet8Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -931,7 +931,7 @@
       "properties": {
         "routes": [
           {
-            "name": "toPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('OutsideSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -939,7 +939,7 @@
             }
           },
           {
-            "name": "toDMZ",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('DMZSubnetPrefix')]",
               "nextHopType": "VirtualAppliance",
@@ -947,7 +947,7 @@
             }
           },
           {
-            "name": "toDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -955,7 +955,7 @@
             }
           },
           {
-            "name": "toSubnet3",
+            "name": "[concat('to', '-', parameters('Subnet3Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet3Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -963,7 +963,7 @@
             }
           },
           {
-            "name": "toSubnet4",
+            "name": "[concat('to', '-', parameters('Subnet4Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet4Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -971,7 +971,7 @@
             }
           },
           {
-            "name": "toSubnet5",
+            "name": "[concat('to', '-', parameters('Subnet5Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet5Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -979,7 +979,7 @@
             }
           },
           {
-            "name": "toSubnet6",
+            "name": "[concat('to', '-', parameters('Subnet6Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet6Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -987,7 +987,7 @@
             }
           },
           {
-            "name": "toSubnet7",
+            "name": "[concat('to', '-', parameters('Subnet7Name'))]",
             "properties": {
               "addressPrefix": "[parameters('Subnet7Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -1019,13 +1019,13 @@
         },
         "parameters": {
           "vnetName": {
-            "value": "[parameters('virtualnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "location": {
             "value": "[parameters('location')]"
           },
           "vnetAddressPrefix": {
-            "value": "[parameters('virtualNetworkAddressPrefix')]"
+            "value": "[parameters('vnetAddressPrefix')]"
           },
           "OutsideSubnetName": {
             "value": "[parameters('Subnet1Name')]"
@@ -1076,7 +1076,7 @@
             "value": "[parameters('Subnet8Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+            "value": "[parameters('vnetResourceGroup')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"
@@ -1135,10 +1135,10 @@
             "value": "[parameters('publicIPAddressResourceGroup')]"
           },
           "VMName": {
-            "value": "[parameters('vmName')]"
+            "value": "[parameters('FortiGateName')]"
           },
           "VNetName": {
-            "value": "[parameters('virtualnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "FGPubFacingAddress": {
             "value": "[variables('FGPubFacingAddress')]"
