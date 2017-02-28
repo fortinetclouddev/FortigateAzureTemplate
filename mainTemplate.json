@@ -1132,7 +1132,7 @@
             "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
           },
           "publicIPAddressResourceGroup": {
-            "value": "[parameters('publicIPAddressResourceGroup')]"
+            "value": "[parameters('publicIPResourceGroup')]"
           },
           "VMName": {
             "value": "[parameters('FortiGateName')]"
@@ -1333,6 +1333,12 @@
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg13_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg14_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg15_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg16_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg17_Name'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg18_Name'))]",
         "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
       ],
       "properties": {
