@@ -181,7 +181,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/USgovcloudSingleVM",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/USGovCloudSingleVM",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -454,7 +454,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": true,
-            "storageUri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.windows.net')]"
+            "storageUri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.usgovcloudapi.net')]"
           }
         },
         "storageProfile": {
@@ -469,7 +469,7 @@
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
             }
           },
           "dataDisks": [
@@ -478,7 +478,7 @@
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
               },
               "createOption": "Empty"
             }
