@@ -204,8 +204,8 @@
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
-    "routeTable1Name": "[concat(parameters('FortiGateName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('FortiGateName'),'InternalRoutes')]",
+    "routeTable1Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet1Name'),'-routes')]",
+    "routeTable2Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet2Name'),'-routes')]",
 
     "FGDMZAddress": "[parameters('fortiGateIP2')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
@@ -269,7 +269,7 @@
       "properties": {
         "routes": [
           {
-            "name": "PublicFacingtoFortigateInternal",
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
             "properties": {
               "addressPrefix": "[variables('Subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -287,7 +287,7 @@
       "properties": {
         "routes": [
           {
-            "name": "FortigateInternaltoPublicFacing",
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
             "properties": {
               "addressPrefix": "[variables('Subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
@@ -295,7 +295,7 @@
             }
           },
           {
-            "name": "FortigateInternaltoDefault",
+            "name": "to-Internet",
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
