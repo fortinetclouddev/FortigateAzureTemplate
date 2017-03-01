@@ -2,9 +2,33 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "location - same as above"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the FortiGate virtual appliance."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the FortiGate virtual appliance."
+      }
+    },
+    "FortiGateName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name for FortiGate virtual appliance."
+      }
+    },
     "VirtualMachineSize": {
       "type": "string",
-      "defaultValue": "Standard_D3_v2",
+      "defaultValue": "Standard_D2_v2",
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -12,7 +36,7 @@
     "StorageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+        "description": "Unique *lowercase* name for the Storage Account where the Virtual Machine's disks will be placed. Note, when deploying a custom template, Azure doesn't check these values for uniqueness."
       }
     },
     "StorageAccountType": {
@@ -30,7 +54,14 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identifies whether to use new or existing Storage Account"
+        "description": "Identifies whether to use new or previously created Storage Account"
+      }
+    },
+    "storageAcctResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing storage account - or new resource group from above (if new storage account)"
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -42,7 +73,39 @@
         "none"
       ],
       "metadata": {
-        "description": "Identify if to use a public IP and if so whether it is new"
+        "description": "Identify whether to use a public IP and if so whether it is new or previously created"
+      }
+    },
+    "uniqueDnsPrefixForPublicIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address resource."
+      }
+    },
+    "publicIPResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the public IP - or new resource group from above (if new public IP)"
+      }
+    },
+    "publicIPAddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address - A 'dynamic' address will change during reboot or periods of inactivity"
       }
     },
     "vnetNewOrExisting": {
@@ -56,135 +119,72 @@
         "description": "Identify whether to use a new or existing vnet"
       }
     },
-    "storageAccountExistingRG": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource Group containing existing storage account"
-      }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine."
-      }
-    },
-    "uniqueDnsPrefixForPublicIP": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
-      }
-    },
-    "virtualnetName": {
+    "vnetName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
     },
-    "publicIPAddressName": {
+    "vnetResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
     },
-    "publicIPAddressResourceGroup": {
+    "vnetAddressPrefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Virtual network address space in CIDR notation, example: 10.2.0.0/16"
       }
     },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "vmName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name for FortiGate virtual appliance."
-      }
-    },
-    "virtualNetworkResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Identifies whether to use new or existing Storage Account"
-      }
-    },
-    "virtualNetworkAddressPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Virtual Network Address prefix"
-      }
-    },
-    "OutsideSubnetPrefix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Subnet 1 Prefix"
-      }
-    },
-    "OutsideSubnetName": {
+    "Subnet1Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
-    "DMZSubnetPrefix": {
+    "Subnet1Prefix": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 2 Prefix"
+        "description": "Subnet 1 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.1.0/24"
       }
     },
-    "DMZSubnetName": {
+    "fortiGateIP1": {
+      "type": "string",
+      "metadata": {
+        "description": "Static IP from subnet 1 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.1.4"
+      }
+    },
+    "Subnet2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
-    "fortiGateIP1": {
+    "Subnet2Prefix": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Static IP for public facing NIC of the FortiGate virtual appliance."
+        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
       }
     },
     "fortiGateIP2": {
       "type": "string",
       "metadata": {
-        "description": "Static IP for dmz network facing NIC of the FortiGate virtual appliance."
+        "description": "Static IP from subnet 2 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.2.4"
       }
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.2",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/USgovcloudSingleVM",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
-      }
-    },
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "location"
       }
     }
   },
@@ -193,29 +193,29 @@
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('VirtualMachineSize')]",
 
-    "VNetName": "[parameters('virtualnetName')]",
-    "OutsideSubnetName": "[parameters('OutsideSubnetName')]",
-    "DMZSubnetName": "[parameters('DMZSubnetName')]",
+    "VNetName": "[parameters('vnetName')]",
+    "Subnet1Name": "[parameters('Subnet1Name')]",
+    "Subnet2Name": "[parameters('Subnet2Name')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('OutsideSubnetName'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('DMZSubnetName'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
+    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
 
-    "VNetAddressPrefix": "[parameters('virtualNetworkAddressPrefix')]",
-    "OutsideSubnetPrefix": "[parameters('OutsideSubnetPrefix')]",
-    "DMZSubnetPrefix": "[parameters('DMZSubnetPrefix')]",
+    "VNetAddressPrefix": "[parameters('vnetAddressPrefix')]",
+    "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
+    "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
-    "routeTable1Name": "[concat(parameters('vmName'),'PublicFacingSubnetRoutes')]",
-    "routeTable2Name": "[concat(parameters('vmName'),'InternalRoutes')]",
+    "routeTable1Name": "[concat(parameters('FortiGateName'),'PublicFacingSubnetRoutes')]",
+    "routeTable2Name": "[concat(parameters('FortiGateName'),'InternalRoutes')]",
 
     "FGDMZAddress": "[parameters('fortiGateIP2')]",
     "FGPubFacingAddress": "[parameters('fortiGateIP1')]",
 
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[parameters('vmName')]",
+    "compute_VM_fg1_Name": "[parameters('FortiGateName')]",
 
-    "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(parameters('FortiGateName'),'Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(parameters('FortiGateName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
@@ -224,7 +224,7 @@
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
 
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('vmName'),'AvailSet')]",
+    "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'AvailSet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
 
   },
@@ -256,7 +256,7 @@
             "value": "[parameters('StorageAccountName')]"
           },
           "storageAccountExistingRG": {
-            "value": "[parameters('storageAccountExistingRG')]"
+            "value": "[parameters('storageAcctResourceGroup')]"
           }
         }
       }
@@ -271,7 +271,7 @@
           {
             "name": "PublicFacingtoFortigateInternal",
             "properties": {
-              "addressPrefix": "[variables('DMZSubnetPrefix')]",
+              "addressPrefix": "[variables('Subnet2Prefix')]",
               "nextHopType": "VirtualAppliance",
               "nextHopIpAddress": "[variables('FGPubFacingAddress')]"
             }
@@ -289,7 +289,7 @@
           {
             "name": "FortigateInternaltoPublicFacing",
             "properties": {
-              "addressPrefix": "[variables('OutsideSubnetPrefix')]",
+              "addressPrefix": "[variables('Subnet1Prefix')]",
               "nextHopType": "VirtualAppliance",
               "nextHopIpAddress": "[variables('FGDMZAddress')]"
             }
@@ -321,28 +321,28 @@
         },
         "parameters": {
           "vnetName": {
-            "value": "[parameters('virtualnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "location": {
             "value": "[parameters('location')]"
           },
           "vnetAddressPrefix": {
-            "value": "[parameters('virtualNetworkAddressPrefix')]"
+            "value": "[parameters('vnetAddressPrefix')]"
           },
           "OutsideSubnetName": {
-            "value": "[parameters('OutsideSubnetName')]"
+            "value": "[parameters('Subnet1Name')]"
           },
           "subnet1AddressPrefix": {
-            "value": "[parameters('OutsideSubnetPrefix')]"
+            "value": "[parameters('Subnet1Prefix')]"
           },
           "DMZSubnetName": {
-            "value": "[parameters('DMZSubnetName')]"
+            "value": "[parameters('Subnet2Name')]"
           },
           "subnet2AddressPrefix": {
-            "value": "[parameters('DMZSubnetPrefix')]"
+            "value": "[parameters('Subnet2Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkResourceGroup')]"
+            "value": "[parameters('vnetResourceGroup')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"
@@ -380,13 +380,13 @@
             "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
           },
           "publicIPAddressResourceGroup": {
-            "value": "[parameters('publicIPAddressResourceGroup')]"
+            "value": "[parameters('publicIPResourceGroup')]"
           },
           "VMName": {
-            "value": "[parameters('vmName')]"
+            "value": "[parameters('FortiGateName')]"
           },
           "VNetName": {
-            "value": "[parameters('virtualnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "FGPubFacingAddress": {
             "value": "[variables('FGPubFacingAddress')]"
