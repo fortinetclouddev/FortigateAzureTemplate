@@ -170,13 +170,13 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
+        "description": "Subnet 2 Prefix in CIDR notation, example: 10.2.2.0/24"
       }
     },
     "fortiGateIP2": {
       "type": "string",
       "metadata": {
-        "description": "Static IP from subnet 2 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.2.4"
+        "description": "Static IP from subnet 2 for port2 (typically the 'internal' NIC) of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.2.4"
       }
     },
     "artifactsBaseUrl": {
