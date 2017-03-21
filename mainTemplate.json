@@ -26,7 +26,7 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
-    "VirtualMachineSize": {
+    "instanceType": {
       "type": "string",
       "defaultValue": "Standard_D2_v2",
       "metadata": {
@@ -74,13 +74,6 @@
       ],
       "metadata": {
         "description": "Identify whether to use a public IP and if so whether it is new or previously created"
-      }
-    },
-    "uniqueDnsPrefixForPublicIP": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
       }
     },
     "publicIPAddressName": {
@@ -179,6 +172,12 @@
         "description": "Static IP from subnet 2 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.2.4"
       }
     },
+    "FortinetTags": {
+    "type": "object",
+    "defaultValue": {
+      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      }
+    },
     "artifactsBaseUrl": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.4",
@@ -191,7 +190,7 @@
   "variables": {
     "storageAccountType": "[parameters('StorageAccountType')]",
     "vmStorageAccountContainerName": "vhds",
-    "vmSize": "[parameters('VirtualMachineSize')]",
+    "vmSize": "[parameters('instanceType')]",
 
     "VNetName": "[parameters('vnetName')]",
     "Subnet1Name": "[parameters('Subnet1Name')]",
@@ -233,6 +232,9 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "location": "[parameters('location')]"
     },
     {
@@ -257,6 +259,9 @@
           },
           "storageAccountExistingRG": {
             "value": "[parameters('storageAcctResourceGroup')]"
+          },
+          "FortinetTags": {
+            "value": "[parameters('FortinetTags')]"
           }
         }
       }
@@ -265,6 +270,9 @@
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable1Name')]",
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "location": "[parameters('location')]",
       "properties": {
         "routes": [
@@ -282,6 +290,9 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable2Name')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "apiVersion": "[variables('apiVer')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -349,6 +360,9 @@
           },
           "routeTable2Name": {
             "value": "[variables('routeTable2Name')]"
+          },
+          "FortinetTags": {
+            "value": "[parameters('FortinetTags')]"
           }
         }
       }
@@ -376,9 +390,6 @@
           "publicIPAddressType": {
             "value": "[parameters('publicIPAddressType')]"
           },
-          "dnsName": {
-            "value": "[parameters('uniqueDnsPrefixForPublicIP')]"
-          },
           "publicIPAddressResourceGroup": {
             "value": "[parameters('publicIPResourceGroup')]"
           },
@@ -396,12 +407,18 @@
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
+          },
+          "FortinetTags": {
+            "value": "[parameters('FortinetTags')]"
           }
         }
       }
     },
     {
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[parameters('location')]",
@@ -428,6 +445,9 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "location": "[parameters('location')]",
       "plan": {
         "name": "fortinet_fg-vm",

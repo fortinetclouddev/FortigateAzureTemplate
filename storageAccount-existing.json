@@ -24,6 +24,9 @@
       "metadata": {
         "Description": "Resource Group Name of the existing Storage Account"
       }
+    },
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "resources": [
@@ -35,4 +38,3 @@
     }
   }
 }
-

@@ -17,8 +17,8 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
-        "label": "FortiGate Administrative Username",
-        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin'.",
+        "label": "FortiGate administrative username",
+        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin' nor 'root'.",
         "osPlatform": "Linux",
         "constraints": {
           "required": true
@@ -31,13 +31,11 @@
           "password": "FortiGate Password",
           "confirmPassword": "Confirm Password"
         },
-        "toolTip": {
-          "password": "Admin account password for the Virtual FortiGate"
-        },
+        "toolTip": "Admin account password for the Virtual FortiGate",
         "constraints": {
           "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{6,72}$",
-          "validationMessage": "The password must be between 6 and 72 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,123}$",
+          "validationMessage": "The password must be between 6 and 123 characters long, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters."
         },
         "options": {
           "hideConfirmation": false
@@ -88,7 +86,7 @@
               "subnet2": {
                 "label": "Internal Subnet",
                 "defaultValue": {
-                  "name": "FortigateInternalSubnet",
+                  "name": "InternalSubnet",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -105,8 +103,8 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_D3",
-              "Standard_D4"
+              "Standard_D3_v2",
+              "Standard_D4_v2"
             ],
             "constraints": {
               "allowedSizes": [
@@ -117,8 +115,7 @@
                 "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2"
-              ],
-              "required": true
+              ]
             },
             "osPlatform": "Linux",
             "imageReference": {
@@ -140,8 +137,7 @@
               "allowedTypes": [
                 "Standard_LRS",
                 "Standard_GRS"
-              ],
-              "required": true
+              ]
             }
           }
         ]
@@ -160,24 +156,22 @@
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
               "publicIpAddress": "Public IP address name",
-              "domainNameLabel": "Domain name label"
+              "domainNameLabel": ""
             },
             "toolTip": {
-              "publicIpAddress": "Name of the public IP address object",
-              "domainNameLabel": "DNS prefix to use for the public IP address (e.g. [dnsPrefix].region.cloudapp.azure.com)"
+              "publicIpAddress": "Name of the public IP address object"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-fortigate",
-              "domainNameLabel": "[basics('vmName')]"
+              "publicIpAddressName": "publicip-fortigate"
             },
             "constraints": {
               "required": {
-                "domainNameLabel": true
+                "domainNameLabel": false
               }
             },
             "options": {
               "hideNone": false,
-              "hideDomainNameLabel": false
+              "hideDomainNameLabel": true
             }
           },
           {
@@ -204,30 +198,29 @@
       }
     ],
     "outputs": {
-      "vmName": "[basics('VMName')]",
+      "FortiGateName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
-      "VirtualMachineSize": "[steps('StorageNetworkConfig').vmSize]",
+      "instanceType": "[steps('StorageNetworkConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
-      "uniqueDnsPrefixForPublicIP": "[steps('IPConfig').publicIpAddress.domainNameLabel]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
-      "publicIPAddressResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
+      "publicIPResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
       "fortiGateIP1": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.startAddress]",
       "fortiGateIP2": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.startAddress]",
       "StorageAccountName": "[steps('StorageNetworkConfig').storageAccount.name]",
       "StorageAccountType": "[steps('StorageNetworkConfig').storageAccount.type]",
       "storageAccountNewOrExisting": "[steps('StorageNetworkConfig').storageAccount.newOrExisting]",
-      "storageAccountExistingRG": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]",
+      "storageAcctResourceGroup": "[steps('StorageNetworkConfig').storageAccount.resourceGroup]",
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('StorageNetworkConfig').virtualNetwork.newOrExisting]",
-      "virtualnetName": "[steps('StorageNetworkConfig').virtualNetwork.name]",
-      "virtualNetworkResourceGroup":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
-      "virtualNetworkAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
-      "OutsideSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
-      "OutsideSubnetPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "DMZSubnetName" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
-      "DMZSubnetPrefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
+      "vnetName": "[steps('StorageNetworkConfig').virtualNetwork.name]",
+      "vnetResourceGroup":  "[steps('StorageNetworkConfig').virtualNetwork.resourceGroup]",
+      "vnetAddressPrefix" : "[steps('StorageNetworkConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name" : "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.name]",
+      "Subnet2Prefix": "[steps('StorageNetworkConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
 }

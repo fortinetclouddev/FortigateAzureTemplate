@@ -26,12 +26,6 @@
         "description": "Public IP Address Type (e.g. Static or Dynamic)"
       }
     },
-    "dnsName": {
-      "type": "string",
-      "metadata": {
-        "description": "Public IP DNS prefix (e.g. [dnsName].region.cloudapp.azure.com)"
-      }
-    },
     "VMName": {
       "type": "string",
       "metadata": {
@@ -61,6 +55,9 @@
       "metadata": {
 		  "description": "NIC0 interface name"
       }
+    },
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -70,6 +67,9 @@
     "resources": [
       {
         "apiVersion": "[variables('apiVer')]",
+        "tags": {
+         "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        },
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[parameters('network_NIC_fg11_Name')]",
         "location": "[parameters('location')]",

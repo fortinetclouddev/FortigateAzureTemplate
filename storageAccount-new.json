@@ -24,6 +24,9 @@
       "metadata": {
         "Description": "Resource Group Name of the existing Storage Account"
       }
+    },
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "resources": [
@@ -31,6 +34,9 @@
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[concat(parameters('StorageAccountName'))]",
       "apiVersion": "2015-06-15",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "location": "[parameters('location')]",
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
@@ -44,4 +50,3 @@
     }
   }
 }
-

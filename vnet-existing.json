@@ -55,6 +55,9 @@
     },
     "routeTable2Name": {
       "type": "string"
+    },
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -78,4 +81,3 @@
     }
   }
 }
-

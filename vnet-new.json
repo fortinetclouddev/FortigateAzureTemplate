@@ -55,6 +55,9 @@
     },
     "routeTable2Name": {
       "type": "string"
+    },
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -68,6 +71,9 @@
   "resources": [
     {
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "location": "[parameters('location')]",
