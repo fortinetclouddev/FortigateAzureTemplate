@@ -180,7 +180,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.4",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.5",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -195,7 +195,7 @@
     "VNetName": "[parameters('vnetName')]",
     "Subnet1Name": "[parameters('Subnet1Name')]",
     "Subnet2Name": "[parameters('Subnet2Name')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNetName'))]",
+    "vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
 
@@ -403,7 +403,7 @@
             "value": "[variables('FGPubFacingAddress')]"
           },
           "subnet1Ref": {
-            "value": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1ID.value]"
+            "value": "[variables('subnet1Ref')]"
           },
           "network_NIC_fg11_Name": {
             "value": "[variables('network_NIC_fg11_Name')]"
@@ -433,7 +433,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('FGDMZAddress')]",
               "subnet": {
-                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet2ID.value]"
+                "id": "[variables('subnet2Ref')]"
               }
             }
           }
@@ -483,7 +483,7 @@
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-osdisk', '.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
             }
           },
           "dataDisks": [
@@ -492,7 +492,7 @@
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'), '-datadisk', '.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
