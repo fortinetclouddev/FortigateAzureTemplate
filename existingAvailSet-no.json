@@ -21,7 +21,7 @@
   "resources": [
     {
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('compute_AvailabilitySet_Name')]",
+      "name": "[parameters('compute_AvailabilitySet_Name')]",
       "apiVersion": "[variables('apiVer')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
