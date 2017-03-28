@@ -172,6 +172,23 @@
         "description": "Static IP from subnet 2 for port1 of the FortiGate virtual appliance.  Remember Azure reserves the first 3 IPs in each subnet.  When using an exising vnet, verify that this address is not already assigned, example: 10.2.2.4"
       }
     },
+    "addToExistingAvailabilitySet": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "no",
+        "yes"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing availability set. Note: In order to use existing AS, you must deploy in the same, existing, resource group."
+      }
+    },
+    "availabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of availability Set. If new, this must be unique within the resource group."
+      }
+    },
     "FortinetTags": {
     "type": "object",
     "defaultValue": {
@@ -219,23 +236,38 @@
 
     "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
 
+    "compute_AvailabilitySet_Name": "[parameters('availabilitySetName')]",
+    "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_Name'))]",
+
     "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
-
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'AvailSet')]",
-    "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]"
+    "availabilitySetSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','existingAvailSet-',parameters('addToExistingAvailabilitySet'),'.json')]"
 
   },
   "resources": [
     {
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
-      "location": "[parameters('location')]"
+      "name": "SettingUpAvailabilitySet",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('availabilitySetSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "compute_AvailabilitySet_Name":{
+            "value": "[variables('compute_AvailabilitySet_Name')]"
+          },
+          "FortinetTags": {
+            "value": "[parameters('FortinetTags')]"
+          }
+        }
+      }
     },
     {
       "name": "SettingUpStorageAccount",
