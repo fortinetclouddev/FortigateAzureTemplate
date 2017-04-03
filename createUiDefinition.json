@@ -15,6 +15,26 @@
         }
       },
       {
+        "name": "skuSelectorElement",
+        "type": "Microsoft.Common.OptionsGroup",
+        "label": "PAYG/BYOL License",
+        "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to purchase a license from Fortinet separately.",
+        "defaultValue": "PAYG",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "PAYG",
+              "value": "fortinet_fg-vm_payg"
+            },
+            {
+              "label": "BYOL",
+              "value": "fortinet_fg-vm"
+            }
+          ],
+          "required": true
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "FortiGate administrative username",
@@ -201,6 +221,7 @@
       "FortiGateName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
+      "FortiGateImageSKU": "[basics('skuSelectorElement')]",
       "instanceType": "[steps('StorageNetworkConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",

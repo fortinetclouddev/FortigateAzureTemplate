@@ -26,6 +26,17 @@
         "description": "Name for FortiGate virtual appliance."
       }
     },
+    "FortiGateImageSKU": {
+      "type": "string",
+      "defaultValue": "fortinet_fg-vm_payg",
+      "allowedValues": [
+        "fortinet_fg-vm",
+        "fortinet_fg-vm_payg"
+      ],
+      "metadata": {
+        "description": "Identifies whether to use new or previously created Storage Account"
+      }
+    },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_D2_v2",
@@ -180,7 +191,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.5",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.6",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -475,7 +486,7 @@
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "fortinet_fg-vm",
+            "sku": "[parameters('FortiGateImageSKU')]",
             "version": "latest"
           },
           "osDisk": {
