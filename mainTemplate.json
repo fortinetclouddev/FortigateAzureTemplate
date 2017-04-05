@@ -463,7 +463,7 @@
       "plan": {
         "name": "fortinet_fg-vm",
         "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "product": "fortinet_fortigate-vm_v5-preview"
       },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
@@ -485,7 +485,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "offer": "fortinet_fortigate-vm_v5-preview",
             "sku": "[parameters('FortiGateImageSKU')]",
             "version": "latest"
           },
