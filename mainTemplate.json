@@ -189,6 +189,12 @@
         "description": "Name of availability Set. If new, this must be unique within the resource group."
       }
     },
+    "imagename":{
+      "type": "string",
+      "metadata": {
+        "description": "Name of local FortiGate image hosted in an images container in your existing storage account."
+      }
+    },
     "FortinetTags": {
     "type": "object",
     "defaultValue": {
@@ -197,7 +203,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.5wAvailSetOption",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.5GovCloudLocalImage",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -481,11 +487,6 @@
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
-      "plan": {
-        "name": "fortinet_fg-vm",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
-      },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
@@ -504,18 +505,15 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
-            "sku": "fortinet_fg-vm",
-            "version": "latest"
-          },
           "osDisk": {
             "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
+            "image": {
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/images/',parameters('imagename'))]"
+            },
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
             }
           },
           "dataDisks": [
@@ -524,7 +522,7 @@
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
