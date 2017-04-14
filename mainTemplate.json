@@ -44,37 +44,6 @@
         "description": "Virtual Machine size selection"
       }
     },
-    "StorageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique *lowercase* name for the Storage Account where the Virtual Machine's disks will be placed. Note, when deploying a custom template, Azure doesn't check these values for uniqueness."
-      }
-    },
-    "StorageAccountType": {
-      "type": "string",
-      "defaultValue": "Standard_LRS",
-      "metadata": {
-        "description": "Storage Account Type."
-      }
-    },
-    "storageAccountNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Identifies whether to use new or previously created Storage Account"
-      }
-    },
-    "storageAcctResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource Group containing storage account - or new resource group from above (if new storage account)"
-      }
-    },
     "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
@@ -199,7 +168,6 @@
     }
   },
   "variables": {
-    "storageAccountType": "[parameters('StorageAccountType')]",
     "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('instanceType')]",
 
@@ -228,9 +196,6 @@
     "network_NIC_fg12_Name": "[concat(parameters('FortiGateName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
 
-    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
-
-    "storageAccountSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPNewOrExistingOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]",
 
@@ -242,39 +207,15 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "[variables('apiVer')]",
+      "apiVersion": "2016-04-30-preview",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "location": "[parameters('location')]"
-    },
-    {
-      "name": "SettingUpStorageAccount",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "location": "[parameters('location')]",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('storageAccountSetupURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "storageAccountType": {
-            "value": "[parameters('storageAccountType')]"
-          },
-          "storageAccountName": {
-            "value": "[parameters('StorageAccountName')]"
-          },
-          "storageAccountExistingRG": {
-            "value": "[parameters('storageAcctResourceGroup')]"
-          },
-          "FortinetTags": {
-            "value": "[parameters('FortinetTags')]"
-          }
-        }
+        "managed": "true",
+        "platformFaultDomainCount": "2",
+        "platformUpdateDomainCount": "2"
       }
     },
     {
@@ -455,7 +396,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
-      "apiVersion": "[variables('apiVer')]",
+      "apiVersion": "2016-04-30-preview",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -467,8 +408,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
-        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]",
-        "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]"
+        "[concat('Microsoft.Network/networkInterfaces/',variables('network_NIC_fg12_Name'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -490,21 +430,12 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
-            "caching": "ReadWrite",
-            "createOption": "FromImage",
-            "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
-            }
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "name": "[concat(variables('compute_VM_fg1_Name'),'-dataDisk')]",
               "diskSizeGB": "30",
               "lun": 0,
-              "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
-              },
               "createOption": "Empty"
             }
           ]
