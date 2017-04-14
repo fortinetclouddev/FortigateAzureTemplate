@@ -461,7 +461,7 @@
       },
       "location": "[parameters('location')]",
       "plan": {
-        "name": "fortinet_fg-vm",
+        "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5-preview"
       },
