@@ -483,7 +483,7 @@
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
             }
           },
           "dataDisks": [
@@ -492,7 +492,7 @@
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
