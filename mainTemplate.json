@@ -34,7 +34,7 @@
         "fortinet_fg-vm_payg"
       ],
       "metadata": {
-        "description": "Identifies whether to use new or previously created Storage Account"
+        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
     "instanceType": {
