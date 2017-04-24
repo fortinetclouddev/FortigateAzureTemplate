@@ -30,8 +30,7 @@
               "label": "BYOL",
               "value": "fortinet_fg-vm"
             }
-          ],
-          "required": true
+          ]
         }
       },
       {
