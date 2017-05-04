@@ -50,6 +50,30 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
+    "Subnet3Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet3AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
+    "Subnet4Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Server will be deployed into this subnet within the Virtual Network"
+      }
+    },
+    "subnet4AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
+      }
+    },
     "routeTable1Name": {
       "type": "string"
     },
@@ -100,6 +124,18 @@
               "routeTable": {
                 "id": "[variables('routeTable2Id')]"
               }
+            }
+          },
+          {
+            "name": "[parameters('Subnet3Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('Subnet3AddressPrefix')]"
+            }
+          },
+          {
+            "name": "[parameters('Subnet4Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('Subnet4AddressPrefix')]"
             }
           }
         ]
