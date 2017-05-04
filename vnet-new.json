@@ -61,7 +61,7 @@
       "metadata": {
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
-    }
+    },
     "routeTable1Name": {
       "type": "string"
     },
