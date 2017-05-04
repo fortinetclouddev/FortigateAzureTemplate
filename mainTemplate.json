@@ -230,7 +230,7 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2016-04-30-preview",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -452,7 +452,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2016-04-30-preview",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
