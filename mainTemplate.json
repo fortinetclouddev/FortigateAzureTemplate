@@ -207,15 +207,17 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
-        "managed": "true",
         "platformFaultDomainCount": "2",
         "platformUpdateDomainCount": "2"
+      },
+      "sku": {
+        "name":  "Aligned"
       }
     },
     {
@@ -396,7 +398,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
