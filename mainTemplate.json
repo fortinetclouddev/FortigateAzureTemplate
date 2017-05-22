@@ -200,7 +200,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.8-4NIC",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.4.2-4NIC",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -253,15 +253,17 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
-        "managed": "true",
         "platformFaultDomainCount": "2",
         "platformUpdateDomainCount": "2"
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
@@ -508,7 +510,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('compute_VM_fg1_Name')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -567,6 +569,18 @@
                 "primary": false
               },
               "id": "[variables('network_NIC_fg12_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg13_Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('network_NIC_fg14_Id')]"
             }
           ]
         }
