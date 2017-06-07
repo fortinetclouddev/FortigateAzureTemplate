@@ -178,7 +178,7 @@
     },
     "artifactsBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.3.7",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.4.2wAvailSetOption",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -226,7 +226,7 @@
     {
       "name": "SettingUpAvailabilitySet",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2017-03-30",
+      "apiVersion": "2015-01-01",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
