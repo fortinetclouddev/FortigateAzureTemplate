@@ -158,12 +158,6 @@
 
     "scaleNumber": "[parameters('FortiWebAppliancesScaleNumber')]",
     "apiVer": "2015-06-15",
-    "compute_VM_fg1_Name": "[parameters('vmName')]",
-
-    "network_NIC_fg11_Name": "[concat(parameters('vmName'),'Nic0')]",
-    "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(parameters('vmName'),'Nic1')]",
-    "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
    
     "publicIPSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','publicip-',parameters('publicIPsNewOrNone'),'.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('artifactsBaseUrl'),'/','vnet-',parameters('vnetNewOrExisting'),'.json')]"
@@ -182,13 +176,13 @@
         },
         "parameters": {
           "vnetName": {
-            "value": "[parameters('virtualnetName')]"
+            "value": "[parameters('vnetName')]"
           },
           "location": {
             "value": "[parameters('location')]"
           },
           "vnetAddressPrefix": {
-            "value": "[parameters('virtualNetworkAddressPrefix')]"
+            "value": "[parameters('vnetAddressPrefix')]"
           },
           "subnet1Name": {
             "value": "[parameters('Subnet1Name')]"
@@ -203,7 +197,10 @@
             "value": "[parameters('Subnet2Prefix')]"
           },
           "vnetResourceGroup": {
-            "value": "[parameters('virtualNetworkExistingRGName')]"
+            "value": "[parameters('vnetResourceGroup')]"
+          },
+          "FortinetTags": {
+            "value": "[parameters('FortinetTags')]"
           }
         }
       }
@@ -248,6 +245,9 @@
     },
     {
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('FortiWebsNamePrefix'),'-', copyindex(), '-nic1')]",
       "location": "[parameters('location')]",
@@ -277,6 +277,9 @@
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('FortiWebsNamePrefix'),'-', copyindex())]",
       "apiVersion": "2017-03-30",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "location": "[parameters('location')]",
       "plan": {
         "name": "fortinet_fw-vm",
@@ -308,7 +311,7 @@
             "version": "latest"
           },
           "osDisk": {
-            "createOption": "FromImage",
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
