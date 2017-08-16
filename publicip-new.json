@@ -107,6 +107,44 @@
             {
               "name": "[variables('network_LB_Public_BEName')]"
             }
+          ],
+          "loadBalancingRules": [
+            {
+              "name": "HTTPS-LB-Rule",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[variables('network_LB_Public_FEName')]"
+                },
+                "backendAddressPool": {
+                  "id": "[variables('network_LB_Public_BEName')]"
+                },
+                "protocol": "tcp",
+                "frontendPort": 443,
+                "backendPort": 443,
+                "enableFloatingIP": true,
+                "probe": {
+                  "id": "[variables('lbProbeID')]"
+                }
+              }
+            },
+            {
+              "name": "HTTP-LB-Rule",
+              "properties": {
+                "frontendIPConfiguration": {
+                  "id": "[variables('network_LB_Public_FEName')]"
+                },
+                "backendAddressPool": {
+                  "id": "[variables('network_LB_Public_BEName')]"
+                },
+                "protocol": "tcp",
+                "frontendPort": 80,
+                "backendPort": 80,
+                "enableFloatingIP": true,
+                "probe": {
+                  "id": "[variables('lbProbeID')]"
+                }
+              }
+            }
           ]
         }
       },
