@@ -50,11 +50,8 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "routeTable1Name": {
-      "type": "string"
-    },
-    "routeTable2Name": {
-      "type": "string"
+    "FortinetTags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -68,6 +65,9 @@
   "resources": [
     {
       "apiVersion": "[variables('apiVer')]",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "location": "[parameters('location')]",
@@ -81,19 +81,13 @@
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable1Id')]"
-              }
+              "addressPrefix": "[parameters('subnet1AddressPrefix')]"
             }
           },
           {
             "name": "[parameters('Subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
+              "addressPrefix": "[parameters('Subnet2AddressPrefix')]"
             }
           }
         ]
