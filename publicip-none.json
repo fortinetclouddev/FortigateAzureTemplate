@@ -8,13 +8,7 @@
         "description": "Location"
       }
     },
-    "publicIPAddressResourceGroup": {
-      "type": "string",
-      "metadata": {
-        "description": "Resource Group"
-      }
-    },
-    "publicIPAddressName": {
+    "publicIPAddressNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Public IP Address Name"
@@ -26,22 +20,10 @@
         "description": "Public IP Address Type (e.g. Static or Dynamic)"
       }
     },
-    "VMName": {
+    "VMNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "FortiGate name"
-      }
-    },
-    "VNetName": {
-      "type": "string",
-      "metadata": {
-        "description": "FortiGate name"
-      }
-    },
-    "FGPubFacingAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "Outside address of FortiGate"
       }
     },
     "subnet1Ref": {
@@ -50,16 +32,16 @@
         "description": "subnet 1 reference ID"
       }
     },
-    "network_NIC_fg11_Name": {
-      "type": "string",
+    "scaleNumber": {
+      "type": "int",
       "metadata": {
-		  "description": "NIC0 interface name"
+        "description": "number of appliances being built"
       }
     },
-    "FortinetTags": {
-      "type": "object"
-    }
-  },
+      "FortinetTags": {
+        "type": "object"
+      }
+    },
   "variables": {
     "apiVer": "2015-06-15"
   },
@@ -67,18 +49,21 @@
     {
       "apiVersion": "[variables('apiVer')]",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('network_NIC_fg11_Name')]",
+      "name": "[concat(parameters('vmNamePrefix'),'-', copyindex(), '-nic0')]",
       "location": "[parameters('location')]",
+      "copy": {
+        "name": "nicloop",
+        "count": "[parameters('scaleNumber')]"
+      },
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('FGPubFacingAddress')]",
+              "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[parameters('subnet1Ref')]"
               }
@@ -86,10 +71,8 @@
           }
         ],
         "enableIPForwarding": true
+      }
+    }
+  ]
 
-      }
-    }
-  ],
-      "outputs": {
-      }
-    }
+}

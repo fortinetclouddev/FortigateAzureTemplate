@@ -62,24 +62,6 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "Subnet4Name": {
-      "type": "string",
-      "metadata": {
-        "description": "Server will be deployed into this subnet within the Virtual Network"
-      }
-    },
-    "subnet4AddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
-      }
-    },
-    "routeTable1Name": {
-      "type": "string"
-    },
-    "routeTable2Name": {
-      "type": "string"
-    },
     "FortinetTags": {
       "type": "object"
     }
@@ -88,8 +70,6 @@
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('OutsideSubnetName'))]",
     "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('DMZSubnetName'))]",
-    "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
     "apiVer": "2015-06-15"
   },
   "resources": [
@@ -111,19 +91,13 @@
           {
             "name": "[parameters('OutsideSubnetName')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable1Id')]"
-              }
+              "addressPrefix": "[parameters('subnet1AddressPrefix')]"
             }
           },
           {
             "name": "[parameters('DMZSubnetName')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
-              "routeTable": {
-                "id": "[variables('routeTable2Id')]"
-              }
+              "addressPrefix": "[parameters('Subnet2AddressPrefix')]"
             }
           },
           {
@@ -141,15 +115,5 @@
         ]
       }
     }
-  ],
-  "outputs": {
-    "subnet1ID": {
-      "value": "[variables('subnet1ID')]",
-      "type": "string"
-    },
-    "subnet2ID": {
-      "value": "[variables('subnet2ID')]",
-      "type": "string"
-    }
-  }
+  ]
 }
