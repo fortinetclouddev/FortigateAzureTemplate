@@ -22,6 +22,7 @@
     },
     "FortiWebAppliancesScaleNumber": {
       "type": "int",
+      "defaultValue": 2,
       "metadata": {
         "description": "How many FortiWeb virtual appliances to create?"
       }
@@ -52,6 +53,7 @@
     },
     "publicIPsAddressNamePrefix": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
