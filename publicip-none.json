@@ -67,7 +67,6 @@
                 "subnet": {
                   "id": "[parameters('subnet1Ref')]"
                 }
-                ]
               }
             }
           ],
