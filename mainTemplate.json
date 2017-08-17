@@ -283,9 +283,6 @@
           "VMNamePrefix": {
             "value": "[parameters('FortiGateNamePrefix')]"
           },
-          "VNetName": {
-            "value": "[parameters('vnetName')]"
-          },
           "subnet1Ref": {
             "value": "[variables('subnet1Ref')]"
           },
@@ -367,7 +364,7 @@
       },
       "location": "[parameters('location')]",
       "plan": {
-        "name": "[concat(parameters('FortiGateNamePrefix'),'-', copyindex())]",
+        "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
@@ -389,7 +386,7 @@
           "id": "[variables('compute_AvailabilitySet_FG_Id')]"
         },
         "osProfile": {
-          "computerName": "[variables('compute_VM_fg1_Name')]",
+          "computerName": "[concat(parameters('FortiGateNamePrefix'),'-', copyindex())]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
