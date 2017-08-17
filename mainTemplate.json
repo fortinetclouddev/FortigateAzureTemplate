@@ -309,7 +309,7 @@
       "dependsOn": [
         "[concat('Microsoft.Resources/deployments/', 'SettingUpPublicIPandFollowing')]",
         "[concat('Microsoft.Network/networkInterfaces/',concat(parameters('FortiWebsNamePrefix'),'-', copyindex(), '-nic1'))]",
-        "[concat('Microsoft.Compute/availabilitySets', concat(parameters('FortiWebsNamePrefix'),'-AvailabilitySet'))]"
+        "[concat('Microsoft.Compute/availabilitySets/', concat(parameters('FortiWebsNamePrefix'),'-AvailabilitySet'))]"
       ],
       "properties": {
         "hardwareProfile": {

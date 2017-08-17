@@ -46,10 +46,10 @@
     "publicIPID": "[resourceID('Microsoft.Network/publicIPAddresses',concat(parameters('publicIPsAddressNamePrefix'),'-LB'))]",
     "network_LB_Public_Name": "[concat(parameters('vmNamePrefix'),'publicLB')]",
     "network_LB_Public_Id": "[resourceId('Microsoft.Network/loadBalancers',variables('network_LB_Public_Name'))]",
-    "network_LB_Public_FEName": "[concat(parameters('vmNamePrefix'),'publicLBFE')]",
-    "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FEName'))]",
-    "network_LB_Public_BEName": "[concat(parameters('vmNamePrefix'),'publicLBBE')]",
-    "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
+    "network_LB_Public_FEName": "publicLBFE0",
+    "network_LB_Public_FEId": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/publicLBFE0')]",
+    "network_LB_Public_BEName": "publicLBBE0",
+    "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/publicLBBE0')]",
     "lbProbeID": "[concat(variables('network_LB_Public_Id'),'/probes/lbprobe')]",
     "apiVer": "2015-06-15"
   },
@@ -82,13 +82,13 @@
           "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
         }
       },
-	  {
+      {
         "type": "Microsoft.Network/loadBalancers",
         "name": "[variables('network_LB_Public_Name')]",
-      "apiVersion": "[variables('apiVer')]",
-      "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
+        "apiVersion": "2015-06-15",
+        "tags": {
+          "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        },
         "location": "[parameters('location')]",
         "dependsOn": [
           "[variables('publicIPID')]"
@@ -111,53 +111,53 @@
           ],
           "loadBalancingRules": [
             {
-              "name": "HTTPS-LB-Rule",
               "properties": {
                 "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEName')]"
+                  "id": "[variables('network_LB_Public_FEId')]"
                 },
                 "backendAddressPool": {
-                  "id": "[variables('network_LB_Public_BEName')]"
+                  "id": "[variables('network_LB_Public_BEId')]"
                 },
-                "protocol": "tcp",
+                "protocol": "Tcp",
                 "frontendPort": 443,
                 "backendPort": 443,
                 "enableFloatingIP": true,
                 "probe": {
                   "id": "[variables('lbProbeID')]"
                 }
-              }
+              },
+              "Name": "HTTPS-LB-Rule"
             },
             {
-              "name": "HTTP-LB-Rule",
               "properties": {
                 "frontendIPConfiguration": {
-                  "id": "[variables('network_LB_Public_FEName')]"
+                  "id": "[variables('network_LB_Public_FEId')]"
                 },
                 "backendAddressPool": {
-                  "id": "[variables('network_LB_Public_BEName')]"
+                  "id": "[variables('network_LB_Public_BEId')]"
                 },
-                "protocol": "tcp",
+                "protocol": "Tcp",
                 "frontendPort": 80,
                 "backendPort": 80,
                 "enableFloatingIP": true,
                 "probe": {
                   "id": "[variables('lbProbeID')]"
                 }
-              }
+              },
+              "Name": "HTTP-LB-Rule"
             }
           ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 22,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
-          }
-        ]
+          "probes": [
+            {
+              "properties": {
+                "protocol": "Tcp",
+                "port": 22,
+                "intervalInSeconds": 5,
+                "numberOfProbes": 2
+              },
+              "name": "lbprobe"
+            }
+          ]
         }
       },
       {
