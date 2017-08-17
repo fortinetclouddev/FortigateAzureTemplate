@@ -105,12 +105,6 @@
             "properties": {
               "addressPrefix": "[parameters('Subnet3AddressPrefix')]"
             }
-          },
-          {
-            "name": "[parameters('Subnet4Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('Subnet4AddressPrefix')]"
-            }
           }
         ]
       }
