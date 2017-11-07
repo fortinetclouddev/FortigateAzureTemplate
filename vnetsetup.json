@@ -137,6 +137,10 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[parameters('routeTable1Name')]",
+        "[parameters('routeTable2Name')]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
