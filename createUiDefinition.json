@@ -6,8 +6,8 @@
       {
         "name": "VMName",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiGate VM Name",
-        "toolTip": "This is the name of the FortiGate virtual appliance.",
+        "label": "FortiGate Instance Name",
+        "toolTip": "This is the name of the FortiGate instance.",
         "constraints": {
           "required": true,
           "regex": "^[A-Za-z0-9]{1,15}$",
@@ -18,17 +18,44 @@
         "name": "skuSelectorElement",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "PAYG/BYOL License",
-        "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to purchase a license from Fortinet separately.",
-        "defaultValue": "PAYG",
+        "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to obtain a license from Fortinet separately.",
+        "defaultValue": "PAYG 5.6",
         "constraints": {
           "allowedValues": [
             {
-              "label": "PAYG",
-              "value": "fortinet_fg-vm_payg"
+              "label": "BYOL 5.2",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.2.9"
+              }
             },
             {
-              "label": "BYOL",
-              "value": "fortinet_fg-vm"
+              "label": "BYOL 5.4",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.4.6"
+              }
+            },
+            {
+              "label": "BYOL 5.6",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.6.2"
+              }
+            },
+            {
+              "label": "PAYG 5.4",
+              "value": {
+                "SKU": "fortinet_fg-vm_payg",
+                "Version": "5.4.6"
+              }
+            },
+            {
+              "label": "PAYG 5.6",
+              "value": {
+                "SKU": "fortinet_fg-vm_payg",
+                "Version": "5.6.2"
+              }
             }
           ]
         }
@@ -37,7 +64,7 @@
         "name": "adminUsername",
         "type": "Microsoft.Compute.UserNameTextBox",
         "label": "FortiGate administrative username",
-        "toolTip": "Admin username for the FortiGate virtual appliance. Must not be 'admin' nor 'root'.",
+        "toolTip": "Admin username for the FortiGate instance. Must not be 'admin' nor 'root'.",
         "osPlatform": "Linux",
         "constraints": {
           "required": true
@@ -50,7 +77,7 @@
           "password": "FortiGate Password",
           "confirmPassword": "Confirm Password"
         },
-        "toolTip": "Administrative account password for the FortiGate virtual appliance",
+        "toolTip": "Administrative account password for the FortiGate instance",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,123}$",
@@ -103,9 +130,9 @@
                 }
               },
               "subnet2": {
-                "label": "Internal Subnet",
+                "label": "Inside Subnet",
                 "defaultValue": {
-                  "name": "InternalSubnet",
+                  "name": "InsideSubnet",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -122,8 +149,8 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_D3_v2",
-              "Standard_D4_v2"
+              "Standard_F2s_v2",
+              "Standard_F4s_v2"
             ],
             "constraints": {
               "allowedSizes": [
@@ -142,7 +169,12 @@
                 "Standard_F1s",
                 "Standard_F2s",
                 "Standard_F4s",
-                "Standard_F8s"
+                "Standard_F8s",
+                "Standard_F16s",
+                "Standard_F2s_v2",
+                "Standard_F4s_v2",
+                "Standard_F8s_v2",
+                "Standard_F16s_v2"
               ]
             },
             "osPlatform": "Linux",
@@ -159,7 +191,7 @@
         "name": "IPConfig",
         "label": "FortiGate IP Address Assignments",
         "subLabel": {
-          "preValidation": "Configure the Public IP and the IP Addresses for each NIC on the FortiGate",
+          "preValidation": "Configure the Public IP",
           "postValidation": "Done"
         },
         "bladeTitle": "IP Assignment",
@@ -213,22 +245,21 @@
       "FortiGateName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
-      "FortiGateImageSKU": "[basics('skuSelectorElement')]",
+      "FortiGateImageSKU": "[basics('skuSelectorElement').SKU]",
+      "FortiGateImageVersion": "[basics('skuSelectorElement').Version]",
       "instanceType": "[steps('NetworkandInstanceConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
       "publicIPResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
-      "fortiGateIP1": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.startAddress]",
-      "fortiGateIP2": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.startAddress]",
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('NetworkandInstanceConfig').virtualNetwork.newOrExisting]",
       "vnetName": "[steps('NetworkandInstanceConfig').virtualNetwork.name]",
-      "vnetResourceGroup":  "[steps('NetworkandInstanceConfig').virtualNetwork.resourceGroup]",
-      "vnetAddressPrefix" : "[steps('NetworkandInstanceConfig').virtualNetwork.addressPrefix]",
-      "Subnet1Name" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.name]",
+      "vnetResourceGroup": "[steps('NetworkandInstanceConfig').virtualNetwork.resourceGroup]",
+      "vnetAddressPrefix": "[steps('NetworkandInstanceConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.name]",
       "Subnet2Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }
