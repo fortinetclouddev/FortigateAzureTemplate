@@ -105,15 +105,5 @@
         ]
       }
     }
-  ],
-  "outputs": {
-    "subnet1ID": {
-      "value": "[variables('subnet1ID')]",
-      "type": "string"
-    },
-    "subnet2ID": {
-      "value": "[variables('subnet2ID')]",
-      "type": "string"
-    }
-  }
+  ]
 }

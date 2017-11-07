@@ -19,16 +19,36 @@
         "type": "Microsoft.Common.OptionsGroup",
         "label": "PAYG/BYOL License",
         "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to purchase a license from Fortinet separately.",
-        "defaultValue": "PAYG",
+        "defaultValue": "PAYG 5.6",
         "constraints": {
           "allowedValues": [
             {
-              "label": "PAYG",
-              "value": "fortinet_fg-vm_payg"
+              "label": "PAYG 5.4",
+              "value": {
+                "SKU": "fortinet_fg-vm_payg",
+                "Version": "5.4.6"
+              }
             },
             {
-              "label": "BYOL",
-              "value": "fortinet_fg-vm"
+              "label": "PAYG 5.6",
+              "value": {
+                "SKU": "fortinet_fg-vm_payg",
+                "Version": "5.6.2"
+              }
+            },
+            {
+              "label": "BYOL 5.4",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.4.6"
+              }
+            },
+            {
+              "label": "BYOL 5.6",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.6.2"
+              }
             }
           ]
         }
@@ -213,7 +233,8 @@
       "FortiGateName": "[basics('VMName')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('passwordElement')]",
-      "FortiGateImageSKU": "[basics('skuSelectorElement')]",
+      "FortiGateImageSKU": "[basics('skuSelectorElement').SKU]",
+      "FortiGateImageVersion": "[basics('skuSelectorElement').Version]",
       "instanceType": "[steps('NetworkandInstanceConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
       "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
@@ -224,11 +245,11 @@
       "location": "[location()]",
       "vnetNewOrExisting": "[steps('NetworkandInstanceConfig').virtualNetwork.newOrExisting]",
       "vnetName": "[steps('NetworkandInstanceConfig').virtualNetwork.name]",
-      "vnetResourceGroup":  "[steps('NetworkandInstanceConfig').virtualNetwork.resourceGroup]",
-      "vnetAddressPrefix" : "[steps('NetworkandInstanceConfig').virtualNetwork.addressPrefix]",
-      "Subnet1Name" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.name]",
-      "Subnet1Prefix" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-      "Subnet2Name" : "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.name]",
+      "vnetResourceGroup": "[steps('NetworkandInstanceConfig').virtualNetwork.resourceGroup]",
+      "vnetAddressPrefix": "[steps('NetworkandInstanceConfig').virtualNetwork.addressPrefix]",
+      "Subnet1Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.name]",
+      "Subnet1Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet2Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.name]",
       "Subnet2Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
     }
   }

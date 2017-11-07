@@ -69,15 +69,5 @@
     "apiVer": "2015-06-15"
   },
   "resources": [
-  ],
-  "outputs": {
-    "subnet1ID": {
-      "value": "[variables('subnet1ID')]",
-      "type": "string"
-    },
-    "subnet2ID": {
-      "value": "[variables('subnet2ID')]",
-      "type": "string"
-    }
-  }
+  ]
 }

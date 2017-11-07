@@ -53,7 +53,7 @@
     "network_NIC_fg11_Name": {
       "type": "string",
       "metadata": {
-		  "description": "NIC0 interface name"
+        "description": "NIC0 interface name"
       }
     },
     "FortinetTags": {
@@ -67,7 +67,7 @@
     {
       "apiVersion": "[variables('apiVer')]",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('network_NIC_fg11_Name')]",
@@ -89,7 +89,5 @@
 
       }
     }
-  ],
-      "outputs": {
-      }
-    }
+  ]
+}

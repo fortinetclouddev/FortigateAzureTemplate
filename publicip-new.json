@@ -107,15 +107,5 @@
           "enableIPForwarding": true
         }
       }
-    ],
-    "outputs": {
-        "publicIPID": {
-            "value": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
-            "type": "string"
-        },
-        "fqdn": {
-            "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName')),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).dnsSettings.fqdn]",
-            "type": "string"
-        }
-    }
+    ]
 }
