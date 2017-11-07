@@ -8,6 +8,9 @@
         "description": "Location"
       }
     },
+    "vnetNewOrExisting": {
+      "type": "string"
+    },
     "vnetName": {
       "type": "string",
       "metadata": {
@@ -26,7 +29,7 @@
         "description": "Virtual Network Address Prefix (i.e. CIDR)"
       }
     },
-    "OutsideSubnetName": {
+    "Subnet1Name": {
       "type": "string",
       "metadata": {
         "description": "Server will be deployed into this subnet within the Virtual Network"
@@ -38,7 +41,10 @@
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
     },
-    "DMZSubnetName": {
+    "subnet1NextHop": {
+      "type": "string"
+    },
+    "Subnet2Name": {
       "type": "string",
       "metadata": {
         "description": "Server will be deployed into this subnet within the Virtual Network"
@@ -49,6 +55,9 @@
       "metadata": {
         "description": "Virtual Network subnet Address Prefix (i.e. CIDR)"
       }
+    },
+    "subnet2NextHop": {
+      "type": "string"
     },
     "routeTable1Name": {
       "type": "string"
@@ -62,17 +71,68 @@
   },
   "variables": {
     "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('OutsideSubnetName'))]",
-    "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('DMZSubnetName'))]",
+    "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('Subnet1Name'))]",
+    "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('Subnet2Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
     "apiVer": "2015-06-15"
   },
   "resources": [
     {
-      "apiVersion": "[variables('apiVer')]",
+      "type": "Microsoft.Network/routeTables",
+      "name": "[parameters('routeTable1Name')]",
+      "apiVersion": "2015-06-15",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('to', '-', parameters('Subnet2Name'))]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet2AddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('subnet1NextHop')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[parameters('routeTable2Name')]",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "apiVersion": "2015-06-15",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "[concat('to', '-', parameters('Subnet1Name'))]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1AddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('subnet1NextHop')]"
+            }
+          },
+          {
+            "name": "to-Internet",
+            "properties": {
+              "AddressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[parameters('subnet1NextHop')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
+      "apiVersion": "2015-06-15",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
@@ -85,7 +145,7 @@
         },
         "subnets": [
           {
-            "name": "[parameters('OutsideSubnetName')]",
+            "name": "[parameters('Subnet1Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet1AddressPrefix')]",
               "routeTable": {
@@ -94,7 +154,7 @@
             }
           },
           {
-            "name": "[parameters('DMZSubnetName')]",
+            "name": "[parameters('Subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('Subnet2AddressPrefix')]",
               "routeTable": {
@@ -107,13 +167,5 @@
     }
   ],
   "outputs": {
-    "subnet1ID": {
-      "value": "[variables('subnet1ID')]",
-      "type": "string"
-    },
-    "subnet2ID": {
-      "value": "[variables('subnet2ID')]",
-      "type": "string"
-    }
   }
 }
