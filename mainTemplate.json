@@ -161,7 +161,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.5.0/",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/5.5.0",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -187,8 +187,8 @@
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'-AvailabilitySet-',uniquestring(deployment().name))]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
-    "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'update-nic.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'vnetsetup.json')]"
+    "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
+    "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
 
   },
   "resources": [
@@ -442,7 +442,7 @@
       "plan": {
         "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "product": "fortinet_fortigate-vm_v5-preview"
       },
       "dependsOn": [
         "SettingUpVirtualNetwork"
@@ -462,7 +462,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "offer": "fortinet_fortigate-vm_v5-preview",
             "sku": "[parameters('FortiGateImageSKU')]",
             "version": "[parameters('FortiGateImageVersion')]"
           },
