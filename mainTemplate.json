@@ -442,7 +442,7 @@
       "plan": {
         "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5-preview"
+        "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
         "SettingUpVirtualNetwork"
@@ -462,7 +462,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5-preview",
+            "offer": "fortinet_fortigate-vm_v5",
             "sku": "[parameters('FortiGateImageSKU')]",
             "version": "[parameters('FortiGateImageVersion')]"
           },
