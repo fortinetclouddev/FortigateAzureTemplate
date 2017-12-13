@@ -64,7 +64,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'none'), variables('NICwoPIP'), variables('NICwPIP'))]",
-        "enableIPForwarding": false
+        "enableIPForwarding": true
       }
     }
   ],
