@@ -54,7 +54,7 @@
               "label": "PAYG 5.6",
               "value": {
                 "SKU": "fortinet_fg-vm_payg",
-                "Version": "5.6.2"
+                "Version": "5.6.3"
               }
             }
           ]
