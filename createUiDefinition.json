@@ -23,38 +23,45 @@
         "constraints": {
           "allowedValues": [
             {
-              "label": "BYOL 5.2",
+              "label": "BYOL 5.4.8",
               "value": {
                 "SKU": "fortinet_fg-vm",
-                "Version": "5.2.9"
+                "Version": "5.4.8"
               }
             },
             {
-              "label": "BYOL 5.4",
-              "value": {
-                "SKU": "fortinet_fg-vm",
-                "Version": "5.4.6"
-              }
-            },
-            {
-              "label": "BYOL 5.6",
+              "label": "BYOL 5.6.3",
               "value": {
                 "SKU": "fortinet_fg-vm",
                 "Version": "5.6.3"
               }
             },
             {
-              "label": "PAYG 5.4",
+              "label": "BYOL 6.0.0",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "6.0.0"
+              }
+            },
+            {
+              "label": "PAYG 5.4.6",
               "value": {
                 "SKU": "fortinet_fg-vm_payg",
                 "Version": "5.4.6"
               }
             },
             {
-              "label": "PAYG 5.6",
+              "label": "PAYG 5.6.3",
               "value": {
                 "SKU": "fortinet_fg-vm_payg",
                 "Version": "5.6.3"
+              }
+            },
+            {
+              "label": "PAYG 6.0.0",
+              "value": {
+                "SKU": "fortinet_fg-vm_payg",
+                "Version": "6.0.0"
               }
             }
           ]
@@ -259,8 +266,10 @@
       "vnetAddressPrefix": "[steps('NetworkandInstanceConfig').virtualNetwork.addressPrefix]",
       "Subnet1Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.name]",
       "Subnet1Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
+      "Subnet1IP": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet1.startAddress]",
       "Subnet2Name": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.name]",
-      "Subnet2Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.addressPrefix]"
+      "Subnet2Prefix": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.addressPrefix]",
+      "Subnet2IP": "[steps('NetworkandInstanceConfig').virtualNetwork.subnets.subnet2.startAddress]",
     }
   }
 }
