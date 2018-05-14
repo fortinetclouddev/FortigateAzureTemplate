@@ -28,7 +28,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_D2_v2",
+      "defaultValue": "Standard_F2",
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -233,7 +233,7 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
     "network_NIC_fg12_Name": "[concat(parameters('FortiGateName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    
+
     "compute_AvailabilitySet_Name": "[parameters('availabilitySetName')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_Name'))]",
 
