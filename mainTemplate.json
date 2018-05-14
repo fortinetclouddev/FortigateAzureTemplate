@@ -48,9 +48,8 @@
     },
     "storageAccountNewOrExisting": {
       "type": "string",
-      "defaultValue": "new",
+      "defaultValue": "existing",
       "allowedValues": [
-        "new",
         "existing"
       ],
       "metadata": {
@@ -211,18 +210,13 @@
     }
   },
   "variables": {
-    "storageAccountType": "[parameters('StorageAccountType')]",
-    "vmStorageAccountContainerName": "vhds",
     "vmSize": "[parameters('instanceType')]",
 
-    "VNetName": "[parameters('vnetName')]",
     "Subnet1Name": "[parameters('Subnet1Name')]",
     "Subnet2Name": "[parameters('Subnet2Name')]",
     "vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', variables('Subnet2Name'))]",
-
-    "VNetAddressPrefix": "[parameters('vnetAddressPrefix')]",
     "Subnet1Prefix": "[parameters('Subnet1Prefix')]",
     "Subnet2Prefix": "[parameters('Subnet2Prefix')]",
 
@@ -239,9 +233,7 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
     "network_NIC_fg12_Name": "[concat(parameters('FortiGateName'),'Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-
-    "storage_Acct_1_Id": "[resourceId('Microsoft.Storage/storageAccounts',parameters('StorageAccountName'))]",
-
+    
     "compute_AvailabilitySet_Name": "[parameters('availabilitySetName')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_Name'))]",
 
@@ -509,11 +501,12 @@
             "name": "[concat(variables('compute_VM_fg1_Name'),'-osDisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage",
+            "osType": "linux",
             "image": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/images/',parameters('imagename'))]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/images/',parameters('imagename'))]"
             },
             "vhd": {
-              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-osdisk.vhd')]"
             }
           },
           "dataDisks": [
@@ -522,7 +515,7 @@
               "diskSizeGB": "30",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.usgovcloudapi.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
+                "uri": "[concat('http://',parameters('StorageAccountName'),'.blob.core.windows.net/vhds/', variables('compute_VM_fg1_Name'),'-',deployment().name,'-',uniqueString(resourceGroup().id),'-datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
