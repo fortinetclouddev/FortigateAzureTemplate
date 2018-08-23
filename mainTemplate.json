@@ -42,9 +42,9 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "5.2.9",
         "5.4.6",
-        "5.6.3",
+        "5.6.5",
+        "6.0.2",
         "latest"
       ],
       "metadata": {
@@ -331,6 +331,9 @@
           "publicIPNewOrExistingOrNone": {
             "value": "[parameters('publicIPNewOrExistingOrNone')]"
           },
+          "location": {
+            "value": "[parameters('location')]"
+          },
           "FortinetTags": {
             "value": "[parameters('FortinetTags')]"
           }
@@ -365,6 +368,9 @@
           },
           "publicIPNewOrExistingOrNone": {
             "value": "none"
+          },
+          "location": {
+            "value": "[parameters('location')]"
           },
           "FortinetTags": {
             "value": "[parameters('FortinetTags')]"

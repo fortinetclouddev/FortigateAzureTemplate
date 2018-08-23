@@ -17,6 +17,9 @@
     "publicIPNewOrExistingOrNone": {
       "type": "string"
     },
+    "location":{
+      "type": "string"
+    },
     "FortinetTags": {
       "type": "object"
     }
@@ -61,7 +64,7 @@
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('nicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'none'), variables('NICwoPIP'), variables('NICwPIP'))]",
         "enableIPForwarding": true
