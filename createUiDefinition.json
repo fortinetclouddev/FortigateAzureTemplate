@@ -23,31 +23,31 @@
         "constraints": {
           "allowedValues": [
             {
-              "label": "PAYG 5.6.5",
+              "label": "PAYG 5.6.6",
               "value": {
                 "SKU": "fortinet_fg-vm_payg",
-                "Version": "5.6.5"
+                "Version": "5.6.6"
               }
             },
             {
-              "label": "BYOL 5.6.5",
+              "label": "BYOL 5.6.6",
               "value": {
                 "SKU": "fortinet_fg-vm",
-                "Version": "5.6.5"
+                "Version": "5.6.6"
               }
             },
             {
-              "label": "PAYG 6.0.2",
+              "label": "PAYG 6.0.3",
               "value": {
                 "SKU": "fortinet_fg-vm_payg",
-                "Version": "6.0.2"
+                "Version": "6.0.3"
               }
             },
             {
-              "label": "BYOL 6.0.2",
+              "label": "BYOL 6.0.3",
               "value": {
                 "SKU": "fortinet_fg-vm",
-                "Version": "6.0.2"
+                "Version": "6.0.3"
               }
             }
           ]
