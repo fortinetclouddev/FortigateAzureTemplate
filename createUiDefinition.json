@@ -19,7 +19,7 @@
         "type": "Microsoft.Common.OptionsGroup",
         "label": "PAYG/BYOL License",
         "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to obtain a license from Fortinet separately.",
-        "defaultValue": "PAYG 5.6",
+        "defaultValue": "PAYG 6.0.3",
         "constraints": {
           "allowedValues": [
             {
