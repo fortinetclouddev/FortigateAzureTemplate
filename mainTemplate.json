@@ -43,6 +43,7 @@
       "defaultValue": "latest",
       "allowedValues": [
         "5.6.6",
+        "6.0.02",
         "6.0.2",
         "6.0.3",
         "latest"
@@ -185,6 +186,8 @@
 
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'-AvailabilitySet-',uniquestring(deployment().name))]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
+
+    "customData": "[concat('config system global\n     set admin-sport 8443\n end\n config system interface\n     edit port1\n        set description ext\n     next\n     edit port2\n        set description int\n        set mode dhcp\n        set defaultgw disable\n     next\n end\nconfig router static\nedit 0\nset dst 168.63.129.16 255.255.255.255\nset device port2\n next\n end\nedit 0\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\n next\n end\n')]",
 
     "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
@@ -432,7 +435,7 @@
             "value": "[parameters('Subnet2Prefix')]"
           },
           "subnet2NextHop": {
-            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg11_Name'))).ipConfigurations[0].properties.privateIPAddress]"
+            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[0].properties.privateIPAddress]"
           },
           "vnetResourceGroup": {
             "value": "[parameters('vnetResourceGroup')]"
@@ -475,7 +478,8 @@
         "osProfile": {
           "computerName": "[parameters('FortiGateName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[base64(variables('customData'))]"
         },
         "storageProfile": {
           "imageReference": {

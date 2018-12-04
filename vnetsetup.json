@@ -114,7 +114,7 @@
             "properties": {
               "addressPrefix": "[parameters('subnet1AddressPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[parameters('subnet1NextHop')]"
+              "nextHopIpAddress": "[parameters('subnet2NextHop')]"
             }
           },
           {
@@ -122,7 +122,7 @@
             "properties": {
               "AddressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[parameters('subnet1NextHop')]"
+              "nextHopIPAddress": "[parameters('subnet2NextHop')]"
             }
           }
         ]
