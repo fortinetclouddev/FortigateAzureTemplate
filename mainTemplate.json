@@ -122,37 +122,44 @@
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.0.0.0/16",
       "metadata": {
         "description": "Virtual network address space in CIDR notation, example: 10.2.0.0/16"
       }
     },
     "Subnet1Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "sub1",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
     "Subnet1Prefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.1.0/24"
       }
     },
     "Subnet2Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "sub2",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "Subnet2Prefix": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10.0.2.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
+      }
+    },
+    "subnet2FirstIP": {
+      "type": "string",
+      "defaultValue": "10.0.2.4",
+      "metadata": {
+        "description": "First usable IP for subnet2 - typically provided via Azure marketplace UI"
       }
     },
     "FortinetTags": {
@@ -163,7 +170,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/6.0.4",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/6.0.442",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -187,7 +194,14 @@
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'-AvailabilitySet-',uniquestring(deployment().name))]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
-    "customData": "[concat('config system global\n     set admin-sport 8443\n end\n config system interface\n     edit port1\n        set description ext\n     next\n     edit port2\n        set description int\n        set mode dhcp\n        set defaultgw disable\n     next\n end\nconfig router static\nedit 0\nset dst 168.63.129.16 255.255.255.255\nset device port2\n next\n end\nedit 0\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\n next\n end\n')]",
+    "vmIPArray": "[split(parameters('subnet2FirstIP'),'.')]",
+    "newIPArray3": "[string(mod(sub(int(variables('vmIPArray')[3]),3),256))]",
+    "newIPArray2": "[string(int(variables('vmIPArray')[2]))]",
+    "newIPArray1": "[string(int(variables('vmIPArray')[1]))]",
+    "newIPArray0": "[string(int(variables('vmIPArray')[0]))]",
+    "GatewayIP": "[concat(variables('newIPArray0'),'.',variables('newIPArray1'),'.',variables('newIPArray2'),'.',variables('newIPArray3'))]",
+
+    "customData": "[concat('config system global\n     set admin-sport 8443\n end\n config system interface\n     edit port1\n        set description ext\n     next\n     edit port2\n        set description int\n        set mode dhcp\n        set defaultgw disable\n     next\n end\nconfig router static\nedit 0\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('GatewayIP'), '\n next\nedit 0\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\n set gateway ', variables ('GatewayIP'), '\n next\n end\n')]",
 
     "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
