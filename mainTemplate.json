@@ -155,13 +155,6 @@
         "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
       }
     },
-    "subnet2FirstIP": {
-      "type": "string",
-      "defaultValue": "10.0.2.4",
-      "metadata": {
-        "description": "First usable IP for subnet2 - typically provided via Azure marketplace UI"
-      }
-    },
     "FortinetTags": {
       "type": "object",
       "defaultValue": {
@@ -194,8 +187,10 @@
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'-AvailabilitySet-',uniquestring(deployment().name))]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
-    "vmIPArray": "[split(parameters('subnet2FirstIP'),'.')]",
-    "newIPArray3": "[string(mod(sub(int(variables('vmIPArray')[3]),3),256))]",
+    "vmIPArray": "[split(parameters('Subnet2Prefix'),'.')]",
+    "vmIPArray2String": "[string(variables('vmIPArray')[3])]",
+    "vmIPArray2": "[split(variables('vmIPArray2String'),'/')]",
+    "newIPArray3": "[string(add(int(variables('vmIPArray2')[0]),1))]",
     "newIPArray2": "[string(int(variables('vmIPArray')[2]))]",
     "newIPArray1": "[string(int(variables('vmIPArray')[1]))]",
     "newIPArray0": "[string(int(variables('vmIPArray')[0]))]",
