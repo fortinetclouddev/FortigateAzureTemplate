@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westus"
+        },
+        "FortiGateName": {
+            "value": "FortiGate"
+        },
+        "FortiGateImageSKU": {
+            "value": "fortinet_fg-vm_payg"
+        },
+        "FortiGateImageVersion": {
+            "value": "latest"
+        },
+        "instanceType": {
+            "value": "Standard_F1"
+        },
+        "publicIPNewOrExistingOrNone":{
+            "value": "new"
+        },
+        "publicIPAddressName":{
+            "value": "FortiGatePublicIP"
+        },
+        "publicIPAddressType":{
+            "value": "Static"
+        },
+        "vnetNewOrExisting":{
+            "value": "new"
+        },
+        "vnetName":{
+            "value": "FortiGateProtectedVNET"
+        },
+        "vnetAddressPrefix":{
+            "value": "10.0.0.0/16"
+        },
+        "Subnet1Name":{
+            "value": "UntrustedSubnet"
+        },
+        "Subnet1Prefix":{
+            "value": "10.0.1.0/24"
+        },
+        "Subnet2Name":{
+            "value": "TrustedSubnet"
+        },
+        "Subnet2Prefix":{
+            "value": "10.0.2.0/24"
+        },
+        "Subnet3Name":{
+            "value": "DMZSubnet"
+        },
+        "Subnet3Prefix":{
+            "value": "10.0.3.0/24"
+        },
+        "adminUsername": {
+            "value": "FortiGateAdmin"
+        },
+        "adminPassword": {
+            "value": "Forti53cure#12"
+        }
+    }
+}

@@ -29,7 +29,7 @@
     },
     "FortiGateImageSKU": {
       "type": "string",
-      "defaultValue": "fortinet_fg-vm_payg",
+      "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
         "fortinet_fg-vm_payg"
@@ -78,13 +78,6 @@
         "description": "Name of Public IP address resource."
       }
     },
-    "publicIPResourceGroup": {
-      "type": "string",
-      "defaultValue": "PublicIPResourceGroupHere",
-      "metadata": {
-        "description": "Resource Group containing the public IP - or new resource group from above (if new public IP)"
-      }
-    },
     "publicIPAddressType": {
       "type": "string",
       "defaultValue": "Static",
@@ -111,13 +104,6 @@
       "type": "string",
       "metadata": {
         "description": "Name of the Azure virtual network."
-      }
-    },
-    "vnetResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
     },
     "vnetAddressPrefix": {
@@ -155,6 +141,20 @@
         "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
       }
     },
+    "Subnet3Name": {
+      "type": "string",
+      "defaultValue": "sub3",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
+    "Subnet3Prefix": {
+      "type": "string",
+      "defaultValue": "10.0.3.0/24",
+      "metadata": {
+        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
+      }
+    },
     "FortinetTags": {
       "type": "object",
       "defaultValue": {
@@ -163,7 +163,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/6.0.442",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/testdrive",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -171,13 +171,13 @@
     }
   },
   "variables": {
-    "subnet1Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet1Name'))]",
-    "subnet2Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet2Name'))]",
-    
-    "publicIPID": "[resourceId(parameters('publicIPResourceGroup'), 'Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]",
+    "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet1Name'))]",
+    "subnet2Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet2Name'))]",
+    "subnet3Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet3Name'))]", 
+    "publicIPID": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]",
 
     "routeTable1Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet1Name'),'-routes-',uniquestring(deployment().name))]",
-    "routeTable2Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet2Name'),'-routes-',uniquestring(deployment().name))]",
+    "routeTable2Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet3Name'),'-routes-',uniquestring(deployment().name))]",
 
     "network_NIC_fg11_Name": "[concat(parameters('FortiGateName'),'-Nic0-',uniquestring(deployment().name))]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
@@ -255,6 +255,12 @@
             "name": "[parameters('Subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('Subnet2Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('Subnet3Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('Subnet3Prefix')]"
             }
           }
         ]
@@ -446,8 +452,11 @@
           "subnet2NextHop": {
             "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[0].properties.privateIPAddress]"
           },
-          "vnetResourceGroup": {
-            "value": "[parameters('vnetResourceGroup')]"
+          "subnet3Name": {
+            "value": "[parameters('Subnet3Name')]"
+          },
+          "subnet3AddressPrefix": {
+            "value": "[parameters('Subnet3Prefix')]"
           },
           "routeTable1Name": {
             "value": "[variables('routeTable1Name')]"
@@ -525,6 +534,75 @@
           ]
         }
       }
-    }
-  ]
+    },
+    {
+      "apiVersion": "2017-09-01",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "UbuntuNIC",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[parameters('vnetName')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "10.0.3.4",
+              "subnet": {
+                "id": "[variables('subnet3Ref')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": false
+      }
+    },
+    {
+      "name": "UbuntuServer",
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-06-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+          "UbuntuNIC"
+      ],
+      "properties": {
+          "hardwareProfile": {
+              "vmSize": "Standard_B1s"
+          },
+          "storageProfile": {
+              "osDisk": {
+                  "createOption": "fromImage",
+                  "managedDisk": {
+                      "storageAccountType": "StandardSSD_LRS"
+                  }
+              },
+              "imageReference": {
+                  "publisher": "Canonical",
+                  "offer": "UbuntuServer",
+                  "sku": "18.04-LTS",
+                  "version": "latest"
+              }
+          },
+          "networkProfile": {
+              "networkInterfaces": [
+                  {
+                      "id": "[resourceId('Microsoft.Network/networkInterfaces', 'UbuntuNIC')]"
+                  }
+              ]
+          },
+          "osProfile": {
+              "computerName": "UbuntuServer",
+              "adminUsername": "[parameters('adminUsername')]",
+              "adminPassword": "[parameters('adminPassword')]"
+          }
+      },
+      "tags": {}
   }
+]
+
+}
