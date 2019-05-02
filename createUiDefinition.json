@@ -1,6 +1,7 @@
 ﻿{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
   "handler": "Microsoft.Compute.MultiVm",
-  "version": "0.0.1-preview",
+  "version": "0.1.2-preview",
   "parameters": {
     "basics": [
       {
@@ -19,28 +20,35 @@
         "type": "Microsoft.Common.OptionsGroup",
         "label": "PAYG/BYOL License",
         "toolTip": "Select PAYG for on-demand/hourly billing of the FortiGate license, or BYOL to obtain a license from Fortinet separately.",
-        "defaultValue": "PAYG 6.0.3",
+        "defaultValue": "PAYG 6.0.4",
         "constraints": {
           "allowedValues": [
             {
-              "label": "PAYG 5.6.6",
+              "label": "PAYG 6.0.4",
               "value": {
-                "SKU": "fortinet_fg-vm_payg",
-                "Version": "5.6.6"
-              }
-            },
-            {
-              "label": "BYOL 5.6.6",
-              "value": {
-                "SKU": "fortinet_fg-vm",
-                "Version": "5.6.6"
+                "SKU": "fortinet_fg_ey_private_offer",
+                "Version": "6.0.4"
               }
             },
             {
               "label": "PAYG 6.0.3",
               "value": {
-                "SKU": "fortinet_fg-vm_payg",
+                "SKU": "fortinet_fg_ey_private_offer",
                 "Version": "6.0.3"
+              }
+            },
+            {
+              "label": "PAYG 5.6.6",
+              "value": {
+                "SKU": "fortinet_fg_ey_private_offer",
+                "Version": "5.6.6"
+              }
+            },            
+            {
+              "label": "BYOL 6.0.4",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "6.0.4"
               }
             },
             {
@@ -48,6 +56,13 @@
               "value": {
                 "SKU": "fortinet_fg-vm",
                 "Version": "6.0.3"
+              }
+            },
+            {
+              "label": "BYOL 5.6.6",
+              "value": {
+                "SKU": "fortinet_fg-vm",
+                "Version": "5.6.6"
               }
             }
           ]
@@ -142,24 +157,14 @@
             "label": "Virtual machine size",
             "toolTip": "The size of virtual machine to provision.",
             "recommendedSizes": [
-              "Standard_F2s_v2",
-              "Standard_F4s_v2"
+              "Standard_F4",
+              "Standard_F4s"
             ],
             "constraints": {
               "allowedSizes": [
-                "Standard_F1",
-                "Standard_F2",
                 "Standard_F4",
-                "Standard_F8",
-                "Standard_F1s",
-                "Standard_F2s",
                 "Standard_F4s",
-                "Standard_F8s",
-                "Standard_F16s",
-                "Standard_F2s_v2",
-                "Standard_F4s_v2",
-                "Standard_F8s_v2",
-                "Standard_F16s_v2"
+                "Standard_F4s_v2"
               ]
             },
             "osPlatform": "Linux",
@@ -203,25 +208,6 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             }
-          },
-          {
-            "name": "publicIPAddressTypeElement",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Public IP Address Type",
-            "toolTip": "",
-            "defaultValue": "Static",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Static",
-                  "value": "Static"
-                },
-                {
-                  "label": "Dynamic",
-                  "value": "Dynamic"
-                }
-              ]
-            }
           }
         ]
       }
@@ -234,7 +220,6 @@
       "FortiGateImageVersion": "[basics('skuSelectorElement').Version]",
       "instanceType": "[steps('NetworkandInstanceConfig').vmSize]",
       "publicIPAddressName": "[steps('IPConfig').publicIpAddress.name]",
-      "publicIPAddressType": "[steps('IPConfig').publicIPAddressTypeElement]",
       "publicIPNewOrExistingOrNone": "[steps('IPConfig').publicIpAddress.newOrExistingOrNone]",
       "publicIPResourceGroup": "[steps('IPConfig').publicIpAddress.resourceGroup]",
       "location": "[location()]",

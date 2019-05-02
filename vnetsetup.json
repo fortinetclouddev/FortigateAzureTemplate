@@ -70,18 +70,14 @@
     }
   },
   "variables": {
-    "vnetID": "[resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnet1ID": "[concat(variables('vnetID'),'/subnets/',parameters('Subnet1Name'))]",
-    "subnet2ID": "[concat(variables('vnetID'),'/subnets/',parameters('Subnet2Name'))]",
     "routeTable1Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
-    "apiVer": "2015-06-15"
+    "routeTable2Id": "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[parameters('routeTable1Name')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-02-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -105,7 +101,7 @@
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-02-01",
       "location": "[parameters('location')]",
       "properties": {
         "routes": [
@@ -130,7 +126,7 @@
     },
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-02-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },

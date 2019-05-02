@@ -29,10 +29,10 @@
     },
     "FortiGateImageSKU": {
       "type": "string",
-      "defaultValue": "fortinet_fg-vm_payg",
+      "defaultValue": "fortinet_fg_ey_private_offer",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg"
+        "fortinet_fg_ey_private_offer"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -43,9 +43,8 @@
       "defaultValue": "latest",
       "allowedValues": [
         "5.6.6",
-        "6.0.02",
-        "6.0.2",
         "6.0.3",
+        "6.0.4",
         "latest"
       ],
       "metadata": {
@@ -54,7 +53,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F1",
+      "defaultValue": "Standard_F4",
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -83,17 +82,6 @@
       "defaultValue": "PublicIPResourceGroupHere",
       "metadata": {
         "description": "Resource Group containing the public IP - or new resource group from above (if new public IP)"
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address - A 'dynamic' address will change during reboot or periods of inactivity"
       }
     },
     "vnetNewOrExisting": {
@@ -163,7 +151,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/6.0.442",
+      "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
         "description": "Base URL of the solution template gallery package",
         "artifactsBaseUrl": ""
@@ -195,9 +183,6 @@
     "newIPArray1": "[string(int(variables('vmIPArray')[1]))]",
     "newIPArray0": "[string(int(variables('vmIPArray')[0]))]",
     "GatewayIP": "[concat(variables('newIPArray0'),'.',variables('newIPArray1'),'.',variables('newIPArray2'),'.',variables('newIPArray3'))]",
-
-    "customData": "[concat('config system global\n     set admin-sport 8443\n end\n config system interface\n     edit port1\n        set description ext\n     next\n     edit port2\n        set description int\n        set mode dhcp\n        set defaultgw disable\n     next\n end\nconfig router static\nedit 0\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('GatewayIP'), '\n next\nedit 0\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\n set gateway ', variables ('GatewayIP'), '\n next\n end\n')]",
-
     "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
 
@@ -270,7 +255,7 @@
       "name": "[parameters('publicIPAddressName')]",
       "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -487,8 +472,7 @@
         "osProfile": {
           "computerName": "[parameters('FortiGateName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(variables('customData'))]"
+          "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
