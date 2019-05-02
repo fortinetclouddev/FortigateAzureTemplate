@@ -29,10 +29,10 @@
     },
     "FortiGateImageSKU": {
       "type": "string",
-      "defaultValue": "fortinet_fg_ey_private_offer",
+      "defaultValue": "fortinet_fg-vm_payg",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg_ey_private_offer"
+        "fortinet_fg-vm_payg"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
