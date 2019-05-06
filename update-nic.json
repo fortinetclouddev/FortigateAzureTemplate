@@ -22,6 +22,9 @@
     },
     "FortinetTags": {
       "type": "object"
+    },
+    "NSGName":{
+      "type": "string"
     }
   },
   "variables": {
@@ -67,7 +70,10 @@
       "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'none'), variables('NICwoPIP'), variables('NICwPIP'))]",
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',parameters('NSGName'))]"
+        }
       }
     }
   ],

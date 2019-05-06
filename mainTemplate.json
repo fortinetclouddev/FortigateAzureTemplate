@@ -77,6 +77,28 @@
         "description": "Name of Public IP address resource."
       }
     },
+    "publicIPAllocationMethod": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Static",
+        "Dynamic"
+      ],
+      "metadata": {
+        "description": "Dynamic public IPs change on reboot"
+      }
+    },
+    "publicIPsku": {
+        "type": "string",
+        "defaultValue": "Standard",
+        "allowedValues": [
+          "Standard",
+          "Basic"
+        ],
+        "metadata": {
+          "description": "Standard public IPs are newer and required for new Azure load balancers"
+        }
+      },
     "publicIPResourceGroup": {
       "type": "string",
       "defaultValue": "PublicIPResourceGroupHere",
@@ -108,11 +130,11 @@
         "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
     },
-    "vnetAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
+    "vnetAddressPrefixes": {
+      "type": "array",
+      "defaultValue": ["10.0.0.0/16"],
       "metadata": {
-        "description": "Virtual network address space in CIDR notation, example: 10.2.0.0/16"
+        "description": "Virtual network address space in Array and CIDR notation, example: 10.2.0.0/16"
       }
     },
     "Subnet1Name": {
@@ -153,12 +175,12 @@
       "type": "string",
       "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
-        "description": "Base URL of the solution template gallery package",
-        "artifactsBaseUrl": ""
+        "description": "Base URL of the solution template gallery package"
       }
     }
   },
   "variables": {
+    "vnetAddressPrefix": "[string(parameters('vnetAddressPrefixes')[0])]",
     "subnet1Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet1Name'))]",
     "subnet2Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet2Name'))]",
     
@@ -175,14 +197,28 @@
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateName'),'-AvailabilitySet-',uniquestring(deployment().name))]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
-    "vmIPArray": "[split(parameters('Subnet2Prefix'),'.')]",
-    "vmIPArray2String": "[string(variables('vmIPArray')[3])]",
-    "vmIPArray2": "[split(variables('vmIPArray2String'),'/')]",
-    "newIPArray3": "[string(add(int(variables('vmIPArray2')[0]),1))]",
-    "newIPArray2": "[string(int(variables('vmIPArray')[2]))]",
-    "newIPArray1": "[string(int(variables('vmIPArray')[1]))]",
-    "newIPArray0": "[string(int(variables('vmIPArray')[0]))]",
-    "GatewayIP": "[concat(variables('newIPArray0'),'.',variables('newIPArray1'),'.',variables('newIPArray2'),'.',variables('newIPArray3'))]",
+    "sn1IPArray": "[split(parameters('Subnet1Prefix'),'.')]",
+    "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
+    "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
+    "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
+    "sn1IPArray3": "[string(add(int(variables('sn1IPArray2nd')[0]),1))]",
+    "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
+    "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
+    "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
+    "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
+
+    "sn2IPArray": "[split(parameters('Subnet2Prefix'),'.')]",
+    "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
+    "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
+    "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
+    "sn2IPArray3": "[string(add(int(variables('sn2IPArray2nd')[0]),1))]",
+    "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
+    "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
+    "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
+    "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
+
+    "NSGName": "[concat(parameters('FortiGateName'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+
     "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
     "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
 
@@ -199,6 +235,47 @@
          "contentVersion": "1.0.0.0",
          "resources": []
        } 
+      }
+    },
+    {
+      "apiVersion": "2017-09-01",
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('NSGName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowAllInbound",
+            "properties": {
+              "description": "Allow all in",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowAllOutbound",
+            "properties": {
+              "description": "Allow all out",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Outbound"
+            }
+          }
+        ]
       }
     },
     {
@@ -226,7 +303,7 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[parameters('vnetAddressPrefix')]"
+            "[variables('vnetAddressPrefix')]"
           ]
         },
         "subnets": [
@@ -254,8 +331,12 @@
       },
       "name": "[parameters('publicIPAddressName')]",
       "location": "[parameters('location')]",
+      "sku": 
+      {
+        "name": "[parameters('publicIPsku')]"
+      },
       "properties": {
-        "publicIPAllocationMethod": "Static"
+        "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]"
       }
     },
     {
@@ -267,7 +348,8 @@
       "name": "[variables('network_NIC_fg11_Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[parameters('vnetName')]"
+        "[parameters('vnetName')]",
+        "[variables('NSGName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -281,7 +363,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -293,7 +378,8 @@
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[parameters('vnetName')]"
+        "[parameters('vnetName')]",
+        "[variables('NSGName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -307,7 +393,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -344,6 +433,9 @@
           },
           "FortinetTags": {
             "value": "[parameters('FortinetTags')]"
+          },
+          "NSGName": {
+            "value": "[variables('NSGName')]"
           }
         }
       }
@@ -382,6 +474,9 @@
           },
           "FortinetTags": {
             "value": "[parameters('FortinetTags')]"
+          },
+          "NSGName": {
+            "value": "[variables('NSGName')]"
           }
         }
       }
@@ -411,7 +506,7 @@
             "value": "[parameters('location')]"
           },
           "vnetAddressPrefix": {
-            "value": "[parameters('vnetAddressPrefix')]"
+            "value": "[variables('vnetAddressPrefix')]"
           },
           "subnet1Name": {
             "value": "[parameters('Subnet1Name')]"
@@ -472,7 +567,8 @@
         "osProfile": {
           "computerName": "[parameters('FortiGateName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[base64(concat('config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', variables('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg11_Name'))).ipConfigurations[0].properties.privateIPAddress, '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[0].properties.privateIPAddress, '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping\n next\n end\n'))]"
         },
         "storageProfile": {
           "imageReference": {
