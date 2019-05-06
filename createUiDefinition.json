@@ -209,7 +209,6 @@
               "publicIpAddress": "Name of the public IP address object"
             },
             "defaultValue": {
-              "publicIpAddressName": "publicip-fortigate"
             },
             "constraints": {
               "required": {
