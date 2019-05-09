@@ -219,8 +219,8 @@
 
     "NSGName": "[concat(parameters('FortiGateName'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
-    "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'/update-nic.json')]",
-    "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'/vnetsetup.json')]"
+    "updateIPURI": "[concat(parameters('ArtifactsBaseURI'),'update-nic.json')]",
+    "virtualNetworkSetupURL": "[concat(parameters('ArtifactsBaseURI'),'vnetsetup.json')]"
 
   },
   "resources": [
