@@ -178,7 +178,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "[deployment().properties.templateLink.uri]",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/master/",
       "metadata": {
         "description": "Base URL of the solution template gallery package"
       }
