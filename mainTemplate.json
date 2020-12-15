@@ -43,9 +43,9 @@
       "defaultValue": "latest",
       "allowedValues": [		
         "6.2.4",
-		"6.2.5",
+	    	"6.2.5",
         "6.4.2",
-		"6.4.3",
+		    "6.4.3",
         "latest"
       ],
       "metadata": {
@@ -57,6 +57,17 @@
       "defaultValue": "Standard_F8s_v2",
       "metadata": {
         "description": "Virtual Machine size selection"
+      }
+    },
+    "ipv6?": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "enable IPv6 on VNET and interfaces?"
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -138,6 +149,13 @@
         "description": "Virtual network address space in Array and CIDR notation, example: 10.2.0.0/16"
       }
     },
+    "vnetv6AddressPrefixes": {
+      "type": "array",
+      "defaultValue": ["ace:cab:decd::/48"],
+      "metadata": {
+        "description": "Virtual network address space in Array and CIDR notation, example: ace:cab:deca::/48"
+      }
+    },
     "Subnet1Name": {
       "type": "string",
       "defaultValue": "sub1",
@@ -150,6 +168,13 @@
       "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.1.0/24"
+      }
+    },
+    "Subnet1v6Prefix": {
+      "type": "string",
+      "defaultValue": "ace:cab:decd:1::/64",
+      "metadata": {
+        "description": "Subnet 1 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: ace:cab:deca:deed::/64"
       }
     },
     "Subnet2Name": {
@@ -166,6 +191,13 @@
         "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
       }
     },
+    "Subnet2v6Prefix": {
+      "type": "string",
+      "defaultValue": "ace:cab:decd:2::/64",
+      "metadata": {
+        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: ace:cab:deca:deee::/64"
+      }
+    },
 	"AcceleratedNetworking": {
 	  "type": "bool",
 	  "defaultValue": true
@@ -178,7 +210,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "[deployment().properties.templateLink.uri]",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/master/",
       "metadata": {
         "description": "Base URL of the solution template gallery package"
       }
@@ -186,6 +218,7 @@
   },
   "variables": {
     "vnetAddressPrefix": "[string(parameters('vnetAddressPrefixes')[0])]",
+    "vnetv6AddressPrefix": "[string(parameters('vnetv6AddressPrefixes')[0])]",
     "subnet1Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet1Name'))]",
     "subnet2Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet2Name'))]",
 
@@ -302,26 +335,33 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2017-09-01",
+      "apiVersion": "2019-02-01",
       "name": "[parameters('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('vnetAddressPrefix')]"
+            "[variables('vnetAddressPrefix')]",
+            "[variables('vnetv6AddressPrefix')]"
           ]
         },
         "subnets": [
           {
             "name": "[parameters('Subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet1Prefix')]"
+              "addressPrefixes": [
+                "[parameters('Subnet1Prefix')]",
+                "[parameters('Subnet1v6Prefix')]"
+              ]
             }
           },
           {
             "name": "[parameters('Subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet2Prefix')]"
+              "addressPrefixes": [
+                "[parameters('Subnet2Prefix')]",
+                "[parameters('Subnet2v6Prefix')]"
+              ]
             }
           }
         ]
@@ -345,7 +385,7 @@
       }
     },
     {
-      "apiVersion": "2017-09-01",
+      "apiVersion": "2019-02-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -362,6 +402,18 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
+              "privateIPAddressVersion": "IPv4",
+              "primary": "true",
+              "subnet": {
+                "id": "[variables('subnet1Ref')]"
+              }
+            }
+          },
+          {
+            "name": "ipconfigv6",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAddressVersion": "IPv6",
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }
@@ -375,7 +427,7 @@
       }
     },
     {
-      "apiVersion": "2017-09-01",
+      "apiVersion": "2019-02-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -392,6 +444,18 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
+              "privateIPAddressVersion": "IPv4",
+              "primary": "true",
+              "subnet": {
+                "id": "[variables('subnet2Ref')]"
+              }
+            }
+          },
+          {
+            "name": "ipconfigv6",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAddressVersion": "IPv6",
               "subnet": {
                 "id": "[variables('subnet2Ref')]"
               }
@@ -426,6 +490,9 @@
           },
           "privateIp": {
             "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg11_Name'))).ipConfigurations[0].properties.privateIPAddress]"
+          },
+          "privateIpV6": {
+            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg11_Name'))).ipConfigurations[1].properties.privateIPAddress]"
           },
           "publicIPID": {
             "value": "[variables('publicIPID')]"
@@ -471,6 +538,9 @@
           "privateIp": {
             "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[0].properties.privateIPAddress]"
           },
+          "privateIpV6": {
+            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[1].properties.privateIPAddress]"
+          },
           "publicIPID": {
             "value": "[variables('publicIPID')]"
           },
@@ -493,66 +563,6 @@
       }
     },
     {
-      "name": "SettingUpVirtualNetwork",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-02-01",
-      "dependsOn": [
-        "UpdateNIC1",
-        "UpdateNIC2"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('virtualNetworkSetupURL')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "vnetNewOrExisting": {
-            "value": "[parameters('vnetNewOrExisting')]"
-          },
-          "vnetName": {
-            "value": "[parameters('vnetName')]"
-          },
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "vnetAddressPrefix": {
-            "value": "[variables('vnetAddressPrefix')]"
-          },
-          "subnet1Name": {
-            "value": "[parameters('Subnet1Name')]"
-          },
-          "subnet1AddressPrefix": {
-            "value": "[parameters('Subnet1Prefix')]"
-          },
-          "subnet1NextHop": {
-            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg11_Name'))).ipConfigurations[0].properties.privateIPAddress]"
-          },
-          "subnet2Name": {
-            "value": "[parameters('Subnet2Name')]"
-          },
-          "subnet2AddressPrefix": {
-            "value": "[parameters('Subnet2Prefix')]"
-          },
-          "subnet2NextHop": {
-            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[0].properties.privateIPAddress]"
-          },
-          "vnetResourceGroup": {
-            "value": "[parameters('vnetResourceGroup')]"
-          },
-          "routeTable1Name": {
-            "value": "[variables('routeTable1Name')]"
-          },
-          "routeTable2Name": {
-            "value": "[variables('routeTable2Name')]"
-          },
-          "FortinetTags": {
-            "value": "[parameters('FortinetTags')]"
-          }
-        }
-      }
-    },
-    {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('FortiGateName')]",
       "apiVersion": "2017-03-30",
@@ -566,7 +576,8 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "SettingUpVirtualNetwork"
+        "UpdateNIC1",
+        "UpdateNIC2"
       ],
       "properties": {
         "hardwareProfile": {

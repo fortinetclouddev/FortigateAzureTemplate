@@ -11,6 +11,9 @@
     "privateIp": {
       "type": "string"
     },
+    "privateIpV6": {
+      "type": "string"
+    },
     "publicIPID": {
       "type": "string"
     },
@@ -44,6 +47,17 @@
             "id": "[parameters('publicIPID')]"
           }
         }
+      },
+      {
+        "name": "ipconfigv6",
+        "properties": {
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[parameters('privateIpV6')]",
+          "privateIPAddressVersion": "IPv6",
+          "subnet": {
+            "id": "[parameters('SubnetRef')]"
+          }
+        }
       }
     ],
 
@@ -53,6 +67,17 @@
         "properties": {
           "privateIPAllocationMethod": "Static",
           "privateIPAddress": "[parameters('privateIp')]",
+          "subnet": {
+            "id": "[parameters('SubnetRef')]"
+          }
+        }
+      },
+      {
+        "name": "ipconfigv6",
+        "properties": {
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[parameters('privateIpV6')]",
+          "privateIPAddressVersion": "IPv6",
           "subnet": {
             "id": "[parameters('SubnetRef')]"
           }
