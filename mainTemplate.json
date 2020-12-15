@@ -5,6 +5,7 @@
   "parameters": {
     "location": {
       "type": "string",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "location - same as above"
       }
@@ -59,17 +60,6 @@
         "description": "Virtual Machine size selection"
       }
     },
-    "ipv6?": {
-      "type": "string",
-      "defaultValue": "yes",
-      "allowedValues": [
-        "yes",
-        "no"
-      ],
-      "metadata": {
-        "description": "enable IPv6 on VNET and interfaces?"
-      }
-    },
     "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
@@ -113,7 +103,7 @@
       },
     "publicIPResourceGroup": {
       "type": "string",
-      "defaultValue": "PublicIPResourceGroupHere",
+      "defaultValue": "[resourceGroup().name]",
       "metadata": {
         "description": "Resource Group containing the public IP - or new resource group from above (if new public IP)"
       }
@@ -137,7 +127,7 @@
     },
     "vnetResourceGroup": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "[resourceGroup().name]",
       "metadata": {
         "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
@@ -188,14 +178,35 @@
       "type": "string",
       "defaultValue": "10.0.2.0/24",
       "metadata": {
-        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: 10.2.2.0/24"
+        "description": "Subnet 2 Prefix in CIDR notation, example: 10.2.2.0/24"
       }
     },
     "Subnet2v6Prefix": {
       "type": "string",
       "defaultValue": "ace:cab:decd:2::/64",
       "metadata": {
-        "description": "Subnet 2 Prefix in CIDR notation (if using public IP, this will be the 'WAN' or external port), example: ace:cab:deca:deee::/64"
+        "description": "Subnet 2 Prefix in CIDR notation, example: ace:cab:deca:deee::/64"
+      }
+    },
+    "Subnet3Name": {
+      "type": "string",
+      "defaultValue": "sub3",
+      "metadata": {
+        "description": "Subnet 3 Name"
+      }
+    },
+    "Subnet3Prefix": {
+      "type": "string",
+      "defaultValue": "10.0.3.0/24",
+      "metadata": {
+        "description": "Subnet 3 Prefix in CIDR notation, example: 10.2.3.0/24"
+      }
+    },
+    "Subnet3v6Prefix": {
+      "type": "string",
+      "defaultValue": "ace:cab:decd:3::/64",
+      "metadata": {
+        "description": "Subnet 3 Prefix in CIDR notation, example: ace:cab:deca:deef::/64"
       }
     },
 	"AcceleratedNetworking": {
@@ -210,7 +221,7 @@
     },
     "ArtifactsBaseURI": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/master/",
+      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortigateAzureTemplate/ipV6/",
       "metadata": {
         "description": "Base URL of the solution template gallery package"
       }
@@ -221,11 +232,9 @@
     "vnetv6AddressPrefix": "[string(parameters('vnetv6AddressPrefixes')[0])]",
     "subnet1Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet1Name'))]",
     "subnet2Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet2Name'))]",
+    "subnet3Ref": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('Subnet3Name'))]",
 
     "publicIPID": "[resourceId(parameters('publicIPResourceGroup'), 'Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]",
-
-    "routeTable1Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet1Name'),'-routes-',uniquestring(deployment().name))]",
-    "routeTable2Name": "[concat(parameters('FortiGateName'), '-', parameters('Subnet2Name'),'-routes-',uniquestring(deployment().name))]",
 
     "network_NIC_fg11_Name": "[concat(parameters('FortiGateName'),'-Nic0-',uniquestring(deployment().name))]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
@@ -256,6 +265,8 @@
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
 
     "NSGName": "[concat(parameters('FortiGateName'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+
+    "bootstrap-v6-enable": "config system global\n set gui-ipv6 enable\n end\n", 
 
     "updateIPURI": "[uri(parameters('ArtifactsBaseURI'),'update-nic.json')]",
     "virtualNetworkSetupURL": "[uri(parameters('ArtifactsBaseURI'),'vnetsetup.json')]"
@@ -361,6 +372,15 @@
               "addressPrefixes": [
                 "[parameters('Subnet2Prefix')]",
                 "[parameters('Subnet2v6Prefix')]"
+              ]
+            }
+          },
+          {
+            "name": "[parameters('Subnet3Name')]",
+            "properties": {
+              "addressPrefixes": [
+                "[parameters('Subnet3Prefix')]",
+                "[parameters('Subnet3v6Prefix')]"
               ]
             }
           }
@@ -560,6 +580,29 @@
 		    "value": "[parameters('AcceleratedNetworking')]"
 		  }
         }
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "v6routeTable",
+      "apiVersion": "2020-05-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "v6route",
+            "properties": {
+              "addressPrefix": "::/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('network_NIC_fg12_Name'))).ipConfigurations[1].properties.privateIPAddress]"
+            }
+          }
+        ],
+        "subnets": [
+          {
+            "id": "[variables('subnet3Ref')]"
+          }
+        ]
       }
     },
     {
