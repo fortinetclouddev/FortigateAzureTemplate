@@ -587,6 +587,9 @@
       "name": "v6routeTable",
       "apiVersion": "2020-05-01",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('network_NIC_fg12_Name')]"
+      ],
       "properties": {
         "routes": [
           {
